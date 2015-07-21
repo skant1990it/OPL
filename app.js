@@ -61,8 +61,13 @@ app.get('/listapi', adduser.listapi);
 
 //for admin module
 
-
-app.get('/admin',adminuser.add);
+app.get('/admin', function(req, res) {
+	var title = 'Learning node';
+	res.render('admin/index', {
+		title : title,
+		url: gapi.url
+	});
+});
 
 app.listen(3000, function() {
 	console.log("Express server listening on port %d in %s mode",

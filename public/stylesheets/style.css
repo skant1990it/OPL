@@ -36,3 +36,79 @@ table, th{
 	width:100px;
 	height:100px;
 }
+
+
+#bowler,#batsman{
+	height:150px;
+	padding:0px;
+	padding-left:5px;
+	
+}
+#batting,#bowling{
+	height:350px;
+	padding:0px;
+	padding-left:5px;
+}
+
+#over,.run{
+	height:50px;
+	margin-bottom: -10px;
+	padding-bottom:5px;
+}
+h4{
+	float:left;
+}
+.summary h5{
+	margin-bottom:-10px;
+}
+.player{
+	background-color:#E0E2EC;
+	margin-bottom:15px;
+	margin-top: 20px;
+	padding-left:5px;
+}
+#score{
+	height:180px;
+	padding:0px;
+}
+#scoringdiv{
+	background-color:#B9BED5;
+	
+}
+.player_btn{
+	height:50px;
+	width:85px;
+	margin-left:2px;
+	margin-bottom:5px;
+}
+
+.over_btn{
+	height:40px;
+	width:40px;
+	margin-top: 5px;
+	
+}
+.label_btn{
+	float:left;
+	width:80px;
+	height:40px;
+	margin-right:30px;
+	margin-top: 5px;
+	
+}
+ th,td{
+  
+	margin-right:10px;
+	
+	width:90px;
+}
+tr ,td{
+	border:1px black;
+}
+#summary{
+	height:400px;
+}
+.runs_given,.bowler_name{
+	width:100px;
+	margin-top:5px;
+}
