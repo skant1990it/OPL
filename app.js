@@ -7,6 +7,7 @@ var routes = require('./routes');
 var bodyParser = require("body-parser");
 var app = module.exports = express.createServer();
 var adduser = require('./controller/addcontroller');
+var adminuser = require('./controller/admincontroller');
 var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
@@ -56,6 +57,13 @@ app.get('/edituser/*', adduser.edit);
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
 app.get('/listapi', adduser.listapi);
+
+
+//for admin module
+
+
+app.get('/admin',adminuser.add);
+
 app.listen(3000, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
