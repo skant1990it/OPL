@@ -29,3 +29,20 @@ $(document).on("click", '.abc', function() {
 		$(".modal-body").html(data);
 	});
 });
+
+//For admin login 
+
+$(document).on("click", '#admin', function() {
+
+	$.get('/login', function(data) {
+//		$(".jumbotron").html(data);
+		$(".modal-body").html(data);
+	});
+});
+
+$(document).on("click", '#dash_admin', function() {
+
+	$.get('/admin', function(data) {
+		$(".abc").html(data);
+	});
+});

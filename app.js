@@ -11,6 +11,9 @@ var adminuser = require('./controller/admincontroller');
 var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
+var path = require('path');
+
+var csv = require('ya-csv');
 // Configuration
 
 app.configure(function() {
@@ -47,6 +50,8 @@ app.get('/', function(req, res) {
 	});
 });
 
+
+
 /* Configure the multer. */
 
 
@@ -62,12 +67,32 @@ app.get('/listapi', adduser.listapi);
 //for admin module
 
 app.get('/admin', function(req, res) {
-	var title = 'Learning node';
+	var title = 'Admin Panel';
 	res.render('admin/index', {
 		title : title,
 		url: gapi.url
 	});
 });
+app.get('/login',adminuser.login);
+
+app.post('/admin',adminuser.loginuser);
+
+
+app.post('/upload/group', function(req, res) {
+    console.log('File name is ' + req.files.groupfile.name);
+    console.log('File size is ' + req.files.groupfile.size);
+    console.log('File size is ' + req.files.groupfile.path);
+    var reader = csv.createCsvFileReader(req.files.groupfile.path, {
+                                            'separator': ',',
+                                            'quote': '"',
+                                            'escape': '"',   
+                                            'comment': ''
+                                         });
+    reader.addListener('data', function(data) {
+            console.log(data);
+    });
+});
+
 
 app.listen(3000, function() {
 	console.log("Express server listening on port %d in %s mode",

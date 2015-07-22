@@ -14,7 +14,7 @@ a {
 
 }
 #center {
-		height:500px;
+		min-height:200px;
 	color:#c41d1d;
 	background-color:#e4edf4;
 }
