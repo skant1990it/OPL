@@ -1,0 +1,6 @@
+ .ball2 ,.ball3 ,.ball4 ,.ball5 ,.ball6{
+	display:none;
+}
+.active{
+	background-color:rgb(123, 123, 211);
+}

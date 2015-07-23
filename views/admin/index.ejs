@@ -1,6 +1,4 @@
- <head>
-    <% include ../partials/head %>
-</head>
+
 <body class="container">
 <header>
         <% include ../admin/addplayer %>
@@ -14,7 +12,7 @@
                 <input type="button" value="Bowler"></h3>
                 
               <% for(var i=1; i <=11; i++) { %>
-                 <input type="button" class="player_btn" value="Bowler <%= i %>">
+                 <input type="button" class="player_btn bowler" value="Bowler<%=i %>" id=<%=i%>>
                  <% } %>
                 </div>
                 
@@ -26,7 +24,7 @@
                 <input type="button" value="Batsman"></h3>
                 
               <% for(var i=1; i <=11; i++) { %>
-                 <input type="button" class="player_btn" value= "Batsman<%= i %>">
+                 <input type="button" class="player_btn batsman" value= "Batsman<%=i %>" id=bat<%=i%>>
                  <% } %>
                 </div>
 
@@ -41,7 +39,11 @@
                   <h3 >
                 <input class="label_btn" type="button" value="Over"></h3>
                 <% for(var i=1; i <=11; i++) { %>
-                 <input type="button" class="over_btn" value= <%= i %>>
+                <% if(i==1){ %>
+                <input type="button" class="over_btn active " value= <%= i %> id=over<%= i %>>
+               <% }else{ %>
+                 <input type="button" class="over_btn " value= <%= i %> id=over<%= i %>>
+                <% }%>
                  <% } %>
                 </div>
                 
@@ -67,53 +69,93 @@
                                   <th>    No Ball       </th>
                                   <th></th>
                 </tr>
-                <tr><td>1</td>
+                <tr id="1"><td>1</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
+                 <td><% if(i<=7){ %>
+                 <input type="radio"  name="runScored1"class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>>
+                 <% } %>
+                 </td>
                 
                  <% } %>
-                 <td><input type="button" value="OK"</td>
+                 <td><input type="button" value="OK" class ="ball1" checkclass="1" id="ball1"></td>
                  </tr>
-                  <tr><td>2</td>
+                 
+                  <tr id="2"><td>2</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
+                  <td><% if(i<=7){ %>
+                 <input type="radio"  name="runScored2" class="overball ball2" checkclass="2" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball2" checkclass="2" value= <%= i %> id=<%=i %>>
+                 <% } %>
+                 </td>
                 
                  <% } %>
-                  <td><input type="button" value="OK"</td>
+                  <td><input type="button" value="OK"  class ="ball2" checkclass="2" id="ball2"></td>
                  </tr>
+                 
+                 
                   <tr><td>3</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
-                
+                   <td><% if(i<=7){ %>
+                 <input type="radio" name="runScored3" class="overball ball3" checkclass="3" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball3" checkclass="3" value= <%= i %> id=<%=i %>>
                  <% } %>
-                  <td><input type="button" value="OK"</td>
+                 </td>
+                
+                 
+                 <% } %>
+                  <td><input type="button" value="OK" class ="ball3" checkclass="3" id="ball3"></td>
                  </tr>
+                 
+                 
                   <tr><td>4</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
+                 <td><% if(i<=7){ %>
+                 <input type="radio" name="runScored4" class="overball ball4" checkclass="4" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball4" checkclass="4" value= <%= i %> id=<%=i %>>
+                 <% } %>
+                 </td>
                 
                  <% } %>
-                  <td><input type="button" value="OK"</td>
+                  <td><input type="button" value="OK"  class ="ball4" checkclass="4" id="ball4"></td>
                  </tr>
+                 
+                 
                   <tr><td>5</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
+                   <td><% if(i<=7){ %>
+                 <input type="radio" name="runScored5" class="overball ball5" checkclass="5" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball5" checkclass="5" value= <%= i %> id=<%=i %>>
+                 <% } %>
+                 </td>
                 
                  <% } %>
-                  <td><input type="button" value="OK"</td>
+                  <td><input type="button" value="OK"  class ="ball5" checkclass="5" id="ball5"></td>
                  </tr>
+                 
+                 
                   <tr><td>6</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
-                 <td><input type="checkbox"  value= <%= i %>></td>
+                  <td><% if(i<=7){ %>
+                 <input type="radio" name="runScored6" class="overball ball6" checkclass="6" value= <%= i %> id=<%=i %>>
+                 <% } else{%>
+                  <input type="checkbox"  class="overball ball6" checkclass="6" value= <%= i %> id=<%=i %>>
+                 <% } %>
+                 </td>
                 
                  <% } %>
-                  <td><input type="button" value="OK"</td>
+                  <td><input type="button" value="OK" class ="ball6"  checkclass="6" id="ball6"></td>
                  </tr>
                  
                 </table>

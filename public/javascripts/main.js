@@ -23,12 +23,6 @@ $(document).on("click", '#list_view', function() {
  document.getElementById("content").innerHTML='<object type="text/html" data="home.html" ></object>';
  }*/
 
-$(document).on("click", '.abc', function() {	
-	var userId = $(this).attr('id');
-	$.get('/edituser/' + userId  ,function( data ) {
-		$(".modal-body").html(data);
-	});
-});
 
 //For admin login 
 
@@ -43,6 +37,10 @@ $(document).on("click", '#admin', function() {
 $(document).on("click", '#dash_admin', function() {
 
 	$.get('/admin', function(data) {
-		$(".abc").html(data);
+		$(".scoreboard").html(data);
 	});
 });
+
+
+
+
