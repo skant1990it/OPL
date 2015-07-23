@@ -1,0 +1,52 @@
+  <div class="">
+                <div class="player" id="match_setting">
+                <h3>Match Setting</h3>
+                <div class="col-sm-6">
+                Total Over :  <input class = "onlyNumeric over_limit" type = "Text">  
+                </div>
+                <div class="col-sm-6">
+                Over Limit :  <input class = "onlyNumeric over_limit" type = "Text">  
+                </div>
+                <div style="text-align:center">  
+    				<input class = "setting_save" type = "Button" Value = "Save">   
+				</div>  
+             </div>
+        </div>
+ 
+ <div class="row">
+            <div class="col-sm-6">
+             <h3>
+                <input type="button" class = "team_name" value="First Team"></h3>
+                <div class="player" id="bowler">
+             <select class = "center_postion" id='playing_team_A_select'>
+             <option value="0">Select Team</option>
+             <% for(var i=0; i < team.length; i++) { %>
+             
+             <option value="<%= team[i].id %>"><%= team[i].team_name %></option>
+             <% } %>
+             </select>
+              <div id = "player_list_A"></div> 
+              <div style="text-align:center">  
+    				<input class = "setting_save" type = "Button" Value = "Save">   
+				</div>  
+                </div>
+              
+            </div>
+            <div class="col-sm-6">
+                 <h3>
+                <input type="button" class = "team_name" value="Second Team"></h3>
+                <div class="player" id="batsman">
+                   <select class = "center_postion"id='playing_team_B_select'>
+                   <option value="0">Select Team</option>
+             <% for(var i=0; i < team.length; i++) { %>
+             <option value="<%= team[i].id %>"><%= team[i].team_name %></option>
+             <% } %>
+             </select>
+             <div id = "player_list_B"></div> 
+             <div style="text-align:center">  
+    				<input class = "setting_save" type = "Button" Value = "Save">   
+				</div>  
+                </div>
+			
+            </div>
+ </div>

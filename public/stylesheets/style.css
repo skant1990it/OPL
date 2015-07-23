@@ -27,10 +27,10 @@ a {
 	float:left;
 	margin-left:100px;
 }
-table, th{
+/* table, th{
     border: 1px solid black;
     text-align: left;
-}
+} */
 #header {
 	border:3px solid red;
 	width:100px;
@@ -45,7 +45,7 @@ table, th{
 	
 }
 #batting,#bowling{
-	height:350px;
+	min-height:350px;
 	padding:0px;
 	padding-left:5px;
 }
@@ -114,6 +114,7 @@ tr ,td{
 }
 
 
+
 .green
 {
     background-color:green;
@@ -121,4 +122,22 @@ tr ,td{
 .red
 {
     background-color:red;
+
+.team_name {
+	margin-left:160px;
+}
+#match_setting {
+	height:150px;
+	padding:0px;
+	padding-left:5px;
+}
+.setting_save {
+	margin-top:60px;
+}
+.center_postion {
+	text-align:center;
+	margin-left:35%;
+	margin-top:5px;
+	background-color:#778280;
+
 }

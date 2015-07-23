@@ -6,6 +6,14 @@ var model = require('../model/adminmodel');
 var path = require('path');	
 var fs = require('fs');
 
+exports.playerList = function(req, res) {
+	model.listdata(req,res);
+};
+
+exports.teamList = function(req, res) {
+	model.listTeam(req,res);
+};
+
 exports.login = function(req, res) {
 	res.render('admin/login', {
 		title : '',
@@ -26,4 +34,15 @@ exports.loginuser = function(req, res) {
     	model.loginErr(req.body,res,errors);
     }
   
+};
+
+exports.teamAdd = function(req, res) {
+	model.listAllPlayer(req,res);
+		
+};
+exports.teamAddData = function(req, res) { 
+    model.addTeamData(req.body,res);
+};
+exports.teamPlayer = function(req, res) {
+	model.teamPlayer(req.params,res);
 };

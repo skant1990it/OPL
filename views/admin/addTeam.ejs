@@ -1,0 +1,26 @@
+<body>
+
+<div id = "center">
+<form enctype="multipart/form-data" id = "form_id" method = 'post' action='/addTeam'>
+<select name = "team_name" >
+             <% for(var i=0; i < team.length; i++) { %>
+             <option selected value="<%= team[i] %>"><%= team[i] %></option>
+             <% } %>
+             </select>
+  <table style="width:100%">
+  <tr>
+	  <th>First Name</th>
+	  <th>Select in Team</th></tr>
+ <tr>
+<% for(var i=0; i < player.length; i++) { %>
+   <tr>
+     <td><%= player[i] %></td>
+     <td><input name = "player" type = "checkbox" value  = "<%= player[i] %>">
+     </td>
+   </tr>
+<% } %>
+</table> 
+   <input class = "button_class" type = "submit" value  = "Save">     
+   </form>  
+</div>
+</body>

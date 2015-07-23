@@ -55,9 +55,17 @@ app.get('/', function(req, res) {
 /* Configure the multer. */
 
 
-app.get('/add', adduser.add);
-app.post('/adddata', adduser.adddata);
-app.get('/list', adduser.list);
+
+//Player list
+app.get('/list', adminuser.playerList);
+//Team list
+app.get('/teamlist', adminuser.teamList);
+//Team add
+app.get('/addTeam', adminuser.teamAdd);
+app.post('/addTeam', adminuser.teamAddData);
+//add team player
+app.get('/teamPlayer/*', adminuser.teamPlayer);
+
 app.get('/edituser/*', adduser.edit);
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
