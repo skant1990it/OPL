@@ -1,6 +1,6 @@
 <!-- views/partials/header.ejs -->
 
-<nav class="navbar navbar-default" role="navigation">
+<nav class="row navbar navbar-default" role="navigation">
     <div class="container-fluid">
 
         <div class="navbar-header">
@@ -8,11 +8,12 @@
                 <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
             </a>
         </div>
-        <ul class="nav navbar-nav">
-            <li>
-				<input class = "button_class" type = "button" id = "dashboard" value  = "Home"></li>
-				<li><a hrsssef = '/admin'>
-				<input class = "button_class" type = "button" value  = "Admin" id = "dash_admin"></a></li>
+        <ul class="row nav navbar-nav">
+            <li><input class = "button_class" type = "button" id = "dashboard" value  = "Home"></li>
+			<li><input class = "button_class" type = "button" value  = "ScoreBoard" id = "dash_admin"></li>
+			<li><input class = "button_class" type = "button" value  = "Playing Team" id = "playing_team"></li>
+			<li><input class = "button_class" type = "button" value  = "Add Team" id = "add_team" 
+			data-toggle="modal" data-target="#myModal"></li>
        		 </ul>
     </div>
 </nav>
