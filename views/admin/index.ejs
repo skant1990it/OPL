@@ -55,7 +55,7 @@
             <div class="col-sm-12">
             
                 <div class="player" id="score">
-                <table id="score_table">
+                <table id="score_table" name="score_table">
                 <tr><th>  Balls     </th>
                 <th>  1         </th>
                   <th>      2     </th>
@@ -69,11 +69,12 @@
                                   <th>    No Ball       </th>
                                   <th></th>
                 </tr>
-                <tr id="1"><td>1</td>
+                <tr id="1" >
+                <td>1</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
                  <td><% if(i<=7){ %>
-                 <input type="radio"  name="runScored1"class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>>
+                 <input type="radio"  name="runScored1" class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>>
                  <% } else{%>
                   <input type="checkbox"  class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>>
                  <% } %>
@@ -98,7 +99,7 @@
                  </tr>
                  
                  
-                  <tr><td>3</td>
+                  <tr><td id="3">3</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
                    <td><% if(i<=7){ %>
@@ -114,7 +115,7 @@
                  </tr>
                  
                  
-                  <tr><td>4</td>
+                  <tr><td id="4">4</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
                  <td><% if(i<=7){ %>
@@ -129,7 +130,7 @@
                  </tr>
                  
                  
-                  <tr><td>5</td>
+                  <tr><td id="5">5</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
                    <td><% if(i<=7){ %>
@@ -144,7 +145,7 @@
                  </tr>
                  
                  
-                  <tr><td>6</td>
+                  <tr><td id="6">6</td>
                  <% for(var i=1; i <=10; i++) { %>
                 
                   <td><% if(i<=7){ %>
