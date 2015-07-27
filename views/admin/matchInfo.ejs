@@ -1,0 +1,32 @@
+  <div class="row">
+ 			  <form  name="match_setting_form" id = "match_setting_form" method = 'post'>
+                <div class="player"">
+               
+                <input class = "setting_update" id ="setting_update" type = "button" Value = "Edit Setting"
+                style="background-color:red; float:right; display:block"/> 
+              
+                <input class = "new_match" id ="new_match" type = "button" Value = "+New Match"
+                style="background-color:green; float:right; display:block"/> 
+                
+                <% if(matchId){%>
+  					 <input name = "match_id" id = "match_id" type = "hidden" value = "<%=matchId ? matchId[0].id: '' %>">
+  				<% } %>
+  				
+                <h3>Match Setting</h3>
+                <div class="col-sm-6">
+                Total Over :  <input class = "match_setting_text"  name="total_over"id = "total_over" type = "Text" value = "<%=matchId ? matchId[0].total_over : '' %>">  
+                </div>
+                <div class="col-sm-6">
+                Over Limit :  <input class = "match_setting_text"  name="over_limit" id = "over_limit" type = "Text" value = "<%=matchId ?  matchId[0].over_limit : ''%>">  
+                </div>
+                <div style="text-align:center">  
+                 <% if(newMatch == 'Yes'){%>
+                 	<input class = "setting_save" id ="setting_save" type = "button" Value = "Save"> 
+                 <% } else { %>
+    				<input class = "setting_save" id ="update_setting_btn" type = "button" Value = "Update"
+    				style="display:none">   
+    			<% } %>
+    				
+				</div>
+             </div></form>  
+        </div>

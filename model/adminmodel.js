@@ -41,14 +41,11 @@ exports.loginErr = function(req,res,errors){
  * Call for list of all player
  */
 exports.listdata = function(req,res) {
-
 	var queryString = 'SELECT * FROM player';
-	
 	connection.query(queryString, function(err, rows, fields) {
 		res.render('admin/playingTeam', {
 			team : rows
 		});
-		 
 	});
 };
 
@@ -122,6 +119,51 @@ exports.teamPlayer = function(data,res) {
 			player : rows,
 			id : data,
 			errors : ''
+		});
+	});
+};
+
+//get match setting data
+exports.getmatchSetting = function(req,res) {
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+	var queryString = 'SELECT * FROM match_info where match_date  = "'+ matchDate +'" order by id desc limit 1';
+	console.log(queryString);
+	connection.query(queryString, function(err, rows, fields) {
+		if(!rows[0]) {
+			res.render('admin/matchInfo', {
+				matchId : '',
+				newMatch : 'Yes'
+			});
+		}
+		else {
+			res.render('admin/matchInfo', {
+				matchId : rows,
+				newMatch : 'No'
+			});
+		}
+	});
+};
+//save and update match setting
+exports.saveMacthSetting = function(req,res) {
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+	if(!req.match_id) {
+		var queryString = "INSERT INTO match_info (total_over,over_limit,match_date) values ('"+ req.total_over +"','"+ req.over_limit +"','"+ matchDate +"');";
+	}
+	else {
+		var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' where id = '"+ req.match_id +"'";
+	}
+	connection.query(queryString, function(err, rows, fields) {
+	});
+};
+//getmatchIdgetmatchSetting
+exports.getmatchId = function(req,res) {
+	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
+	connection.query(queryString, function(err, rows, fields) {
+		console.log(rows);
+		res.render('admin/matchInfo', {
+			matchId : rows
 		});
 	});
 };
