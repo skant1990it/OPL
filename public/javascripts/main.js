@@ -59,9 +59,16 @@ $(document).on("click", '#add_team', function() {
 //For select playing 11 player for team 1
 $(document).on("change", '#playing_team_A_select', function() {
 	var id = $(this).val();
-	$.get('/teamPlayer/' + id, function(data) {
-		$(document).find('#player_list_A').html(data);
-	});
+	var second_team = $('#playing_team_B_select').val();
+	if(second_team == id) {
+		alert("This team is already selected for Today match");
+		return false;
+	} 
+	else {
+		$.get('/teamPlayer/' + id, function(data) {
+			$(document).find('#player_list_A').html(data);
+		});
+	}
 });
 //For select playing 11 player for team 2
 $(document).on("change", '#playing_team_B_select', function() {
@@ -69,6 +76,7 @@ $(document).on("change", '#playing_team_B_select', function() {
 	var id = $(this).val();
 	if(first_team == id) {
 		alert("This team is already selected for Today match");
+		return false;
 	} 
 	else {
 		$.get('/teamPlayer/' + id, function(data) {
@@ -76,8 +84,46 @@ $(document).on("change", '#playing_team_B_select', function() {
 		});
 	}
 });
-//For numeric input only
-jQuery('.onlyNumeric').keyup(function () { 
-    this.value = this.value.replace(/[^0-9\.]/g,'');
+
+//For match setting
+$(document).on("click", '#match_setting', function() {
+	$.get('/setting', function(data) {
+		$(".scoreboard").html(data);
+	});
 });
+//Save match setting details
+$(document).on("click", '.setting_save', function() {
+	$('.setting_update').show();
+	var data = $('#match_setting_form').serialize();
+	$.ajax({
+		url: "/savesetting",
+		data: data,
+		method: "POST",
+		success: function(result){
+			console.log("kllkjlj");
+		}
+	});
+	$(".match_setting_text").attr('disabled','disabled');
+	$("#setting_update").css('display','block');
+	$("#setting_save").attr('disabled','disabled');
+});
+
+$(document).on("click", '#setting_update', function() {
+	$("#update_setting_btn").css('display','block');
+	$("#setting_save").hide();
+	$(".match_setting_text").attr('disabled',false);
+
+});
+
+//For match setting	
+$(document).on("click", '#new_match', function() {
+	$.get('/newmatch', function(data) {
+		$(".scoreboard").html(data);
+	});
+});
+
+
+
+
+
 

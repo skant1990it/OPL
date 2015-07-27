@@ -46,3 +46,26 @@ exports.teamAddData = function(req, res) {
 exports.teamPlayer = function(req, res) {
 	model.teamPlayer(req.params,res);
 };
+exports.matchSetting = function(req, res) {
+	model.getmatchSetting(req.params,res);
+//	res.render('admin/matchInfo', {
+//		matchId : ''
+//	})
+};
+//save match setting  
+exports.saveMacthSetting = function(req, res) {
+	console.log(req.body);
+    model.saveMacthSetting(req.body,res);
+};
+//get match Id
+exports.getmatchId = function(req, res) {
+	model.getmatchId(req.params,res);
+};
+
+//new match setting form
+exports.newMatch = function(req, res) {
+	res.render('admin/matchInfo', {
+		matchId : '',
+		newMatch : 'Yes'
+	})
+};
