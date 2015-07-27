@@ -65,11 +65,19 @@ app.get('/addTeam', adminuser.teamAdd);
 app.post('/addTeam', adminuser.teamAddData);
 //add team player
 app.get('/teamPlayer/*', adminuser.teamPlayer);
+//match setting
+app.get('/setting', adminuser.matchSetting);
+//save and update Match Setting
+app.post('/savesetting', adminuser.saveMacthSetting);
+//get match id
+app.get('/getMatchId', adminuser.getmatchId);
+//new match setting
+app.get('/newmatch', adminuser.newMatch);
 
 app.get('/edituser/*', adduser.edit);
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
-app.get('/listapi', adduser.listapi);
+
 
 
 //for admin module
@@ -84,6 +92,7 @@ app.get('/admin', function(req, res) {
 app.get('/login',adminuser.login);
 
 app.post('/admin',adminuser.loginuser);
+
 
 app.post('/addRuns',adminuser.addRuns);
 
@@ -102,7 +111,6 @@ app.post('/upload/group', function(req, res) {
             console.log(data);
     });
 });
-
 
 app.listen(3000, function() {
 	console.log("Express server listening on port %d in %s mode",

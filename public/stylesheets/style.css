@@ -66,6 +66,7 @@ h4{
 	margin-bottom:15px;
 	margin-top: 20px;
 	padding-left:5px;
+	min-height:100px;
 }
 #score{
 	height:180px;
@@ -112,9 +113,6 @@ tr ,td{
 	width:100px;
 	margin-top:5px;
 }
-
-
-
 .green
 {
     background-color:green;
@@ -122,16 +120,15 @@ tr ,td{
 .red
 {
     background-color:red;
-
+}
 .team_name {
 	margin-left:160px;
 }
 #match_setting {
-	height:150px;
 	padding:0px;
 	padding-left:5px;
 }
-.setting_save {
+.setting_save ,.update {
 	margin-top:60px;
 }
 .center_postion {
@@ -140,4 +137,18 @@ tr ,td{
 	margin-top:5px;
 	background-color:#778280;
 
+}
+.display_team_name {
+	margin-left:100px;
+}
+#setting_update {
+	float:right;
+	margin-right:20px;
+	background-color:red;
+}
+.btn_class{
+	margin-top:60px;
+}
+#update_setting_btn {
+	margin-left:50%;
 }
