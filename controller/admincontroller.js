@@ -46,3 +46,8 @@ exports.teamAddData = function(req, res) {
 exports.teamPlayer = function(req, res) {
 	model.teamPlayer(req.params,res);
 };
+
+
+exports.addRuns = function(req, res) {
+	model.addRuns(req.params,res);
+};

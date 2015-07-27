@@ -85,6 +85,8 @@ app.get('/login',adminuser.login);
 
 app.post('/admin',adminuser.loginuser);
 
+app.post('/addRuns',adminuser.addRuns);
+
 
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
