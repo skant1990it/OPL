@@ -74,3 +74,12 @@ exports.newMatch = function(req, res) {
 		newMatch : 'Yes'
 	})
 };
+
+exports.fetchPlayer = function(req, res) {
+    model.fetchPlayer(req.body,res);
+};
+
+exports.assignPlayerToTeam = function(req, res) {
+    model.assignPlayerToTeam(req.body,res);
+};
+

@@ -72,23 +72,34 @@ exports.listAllPlayer = function(req,res) {
 	var queryTeam = 'SELECT * FROM team';
 	var result = {};
     var user_array = [];
+    var assigned_user_array = [];
     var title_array = [];
 	connection.query(queryPlayer, function(err, rowsp, fields) {
 		for(var i=0; i < rowsp.length; i++) {
-			user_array.push( rowsp[i].first_name  );
+			if(rowsp[i].team_id == 0) {
+				user_array.push(rowsp[i].id);
+				user_array.push(rowsp[i].first_name);
+			}
+			else {
+				assigned_user_array.push(rowsp[i].team_id);
+				assigned_user_array.push(rowsp[i].id);
+				assigned_user_array.push(rowsp[i].first_name);
+			}
 		}
 		
 	});
 	
 	connection.query(queryTeam, function(err, rowst, fields) {
 		for(var i=0; i < rowst.length; i++) {
+			title_array.push(rowst[i].id );
 			title_array.push(rowst[i].team_name );
 		}
 	});
 	setTimeout(function(){
 		res.render('admin/addTeam', {
-			player : user_array,
-			team :title_array
+			player: user_array,
+			team: title_array,
+			assigned_player: assigned_user_array
 		});
 	},1000);
 };
@@ -96,10 +107,8 @@ exports.listAllPlayer = function(req,res) {
  * call for add team member
  */
 exports.addTeamData = function(req,res,reqImg) {
-	console.log(req);
 	//var queryString = "INSERT INTO user (first_name,last_name,phone,email,address,image) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"','"+ reqImg.userPhoto.name +"');";
 	
-	console.log(queryString);
 	connection.query(queryString, function(err, rows, fields) {
 		res.redirect("pages/list");
 //		return exports.listdata(req,res);
@@ -112,7 +121,6 @@ exports.teamPlayer = function(data,res) {
 	
 	var queryString  = "SELECT * from player WHERE team_id = '"+ data +"'";
 	
-	console.log(queryString);
 	connection.query(queryString, function(err, rows, fields) {
 		console.log(rows);
 		res.render('admin/playerList', {
@@ -128,7 +136,6 @@ exports.getmatchSetting = function(req,res) {
 	var myDate = new Date();
 	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
 	var queryString = 'SELECT * FROM match_info where match_date  = "'+ matchDate +'" order by id desc limit 1';
-	console.log(queryString);
 	connection.query(queryString, function(err, rows, fields) {
 		if(!rows[0]) {
 			res.render('admin/matchInfo', {
@@ -161,9 +168,29 @@ exports.saveMacthSetting = function(req,res) {
 exports.getmatchId = function(req,res) {
 	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
 	connection.query(queryString, function(err, rows, fields) {
-		console.log(rows);
 		res.render('admin/matchInfo', {
 			matchId : rows
 		});
 	});
+};
+
+/**
+ * fetch the player data for add team view
+ */
+exports.fetchPlayer = function(req,res) {
+
+	var queryPlayer = 'SELECT * FROM player WHERE first_name like "%'+req.player_name+'%" and team_id = 0';
+    var user_array = [];
+	var abc = connection.query(queryPlayer, function(err, rowsp, fields) {
+		for(var i=0; i < rowsp.length; i++) {
+			user_array.push(rowsp[i].id);
+			user_array.push(rowsp[i].first_name);
+		}
+		res.send(JSON.stringify(user_array));
+	});
+};
+
+exports.assignPlayerToTeam = function(data,res) {
+	var queryString = "UPDATE player SET team_id ='"+ data.team_id +"' where id = '"+ data.player_id +"'";
+	connection.query(queryString);
 };
