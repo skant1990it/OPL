@@ -1,6 +1,5 @@
   <div class="row">
- 			  <form  name="match_setting_form" id = "match_setting_form" method = 'post'>
-                <div class="player"">
+ 			    <div class="player"">
                
                 <input class = "setting_update" id ="setting_update" type = "button" Value = "Edit Setting"
                 style="background-color:red; float:right; display:block"/> 
@@ -8,7 +7,7 @@
                 <input class = "new_match" id ="new_match" type = "button" Value = "+New Match"
                 style="background-color:green; float:right; display:block"/> 
                 
-                <% if(matchId){%>
+                <% if(matchId[0].id){%>
   					 <input name = "match_id" id = "match_id" type = "hidden" value = "<%=matchId ? matchId[0].id: '' %>">
   				<% } %>
   				
@@ -28,5 +27,5 @@
     			<% } %>
     				
 				</div>
-             </div></form>  
+             </div>  
         </div>

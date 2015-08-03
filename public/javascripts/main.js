@@ -43,10 +43,10 @@ $(document).on("click", '#dash_admin', function() {
 
 //For playing team list
 $(document).on("click", '#playing_team', function() {
-
-	$.get('/list', function(data) {
+	$.get('/teamlist', function(data) {
 		$(".scoreboard").html(data);
 	});
+
 });
 //For playing team list
 $(document).on("click", '#add_team', function() {
@@ -131,9 +131,6 @@ $(document).on("click", '#add_team', function() {
 				});
 			},
 		});
-		//console.log(data);
-	//$(".modal-body").html(data);
-		
 	});
 });
 
@@ -145,69 +142,89 @@ function addDroppableAccept() {
 	$(this).droppable('option', 'accept', '.draggable');
 }
 //For select playing 11 player for team 1
-$(document).on("change", '#playing_team_A_select', function() {
-	var id = $(this).val();
-	var second_team = $('#playing_team_B_select').val();
-	if(second_team == id) {
-		alert("This team is already selected for Today match");
-		return false;
-	} 
-	else {
-		$.get('/teamPlayer/' + id, function(data) {
-			$(document).find('#player_list_A').html(data);
-		});
-	}
+$(document).on("change", '#team_A_select', function() {
+	$('#team1_name').val($('#team_A_select option:selected').text());
+	$('#play_team1_name').val($('#team_A_select option:selected').text());
+	var id = $(this).children(":selected").attr("id");
+
+	$.get('/teamPlayer/' + id, function(data) {
+		$(document).find('#player_list_A').html(data);
+		console.log(data);
+	});
+
 });
 //For select playing 11 player for team 2
-$(document).on("change", '#playing_team_B_select', function() {
-	var first_team = $('#playing_team_A_select').val();
-	var id = $(this).val();
-	if(first_team == id) {
-		alert("This team is already selected for Today match");
-		return false;
-	} 
-	else {
-		$.get('/teamPlayer/' + id, function(data) {
-			$(document).find('#player_list_B').html(data);
-		});
-	}
+$(document).on("change", '#team_B_select', function() {
+	
+	$('#team2_name').val($('#team_B_select option:selected').text());
+	$('#play_team2_name').val($('#team_B_select option:selected').text());
+	var id = $(this).children(":selected").attr("id");
+	$.get('/teamPlayer/' + id, function(data) {
+		$(document).find('#player_list_B').html(data);
+	});
+
+});
+
+//For playing 11 setting
+$(document).on("click", '#playing_11_div111', function() {
+
+	alert("helo");
 });
 
 //For match setting
-$(document).on("click", '#match_setting', function() {
-	$.get('/setting', function(data) {
-		$(".scoreboard").html(data);
-	});
+$(document).on("click", '#setting_save', function() {
+	//$('#team_match_setting_div').css('display','block');
+	$(".match_setting_text").attr('disabled','disabled');
+	$("#setting_save").attr('disabled','disabled');
+	
+	
+	var id=$("#match_id").val();
+	if(id!='undefined'){
+		$("#play_team1_name").val($("#team1_name").val());
+		$("#play_team2_name").val($("#team2_name").val());
+	}
+	
+	
 });
 //Save match setting details
 $(document).on("click", '.setting_save', function() {
-	$('.setting_update').show();
-	var data = $('#match_setting_form').serialize();
+	var total_over = $('#total_over').val();
+	var over_limit = $('#over_limit').val();
 	$.ajax({
 		url: "/savesetting",
-		data: data,
+		data: {
+			team1_name:$('#team_A_select :selected').attr("id"),
+			team2_name:$('#team_B_select :selected').attr("id"),
+			total_over:total_over,
+			over_limit:over_limit,
+			match_id :$('#match_id').val(),
+			
+		},
 		method: "POST",
 		success: function(result){
-			console.log("kllkjlj");
+			console.log("saved");
 		}
 	});
-	$(".match_setting_text").attr('disabled','disabled');
+
+//$.get('/setting', function(data) {
+//		$("#matchsetting").html(data);
+//	});
+
 	$("#setting_update").css('display','block');
-	$("#setting_save").attr('disabled','disabled');
 });
 
 $(document).on("click", '#setting_update', function() {
-	$("#update_setting_btn").css('display','block');
-	$("#setting_save").hide();
 	$(".match_setting_text").attr('disabled',false);
-
+	$("#setting_save").attr('disabled',false);
 });
 
 //For match setting	
-$(document).on("click", '#new_match', function() {
-	$.get('/newmatch', function(data) {
-		$(".scoreboard").html(data);
-	});
+$(document).on("click", '.playercheck', function() {
+//	$.get('/newmatch', function(data) {
+//		$(".scoreboard").html(data);
+//	});
+	alert($('input[name="player"]:checked').attr('id'));
+	
 });
 
 $(document).on("keyup", '#search_box', function() {
@@ -238,8 +255,6 @@ $(document).on("keyup", '#search_box', function() {
 		}
 	});
 });
-
-
 
 
 
