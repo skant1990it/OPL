@@ -234,7 +234,6 @@ exports.getmatchId = function(req,res) {
 	});
 };
 
-
 exports.getTeamName = function(req,res) {
 	var queryStringTeam = 'SELECT * FROM team';
 	
@@ -245,6 +244,7 @@ exports.getTeamName = function(req,res) {
 			newMatch : 'Yes'
 		});
 });
+};
 /**
  * fetch the player data for add team view
  */
