@@ -53,16 +53,17 @@ app.get('/', function(req, res) {
 
 
 /* Configure the multer. */
-
-
+//team info
+//app.get('/teaminfo', adminuser.teamInfo);
 
 //Player list
 app.get('/list', adminuser.playerList);
 //Team list
 app.get('/teamlist', adminuser.teamList);
+app.get('/teamname', adminuser.teamName);
 //Team add
 app.get('/addTeam', adminuser.teamAdd);
-app.post('/addTeam', adminuser.teamAddData);
+app.post('/addTeambbbb', adminuser.teamAddData);
 //add team player
 app.get('/teamPlayer/*', adminuser.teamPlayer);
 //match setting

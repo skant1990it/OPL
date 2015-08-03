@@ -3,13 +3,8 @@
              <h3>
                 <input type="button" class = "team_name" value="First Team"></h3>
                 <div class="player" id="bowler">
-             <select class = "center_postion" id='playing_team_A_select'>
-             <option value="0">Select Team</option>
-             <% for(var i=0; i < team.length; i++) { %>
-             
-             <option value="<%= team[i].id %>"><%= team[i].team_name %></option>
-             <% } %>
-             </select>
+             <input type = "text" id="team1_name" name="team1_name"  readonly value=<%= matchId !="null" ? matchId[0].first_team :''   %> >
+         
               <div id = "player_list_A"></div> 
               <div style="text-align:center">  
     				<input class = "setting_save" type = "Button" Value = "Save">   

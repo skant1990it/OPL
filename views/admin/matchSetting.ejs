@@ -1,0 +1,95 @@
+ <div class="row" id="teamDiv">
+ 
+ <form  name="match_setting_form" id = "match_setting_form" method = 'post'>
+ 
+            <div class="col-sm-12">
+                <div class="player" id="bowler">
+                
+                 <input class = "new_team_match" id ="new_team_match" type = "button" Value = "+New Match"
+                style="background-color:green; float:right; display:block"/> 
+                <div id="team1">
+                <div class="teamlist" id="team1list">
+             <select class = "team_info" id='team_A_select'>
+             <option value="0">Select Team A</option>
+             <% for(var i=0; i < team.length; i++) { %>
+             
+             <option id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
+             <% } %>
+             </select>
+             </div>
+             <div class="teamvalue" id="team1value">
+            <input type = "text" id="team1_name" name="team1_name"  readonly value=<%= matchId!="null" ? matchId[0].first_team :''   %> >
+             </div>
+             </div>
+            <div id="team2">
+            <div class="teamlist" >
+             <select class = "team_info" id='team_B_select'>
+             <option value="0">Select Team B</option>
+             <% for(var i=0; i < team.length; i++) { %>
+             
+             <option id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
+             <% } %>
+             </select>
+             </div>
+            <div class="teamvalue">
+             <input type = "text" id="team2_name" name = "team2_name"  readonly value=<%= matchId!="null" ? matchId[0].second_team :''   %> ></div>
+             </div>
+              <div style="text-align:center">  
+    				<input class = "setting_save" id ="team_name_save" type = "Button" Value = "Save">   
+				</div>  
+                </div>
+              
+         
+           
+ </div>
+ 
+ 
+	<div class="col-sm-12">
+		<div id = "matchsetting"  >
+		  
+             </div>
+        </div>
+      
+		
+		
+	
+	
+	
+	<div class="row"  id = "team_match_setting_div" <% if(abc == 1) { %>style="display:none" <% } %> >
+ 		
+ 		<div class="row">
+            <div class="col-sm-6">
+             <h3>
+                <input type="button" class = "team_name" value="First Team"></h3>
+                <div class="player" id="bowler">
+             <input type = "text" id="play_team1_name" name="play_team1_name"  readonly  >
+         
+              <div id = "player_list_A"></div> 
+              <div style="text-align:center">  
+    				<input class = "setting_save" type = "Button" Value = "Save">   
+				</div>  
+                </div>
+              
+            </div>
+            <div class="col-sm-6">
+                 <h3>
+                <input type="button" class = "team_name" value="Second Team"></h3>
+                <div class="player" id="batsman">
+                   
+                <input type = "text" id="play_team2_name" name="play_team2_name"  readonly  >
+              
+             <div id = "player_list_B"></div> 
+             <div style="text-align:center">  
+    				<input class = "setting_save" type = "Button" Value = "Save">   
+				</div>  
+                </div>
+			
+            </div>
+
+ 		  
+           </form>  
+             
+         
+       
+          </div>
+         
