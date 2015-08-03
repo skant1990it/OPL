@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 var app = module.exports = express.createServer();
 var adduser = require('./controller/addcontroller');
 var adminuser = require('./controller/admincontroller');
-//var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
 var path = require('path');
@@ -24,7 +24,7 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
-	//app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
+	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
 
