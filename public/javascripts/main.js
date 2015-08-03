@@ -223,7 +223,7 @@ $(document).on("click", '.playercheck', function() {
 //	$.get('/newmatch', function(data) {
 //		$(".scoreboard").html(data);
 //	});
-	alert($('input[name="player"]:checked').attr('id'));
+	alert($('input[name="player1"]:checked').attr('id'));
 	
 });
 
