@@ -41,12 +41,12 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  var newrow=$("<tr class="+currentTr+"><td></td>");
 		  for(var i=1; i <=10; i++) { 
 			  	if(i<=7){ 
-		  newrow.append("<td><input type='radio'  name='runScored1' class='overball ball1' checkclass='1' value= "+i+" id="+i+"></td>");
+		  newrow.append("<td><input type='radio'  name='runScored"+currentTr+"' class='overball ball1' checkclass="+currentTr+" value= "+i+" id="+i+"></td>");
 		     } else{
-		     newrow.append("<td><input type='checkbox'  class='overball ball1' checkclass='1' value=" + i+ " id="+i+ "></td>");
+		     newrow.append("<td><input type='checkbox'  class='overball ball1' checkclass="+currentTr+" value=" + i+ " id="+i+ "></td>");
 		     }
 		      } 
-		  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='1' id='ball1'></td></tr>");
+		  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass="+currentTr+" id='ball1'></td></tr>");
 		 
 		newrow.insertAfter($(this).parents('tr').closest( "tr" ) );
 		  /*  var table = $('table[name="score_table"]');
@@ -79,6 +79,10 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  $("input:checkbox[class*='overball']").prop('checked',false);
 		    $("input:radio[class*='overball']").prop('checked',false);
 	  }
+	  
+	  
+	  console.log("over"+overcount);
+	  console.log("ball"+overcount);
 	 
 });
 

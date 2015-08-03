@@ -50,6 +50,11 @@ exports.teamName = function(req, res) {
 exports.teamPlayer = function(req, res) {
 	model.teamPlayer(req.params,res);
 };
+
+exports.addRuns = function(req, res) {
+	model.addRuns(req.params,res);
+};
+
 exports.matchSetting = function(req, res) {
 	model.getmatchSetting(req.params,res);
 //	res.render('admin/matchInfo', {
@@ -72,3 +77,12 @@ exports.newMatch = function(req, res) {
 		newMatch : 'Yes'
 	})
 };
+
+exports.fetchPlayer = function(req, res) {
+    model.fetchPlayer(req.body,res);
+};
+
+exports.assignPlayerToTeam = function(req, res) {
+    model.assignPlayerToTeam(req.body,res);
+};
+

@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 var app = module.exports = express.createServer();
 var adduser = require('./controller/addcontroller');
 var adminuser = require('./controller/admincontroller');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
 var path = require('path');
@@ -24,7 +24,7 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
-	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
+	//app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
 
@@ -78,7 +78,10 @@ app.get('/newmatch', adminuser.newMatch);
 app.get('/edituser/*', adduser.edit);
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
-
+//fetch player data for display and selection on add team view
+app.post('/fetchPlayer', adminuser.fetchPlayer);
+//assign player to a team
+app.post('/assignPlayerToTeam', adminuser.assignPlayerToTeam);
 
 
 //for admin module
@@ -94,7 +97,26 @@ app.get('/login',adminuser.login);
 
 app.post('/admin',adminuser.loginuser);
 
-app.listen(3000, function() {
+
+app.post('/addRuns',adminuser.addRuns);
+
+
+app.post('/upload/group', function(req, res) {
+    console.log('File name is ' + req.files.groupfile.name);
+    console.log('File size is ' + req.files.groupfile.size);
+    console.log('File size is ' + req.files.groupfile.path);
+    var reader = csv.createCsvFileReader(req.files.groupfile.path, {
+                                            'separator': ',',
+                                            'quote': '"',
+                                            'escape': '"',   
+                                            'comment': ''
+                                         });
+    reader.addListener('data', function(data) {
+            console.log(data);
+    });
+});
+
+app.listen(3003, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });
