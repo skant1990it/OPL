@@ -53,16 +53,17 @@ app.get('/', function(req, res) {
 
 
 /* Configure the multer. */
-
-
+//team info
+//app.get('/teaminfo', adminuser.teamInfo);
 
 //Player list
 app.get('/list', adminuser.playerList);
 //Team list
 app.get('/teamlist', adminuser.teamList);
+app.get('/teamname', adminuser.teamName);
 //Team add
 app.get('/addTeam', adminuser.teamAdd);
-app.post('/addTeam', adminuser.teamAddData);
+app.post('/addTeambbbb', adminuser.teamAddData);
 //add team player
 app.get('/teamPlayer/*', adminuser.teamPlayer);
 //match setting
@@ -74,10 +75,17 @@ app.get('/getMatchId', adminuser.getmatchId);
 //new match setting
 app.get('/newmatch', adminuser.newMatch);
 
-app.get('/edituser/*', adduser.edit);
+//for playing 11 player setting
+app.post('/playing11', adminuser.playing11);
+
+
+
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
-
+//fetch player data for display and selection on add team view
+app.post('/fetchPlayer', adminuser.fetchPlayer);
+//assign player to a team
+app.post('/assignPlayerToTeam', adminuser.assignPlayerToTeam);
 
 
 //for admin module
@@ -112,7 +120,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3000, function() {
+app.listen(3003, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

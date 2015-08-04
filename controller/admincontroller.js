@@ -43,6 +43,10 @@ exports.teamAdd = function(req, res) {
 exports.teamAddData = function(req, res) { 
     model.addTeamData(req.body,res);
 };
+
+exports.teamName = function(req, res) { 
+    model.getTeamName(req.body,res);
+};
 exports.teamPlayer = function(req, res) {
 	model.teamPlayer(req.params,res);
 };
@@ -59,7 +63,6 @@ exports.matchSetting = function(req, res) {
 };
 //save match setting  
 exports.saveMacthSetting = function(req, res) {
-	console.log(req.body);
     model.saveMacthSetting(req.body,res);
 };
 //get match Id
@@ -74,3 +77,16 @@ exports.newMatch = function(req, res) {
 		newMatch : 'Yes'
 	})
 };
+
+exports.fetchPlayer = function(req, res) {
+    model.fetchPlayer(req.body,res);
+};
+
+exports.assignPlayerToTeam = function(req, res) {
+    model.assignPlayerToTeam(req.body,res);
+};
+//for playing 11 team select
+exports.playing11 = function(req, res) {
+    model.playing11Team(req.body,res);
+};
+

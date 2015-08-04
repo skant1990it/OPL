@@ -42,7 +42,7 @@ a {
 	height:150px;
 	padding:0px;
 	padding-left:5px;
-	
+	border-radius: 3px 3px 3px 3px;
 }
 #batting,#bowling{
 	min-height:350px;
@@ -67,6 +67,7 @@ h4{
 	margin-top: 20px;
 	padding-left:5px;
 	min-height:50px;
+	border-radius: 3px 3px 3px 3px;
 }
 #score{
 	min-height:180px;
@@ -128,7 +129,7 @@ tr ,td{
 	padding:0px;
 	padding-left:5px;
 }
-.setting_save ,.update {
+#setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
 	margin-top:60px;
 }
 .center_postion {
@@ -151,4 +152,45 @@ tr ,td{
 }
 #update_setting_btn {
 	margin-left:50%;
+}
+#team_A_select {
+	float:left;
+	margin-top:10px;
+}
+#team_B_select {
+	margin-top:10px;
+	float:left;
+}
+#team1,#team2{
+	float:left;
+	width:100%;
+}
+.teamlist,.teamvalue{
+	float:left;
+	width:15%;
+	
+}
+.teamvalue{
+	float:left;
+	margin-left:10px;
+	padding-top:2%
+}
+#team_name_save {
+	margin-bottom:20px;
+	margin-top:10%;
+}
+.accordion-fold{
+	display:none;	
+}
+
+#settings-box-container .settings-box {
+  border: 1px solid #AAAAAA;
+  border-radius: 3px 3px 3px 3px;
+  margin-bottom: 10px;
+}
+
+.accordion-toggle,.scroll_Availability,.closed{
+	background-color:#E0E2EC;
+	width:100%;
+	border-radius: 3px 3px 3px 3px;
 }
