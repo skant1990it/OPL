@@ -75,7 +75,11 @@ app.get('/getMatchId', adminuser.getmatchId);
 //new match setting
 app.get('/newmatch', adminuser.newMatch);
 
-app.get('/edituser/*', adduser.edit);
+//for playing 11 player setting
+app.post('/playing11', adminuser.playing11);
+
+
+
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
 //fetch player data for display and selection on add team view

@@ -219,14 +219,47 @@ $(document).on("click", '#setting_update', function() {
 });
 
 //For match setting	
-$(document).on("click", '.playercheck', function() {
-//	$.get('/newmatch', function(data) {
-//		$(".scoreboard").html(data);
-//	});
-	alert($('input[name="player1"]:checked').attr('id'));
-	
+$(document).on("click", '#match_player_save1', function() {
+	var match_id = $("#match_id").val();
+	var checkedPlayer1=[];
+	$('input[name="player1"]:checked').each(function(){
+		checkedPlayer1.push($(this).attr('id'));
+	});
+	console.log(checkedPlayer1);
+
+	$.ajax({
+		url: "/playing11",
+		data: {
+			"player11_id" : checkedPlayer1,
+			"match_id" : match_id,
+		},
+		method: "POST",
+		success: function(result){
+			console.log("playing 11 added");
+		}
+	});
 });
 
+$(document).on("click", '#match_player_save2', function() {
+	var checkedPlayer2=[];
+	var match_id = $("#match_id").val();
+	$('input[name="player2"]:checked').each(function(){
+		checkedPlayer2.push($(this).attr('id'));
+	});
+	console.log(checkedPlayer2);
+	$.ajax({
+		url: "/playing11",
+		data: {
+			"player11_id" : checkedPlayer2,
+			"match_id" : match_id,
+		},
+		method: "POST",
+		success: function(result){
+			console.log("playing 11 added");
+		}
+	});
+});
+	
 $(document).on("keyup", '#search_box', function() {
 	//$('.setting_update').show();
 	var playerName = $('#search_box').val();

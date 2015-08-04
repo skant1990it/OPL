@@ -70,7 +70,7 @@ h4{
 	border-radius: 3px 3px 3px 3px;
 }
 #score{
-	height:180px;
+	min-height:180px;
 	padding:0px;
 }
 #scoringdiv{

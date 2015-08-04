@@ -235,6 +235,32 @@ exports.getmatchId = function(req,res) {
 	});
 };
 
+
+
+
+exports.addRuns = function(req,res) {
+	var extraColumnName="",extraValue=0;
+	if(req.extraruns=='0'){
+			var queryString = "INSERT into ball " +
+			  "(over_id,run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"' )";
+		}else{
+			var score ;
+			if(req.extratype == "wicket"){
+				score = '0';
+			}else{
+				score =  parseInt(req.gainedruns)+1;
+			}
+			var queryString = "INSERT into ball " +
+			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"'  )";
+		}
+
+	connection.query(queryString, function(err, rows, fields) {
+		res.send(req);
+	});
+	
+};
 exports.getTeamName = function(req,res) {
 	var queryStringTeam = 'SELECT * FROM team';
 	
@@ -286,4 +312,16 @@ exports.fetchPlayerForMatchModel = function(req,res){
 			  	batsman_array: batsman_array,
 			});
 		});
+};
+//for playing 11 team select
+exports.playing11Team = function(data,res) {
+	console.log("modeldata"+data.player11_id[0]);
+	for(var i =0; i <=data.player11_id.length; i++) {
+		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
+		connection.query(queryString, function(err, rows, fields) {
+			res.send(rows);
+		});
+	}
+	
+
 };
