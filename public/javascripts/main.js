@@ -74,7 +74,7 @@ $(document).on("click", '#add_team', function() {
            		
            		if($(this).children('.draggable').length == 0){
            			$(ui.draggable).remove();
-           			$(this).append($(ui.draggable).first().clone().attr('droped',1).draggable({
+           			$(this).append($(ui.draggable).first().clone().attr('droped',1).css({"marginTop": "auto","marginRight": "auto","marginBottom": "auto","marginLeft": "auto"}).draggable({
 	           			revert: 'invalid',
 						helper : 'clone',
 						opacity: 0.7,
@@ -106,7 +106,7 @@ $(document).on("click", '#add_team', function() {
 			drop: function(ev, ui) {
 				(ui.helper).remove(); //destroy clone
            		$(ui.draggable).remove();
-           		$(this).append($(ui.draggable).clone().attr('droped',0).draggable({
+           		$(this).append($(ui.draggable).clone().attr('droped',0).css({"marginTop": "5%","marginRight": "auto","marginBottom": "auto","marginLeft": "auto"}).draggable({
            			revert: 'invalid',
 					helper : 'clone',
 					opacity: 0.7,
