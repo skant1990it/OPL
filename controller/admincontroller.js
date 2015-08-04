@@ -48,7 +48,7 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
-	model.addRuns(req.params,res);
+		model.addRuns(req.body,res);
 };
 
 exports.matchSetting = function(req, res) {

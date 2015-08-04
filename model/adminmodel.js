@@ -167,3 +167,29 @@ exports.getmatchId = function(req,res) {
 		});
 	});
 };
+
+
+
+exports.addRuns = function(req,res) {
+	var extraColumnName="",extraValue=0;
+	if(req.extraruns=='0'){
+			var queryString = "INSERT into ball " +
+			  "(over_id,run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"' )";
+		}else{
+			var score ;
+			if(req.extratype == "wicket"){
+				score = '0';
+			}else{
+				score =  parseInt(req.gainedruns)+1;
+			}
+			var queryString = "INSERT into ball " +
+			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"'  )";
+		}
+
+	connection.query(queryString, function(err, rows, fields) {
+		
+	});
+	res.send(req);
+};
