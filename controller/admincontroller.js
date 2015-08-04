@@ -85,4 +85,8 @@ exports.fetchPlayer = function(req, res) {
 exports.assignPlayerToTeam = function(req, res) {
     model.assignPlayerToTeam(req.body,res);
 };
+//for playing 11 team select
+exports.playing11 = function(req, res) {
+    model.playing11Team(req.body,res);
+};
 

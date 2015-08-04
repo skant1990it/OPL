@@ -265,3 +265,14 @@ exports.assignPlayerToTeam = function(data,res) {
 	var queryString = "UPDATE player SET team_id ='"+ data.team_id +"' where id = '"+ data.player_id +"'";
 	connection.query(queryString);
 };
+//for playing 11 team select
+exports.playing11Team = function(data,res) {
+	console.log("modeldata"+data.player11_id[0]);
+	for(var i =0; i <=data.player11_id.length; i++) {
+		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
+		connection.query(queryString, function(err, rows, fields) {
+			res.send(rows);
+		});
+	}
+	
+};

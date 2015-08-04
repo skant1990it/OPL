@@ -1,4 +1,5 @@
 <div id="settings-box-container col-sm-12">
+<%= matchId.id %>
    <div class="settings-box col-sm-12">
 					<div class="accordion-toggle scroll_Availability closed">
 						<h3 class="form-field-title">Select Team</h3>
@@ -113,15 +114,18 @@
 				<% for(var i=0; i < playerlist1.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist1[i].name %> </td>
-				     <td><input name = "player1" class="playercheck" type = "checkbox" id  = "<%= playerlist1[i].id %>">
+				     <td><input name = "player1" class="playercheck1" type = "checkbox" id  = "<%= playerlist1[i].id %>">
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
+				  <div style="text-align:center">  
+                 	<input class = "match_player_save" id ="match_player_save1" type = "button" Value = "Save"> 
+				</div>
               </div> 
               
                 </div>
-              
+            
             </div>
             <div class="col-sm-6">
                 <div class="player" id="batsman">
@@ -137,13 +141,14 @@
 				<% for(var i=0; i < playerlist2.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist2[i].name %> </td>
-				     <td><input name = "player2" class="playercheck" type = "checkbox" id  = "<%= playerlist2[i].id %>">
+				     <td><input name = "player2" class="playercheck2" type = "checkbox" id  = "<%= playerlist2[i].id %>">
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
-				            
-
+				   <div style="text-align:center">  
+                 	<input class = "match_player_save" id ="match_player_save2" type = "button" Value = "Save"> 
+				</div>         
              </div> 
             
                 </div>
