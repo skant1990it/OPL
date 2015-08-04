@@ -3,6 +3,7 @@
  */
 
 var connection = require('../connection');
+
 /**
  * Call for fetch admin details from DB and validate admin
  */
@@ -264,4 +265,25 @@ exports.fetchPlayer = function(req,res) {
 exports.assignPlayerToTeam = function(data,res) {
 	var queryString = "UPDATE player SET team_id ='"+ data.team_id +"' where id = '"+ data.player_id +"'";
 	connection.query(queryString);
+};
+
+exports.fetchPlayerForMatchModel = function(req,res){
+	var bowlers_array = [];
+	var batsman_array = [];
+	var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='46ee5ceb-39c3-11e5-9601-94de80c7dad5'");
+		queryForMatchPlayer .on('result', function(rows) {
+			tempObj = {};
+			if(rows.team_id == 1){
+				tempObj = {'name':rows.first_name , 'id' : rows.id}
+				bowlers_array.push(tempObj);
+			}else if(rows.team_id == 2){
+				tempObj = {'name':rows.first_name , 'id' : rows.id}
+				batsman_array.push(tempObj);
+			}
+		}).on('end',function(){
+			res.render('admin/index', {
+			  	bowlers_array : bowlers_array,
+			  	batsman_array: batsman_array,
+			});
+		});
 };

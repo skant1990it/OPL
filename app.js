@@ -86,13 +86,17 @@ app.post('/assignPlayerToTeam', adminuser.assignPlayerToTeam);
 
 //for admin module
 
-app.get('/admin', function(req, res) {
+/*app.get('/admin', function(req, res) {
 	var title = 'Admin Panel';
 	res.render('admin/index', {
 		title : title,
 		url: gapi.url
 	});
 });
+*/
+
+app.get('/scoreboard',adminuser.fetchPlayerForMatch);
+
 app.get('/login',adminuser.login);
 
 app.post('/admin',adminuser.loginuser);
@@ -116,7 +120,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3003, function() {
+app.listen(4000, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

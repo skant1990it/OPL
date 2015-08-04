@@ -11,8 +11,8 @@
                 <h3>
                 <input type="button" value="Bowler"></h3>
                 
-              <% for(var i=1; i <=11; i++) { %>
-                 <input type="button" class="player_btn bowler" value="Bowler<%=i %>" id=<%=i%>>
+              <% for(var i=0; i <bowlers_array.length; i++) { %>
+                 <input type="button" class="player_btn bowler" value="<%=bowlers_array[i].name %>" id=<%=bowlers_array[i].id%>>
                  <% } %>
                 </div>
                 
@@ -23,8 +23,8 @@
                   <h3>
                 <input type="button" value="Batsman"></h3>
                 
-              <% for(var i=1; i <=11; i++) { %>
-                 <input type="button" class="player_btn batsman" value= "Batsman<%=i %>" id=bat<%=i%>>
+              <% for(var i=0; i <batsman_array.length; i++) { %>
+                 <input type="button" class="player_btn batsman" value= "<%=batsman_array[i].name %>" id=bat<%=batsman_array[i].id%>>
                  <% } %>
                 </div>
 

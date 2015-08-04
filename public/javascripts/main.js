@@ -35,7 +35,7 @@ $(document).on("click", '#admin', function() {
 
 $(document).on("click", '#dash_admin', function() {
 
-	$.get('/admin', function(data) {
+	$.get('/scoreboard', function(data) {
 		$(".scoreboard").html(data);
 
 	});

@@ -1,4 +1,4 @@
-/**
+	/**
  * @author vikash
  */
 var model = require('../model/adminmodel');
@@ -84,5 +84,9 @@ exports.fetchPlayer = function(req, res) {
 
 exports.assignPlayerToTeam = function(req, res) {
     model.assignPlayerToTeam(req.body,res);
+};
+
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
 };
 
