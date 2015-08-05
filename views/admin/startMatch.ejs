@@ -1,6 +1,42 @@
 <form>
 <input type="hidden" id = "match_id" value= "<%= matchId %>">
-<label>First Batsman</label><input type="text" class="text_field" placeholder="Enter Strike batsman name"></br>
-<label>Second Batsman</label><input type="text" class="text_field" placeholder="Enter Runner up name"></br>
-<label>First Bowler</label><input type="text" class="text_field" placeholder="Enter First bowler name"></br>
+
+ <div class="row startmatchdiv">
+            <div class="col-sm-6">
+
+First Batsman
+</div>   <div class="col-sm-6">
+ <select >
+							             <option value="0">Select First Player</option>
+							             <% for(var i=0; i < battinglist.length; i++) { %>
+							             
+							             <option  id = "<%= battinglist[i].id %>"" value="<%= battinglist[i].name %>"><%= battinglist[i].name %></option>
+							             <% } %>
+							             </select>
+							             </div>
+							             </div>
+<div class="row startmatchdiv">
+            <div class="col-sm-6">
+
+Second Batsman</div>   <div class="col-sm-6">
+<select >
+							             <option value="0">Select Second Player</option>
+							             <% for(var i=0; i < battinglist.length; i++) { %>
+							             
+							             <option  id = "<%= battinglist[i].id %>"" value="<%= battinglist[i].name %>"><%= battinglist[i].name %></option>
+							             <% } %>
+							             </select>  </div>
+							             </div>
+							       <div class="row startmatchdiv">
+            <div class="col-sm-6">
+
+First Bowler</div>   <div class="col-sm-6">
+<select >
+							             <option value="0">Select First Bowler</option>
+							             <% for(var i=0; i < bowlinglist.length; i++) { %>
+							             
+							             <option  id = "<%= bowlinglist[i].id %>"" value="<%= bowlinglist[i].name %>"><%= bowlinglist[i].name %></option>
+							             <% } %>
+							             </select> </div>
+							             </div>
 </form>
