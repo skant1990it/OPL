@@ -302,12 +302,25 @@ exports.playing11Team = function(data,res) {
 	}
 };
 
+
 exports.getmatchId = function(req,res) {
 	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
 	connection.query(queryString, function(err, rows, fields) {
 		res.render('admin/matchInfo', {
 			matchId : rows
 		});
+	});
+	};
+
+
+exports.startMatch = function(req,res) {
+	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
+	connection.query(queryString, function(err, rows, fields) {
+		console.log(rows[0].id);
+		res.render('admin/startMatch', {
+			matchId : rows[0].id
+		});
+
 	});
 };
 

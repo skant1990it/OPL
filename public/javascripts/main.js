@@ -11,12 +11,22 @@ function deleteUser(id) {
 		});
 	}
 }
-$(document).on("click", '#add_new', function() {
-
-	$.get('/add', function(data) {
+$(document).on("click", '#add_new_player', function() {
+	$.get('/addAsPlayer', function(data) {
 		$(".jumbotron").html(data);
 	});
 });
+
+$(document).on("click", '#playeradd', function() {
+	var formData = $('#form_id').serialize();
+	
+	alert(formData);
+	
+	$.get('/addPlayerData', function(data) {
+//		$(".jumbotron").html(data);
+	});
+});
+
 $(document).on("click", '#list_view', function() {
 	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
@@ -34,7 +44,11 @@ $(document).on("click", '#admin', function() {
 });
 
 $(document).on("click", '#dash_admin', function() {
+	$.get('/startMatch', function(data) {
+		$(".start-Match").html(data);
 
+	});
+	
 	$.get('/admin', function(data) {
 		$(".scoreboard").html(data);
 

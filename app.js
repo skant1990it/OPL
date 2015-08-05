@@ -80,7 +80,13 @@ app.get('/newmatch', adminuser.newMatch);
 //for playing 11 player setting
 app.post('/playing11', adminuser.playing11);
 
+//for strike batsman setting 
+app.get('/startMatch', adminuser.startMatch);
 
+//for add as player form in add ciontroller
+app.get('/addAsPlayer',adduser.addAsPlayer);
+//for player data add
+app.post('/addPlayerData',adduser.addPlayerData);
 
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);

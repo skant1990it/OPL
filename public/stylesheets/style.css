@@ -22,6 +22,12 @@ a {
 		margin-top:10px;
 	margin-left:100px;
 }
+.label_class{
+	margin-top:20px;
+}
+.field_class{
+	margin-left:20px;
+}
 #form_id {
 	width : 300px;
 	float:left;
@@ -193,4 +199,11 @@ tr ,td{
 	background-color:#E0E2EC;
 	width:100%;
 	border-radius: 3px 3px 3px 3px;
+}
+.start_match_title{
+	margin-bottom:10px;
+}
+.text_field{
+	margin-left:10px;
+	margin-bottom:10px;
 }
