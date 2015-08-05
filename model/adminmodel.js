@@ -300,6 +300,14 @@ exports.playing11Team = function(data,res) {
 			res.send(rows);
 		});
 	}
-	
-
 };
+
+exports.getmatchId = function(req,res) {
+	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
+	connection.query(queryString, function(err, rows, fields) {
+		res.render('admin/matchInfo', {
+			matchId : rows
+		});
+	});
+};
+

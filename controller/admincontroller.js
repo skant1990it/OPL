@@ -90,3 +90,11 @@ exports.playing11 = function(req, res) {
     model.playing11Team(req.body,res);
 };
 
+exports.startingPlayer = function(req, res) {
+    model.startingPlayer(req.body,res);
+};
+
+exports.getOverRecord = function(req, res) {
+	console.log(req.body);
+    //model.getOverRecord(req.body,res);
+};

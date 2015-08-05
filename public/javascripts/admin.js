@@ -39,21 +39,25 @@ $(document).on('change', 'input[type="checkbox"][group="extra[]"]', function() {
 var overcount=1;
 var ballcount=1,nextballcount=1,batsman1,batsman2;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
+	
+	var over =  $('input[type="button"][class*="over_btn active"]').attr('id');
+	console.log(over);
 	var check_ball = $(this).attr('checkclass');	 
 	var checkedRun=[];
 	var check_over,radiocount=1;
 	var gainedruns;
 	var extraruns,extraType="";  
-	  if($('input[type="radio"][name="radio'+check_ball+'_'+nextballcount+'"]:checked').val() == '7'){
+	$(this).parents('tr').find('input[type="radio"],[type="checkbox"],[type="button"]').prop("disabled",true);
+	
+	  if($('input[type="radio"][name="radio'+over+"_"+check_ball+'_'+nextballcount+'"]:checked').val() == '7'){
 		  gainedruns=0;
 	  }else{
-		  gainedruns=$('input[type="radio"][name="radio'+check_ball+'_'+nextballcount+'"]:checked').val();
+		  gainedruns=$('input[type="radio"][name="radio'+over+"_"+check_ball+'_'+nextballcount+'"]:checked').val();
 	  }
 	  
-		$(this).parents('tr').find("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+check_ball+"']:checked").each(function(){
+		$(this).parents('tr').find("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']:checked").each(function(){
 			checkedRun.push($(this).val());
 		});
-		
 	  if(checkedRun.length == '0' ){
 		  extraruns='0';
 	  }
@@ -75,14 +79,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  }
 
 	  batsman_active = $('input[type="button"][class*="player_btn batsman active"]').attr('data');
-	 /* console.log("over"+overcount);
-	  console.log("ball"+check_ball);
-			console.log(	"extraruns"+extraruns);
-			console.log(	"extratype"+extraType);
-				console.log("gainedruns"+gainedruns);
-				console.log("bowler"+bowlerId);
-				console.log("batsman"+battingPlayer);*/
-	$.ajax({
+		$.ajax({
 		url: "/addRuns",
 		data: {
 			"over":overcount,
@@ -103,18 +100,19 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		}
 	});
 	  
+			
 		if ( $.inArray('9', checkedRun)>=0  || $.inArray('10', checkedRun)>=0) {
 		radiocount++;
 		nextballcount++;
-		
-	  var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+check_ball+"']").parents('tr').attr('id');
+	var currentRow = $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr');
+	  var currentTr= currentRow.attr('id');
 	  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td></td>");
 	  for(var i=1; i <=10; i++) { 
 		  if(i<=7){ 
-			  newrow.append("<td><input type='radio'  name='radio"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
+			  newrow.append("<td><input type='radio'  name='radio"+over+"_"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
 		  } 
 		  else{
-			  newrow.append("<td><input type='checkbox' name='check"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ " " +
+			  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ " " +
 			  		" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 	     }
 	  } 
@@ -125,14 +123,14 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	else if($.inArray('8', checkedRun)>=0){
 		ballcount++;
 		check_ball++;
-		var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+check_ball+"']").parents('tr').attr('id');
+		var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr').attr('id');
 		  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td>"+check_ball+"</td>");
 		  for(var i=1; i <=10; i++) { 
 			  if(i<=7){ 
-				  newrow.append("<td><input type='radio'  name='radio"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
+				  newrow.append("<td><input type='radio'  name='radio"+over+"_"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
 			  } 
 			  else{
-				  newrow.append("<td><input type='checkbox' name='check"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ 
+				  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ 
 						  "group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 		     }
 		  } 
@@ -147,14 +145,14 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		check_ball++;
 		  
 		if(check_ball < 7){
-			var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+check_ball+"']").parents('tr').attr('id');
-			  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td>"+check_ball+"</td>");
+			var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr').attr('id');
+			  var newrow=$("<tr class="+currentTr+" id='"+over+"_"+check_ball+"_"+nextballcount+"'><td>"+check_ball+"</td>");
 			  for(var i=1; i <=10; i++) { 
 				  if(i<=7){ 
-					  newrow.append("<td><input type='radio'  name='radio"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
+					  newrow.append("<td><input type='radio'  name='radio"+over+"_"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
 				  } 
 				  else{
-					  newrow.append("<td><input type='checkbox' name='check"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ 
+					  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+ 
 							  "group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 			     }
 			  } 
@@ -165,19 +163,42 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	
 	}
 	
-	 /* if(ballcount==7){
+	  if(ballcount==7){
 		  overcount++;
-		  check_over = $('input[type="button"][class*="over_btn"]').attr('id');
-		  $("#"+check_over).css("background-color", "red");
-		  var nextover=$('input[type="button"][class*="over_btn"]').next().attr('id');
-		  $("#"+nextover).css("background-color", "rgb(123, 123, 211)");
+		  check_over = $('input[type="button"][class*="over_btn active"]').attr('id');
+		  var completed_over =  $("input[type='button'][name='over"+check_over+"']");
+		  completed_over.removeClass('active');
+		  completed_over.addClass('completed');
+		  var nextover=$('input[type="button"][class*="over_btn completed"][name="over'+check_over+'"]').next().attr('id');
+		  $("#"+nextover).addClass('active');
 		  $("input:checkbox[class*='overball']").prop('checked',false);
 		  $("input:radio[class*='overball']").prop('checked',false);
-	  }*/
+		  $("table#score_table").find("tr:gt(1)").remove();
+		  $("table#score_table").find("tr:gt(0)").find('input[type="radio"][id="7"]').prop('checked',true);
+		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"]').attr('name',"radio"+nextover+"_1_1");
+		 $("table#score_table").find("tr:eq(1)").find('input[type="checkbox"]').attr('name',"check"+nextover+"_1");
+		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',false);
+			  ballcount=1;
+	  }
 	 
-	  
-	  
-	   
 	 
 });
 
+
+$(document).on('click', 'input[type="button"][class*="over_btn completed"]', function() {
+	var overId =($(this).attr('id'));
+	var matchId = $("#match_id").val();
+	var teamId = $("#team_id").val();
+	$.ajax({
+		url: "/getOverRecord",
+		data: {
+			overId : overId,
+			matchId : matchId,
+			teamId : teamId,
+		},
+		method: "POST",
+		success: function(result){
+			console.log("saved");
+		}
+	});
+});
