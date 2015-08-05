@@ -208,12 +208,12 @@ exports.saveMacthSetting = function(req,res) {
 		  console.log("bbbbb"+uniqueId.record_id);
 		  if(!req.match_id) {
 				console.log("insert"+uniqueId);
-				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date) " +
+				var queryString = "INSERT INTO match_info (id,first_team_id,second_team_id,total_over,over_limit,match_date) " +
 						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"','"+ matchDate +"');";
 			}
 			else {
 				console.log("update");
-				var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' ,first_team='"+ req.team1_name +"',second_team='"+ req.team2_name +"' where id = '"+ req.match_id +"'";
+				var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' ,first_team_id='"+ req.team1_name +"',second_team_id='"+ req.team2_name +"' where id = '"+ req.match_id +"'";
 				console.log(queryString);
 			}
 			
@@ -301,16 +301,6 @@ exports.playing11Team = function(data,res) {
 		});
 	}
 };
-
-
-exports.getmatchId = function(req,res) {
-	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
-	connection.query(queryString, function(err, rows, fields) {
-		res.render('admin/matchInfo', {
-			matchId : rows
-		});
-	});
-	};
 
 
 exports.startMatch = function(req,res) {

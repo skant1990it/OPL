@@ -196,7 +196,7 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 			matchId : matchId,
 			teamId : teamId,
 		},
-		method: "POST",
+		method: "GET",
 		success: function(result){
 			console.log("saved");
 		}
