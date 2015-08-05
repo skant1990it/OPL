@@ -2,9 +2,9 @@ var model = require('../model/addmodel');
 //var connection = require('../connection');
 var path = require('path');	
 var fs = require('fs');
-exports.add = function(req, res) {
+exports.addAsPlayer = function(req, res) {
 	res.render('pages/add', {
-		title : 'Add New User',
+		title : '',
 		errors: '',
 	})
 };

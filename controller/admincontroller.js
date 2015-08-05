@@ -90,3 +90,7 @@ exports.playing11 = function(req, res) {
     model.playing11Team(req.body,res);
 };
 
+//for strike barsman setting
+exports.startMatch = function(req, res) {
+	model.startMatch(req.body,res);
+};

@@ -1,24 +1,15 @@
 <body>
-<%= title %>
-<div id = "center">
+<div id = "center" class="col-sm-12">
 
-<form enctype="multipart/form-data" id = "form_id" method = 'post' action="<%= title[0].id ? '/updatedata' : '/adddata' %>">
-<p>First Name<input name = "f_name" id = "f_name" class = "button_class" type = "text" value = "<%= title[0].first_name ? title[0].first_name : '' %>"></p>
-<p>Last Name<input  name = "l_name" id = "l_name" class = "button_class" type = "text" value = "<%= title[0].last_name ? title[0].last_name : '' %>"></p>
-<p>Phone<input name = "phone" id = "phone" class = "button_class" type = "text" value = "<%= title[0].phone ? title[0].phone : '' %>"></p>
-<p>Email Id<input name = "email" id = "email" class = "button_class" type = "text" value = "<%= title[0].email ? title[0].email : '' %>"></p>
-<p>Address<input name = "address" id = "address" class = "button_class" type = "text" value = "<%= title[0].address ? title[0].address : '' %>"></p>
-<input type="file" name="userPhoto" id = "userPhoto">
-<input name = "id" class = "button_class" type = "hidden" value = "<%= title[0].id ? title[0].id : '' %>">
-<input class = "button_class" type = "submit" value  = "Save">
+<form enctype="multipart/form-data" id = "form_id" method = 'post'>
+<label class="label_class">First Name</label><input name = "f_name" id = "f_name" class = "field_class" type = "text" >
+<p>Last Name<input  name = "l_name" id = "l_name" class = "button_class" type = "text" ></p>
+<p>Phone<input name = "phone" id = "phone" class = "button_class" type = "text" ></p>
+<p>Email Id<input name = "email" id = "email" class = "button_class" type = "text" ></p>
+<p>Address<input name = "address" id = "address" class = "button_class" type = "text" ></p>
+<input name = "id" class = "button_class" type = "hidden">
+<input class = "button_class" type = "submit" id="playeradd" value  = "Save">
 
 </form>
 </div>
 </body>
-<script>
-<% for (var i = 0; i < errors.length; i++) { %>
-var label = '<label id="<%= errors[i].param %>_error" class="text-danger" for=" <%= errors[i].param %>"><%=errors[i].msg %></label>';
-$(label ).insertAfter( "#<%= errors[i].param %>");
-<% } %>
-
-</script>
