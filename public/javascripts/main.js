@@ -13,17 +13,29 @@ function deleteUser(id) {
 }
 $(document).on("click", '#add_new_player', function() {
 	$.get('/addAsPlayer', function(data) {
+		$(".modal-body").html(data);
+	});
+	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
 	});
 });
 
 $(document).on("click", '#playeradd', function() {
 	var formData = $('#form_id').serialize();
-	
-	alert(formData);
-	
-	$.get('/addPlayerData', function(data) {
-//		$(".jumbotron").html(data);
+
+	$.ajax({
+		url: "/addPlayerData",
+		data: formData,
+		method: "POST",
+		success: function(result){
+			console.log("errormsg"+result);
+		$(".modal-body").html(result);
+//		$('#myModal').modal();
+		}
+	});
+	$.get('/list', function(data) {
+		$(".jumbotron").html(data);
+//		$('#myModal').modal('toggle');
 	});
 });
 
@@ -56,7 +68,7 @@ $(document).on("click", '#dash_admin', function() {
 });
 
 //For playing team list
-$(document).on("click", '#playing_team', function() {
+$(document).on("click", '#match_setting', function() {
 	$.get('/teamlist', function(data) {
 		$(".scoreboard").html(data);
 	});
@@ -219,10 +231,6 @@ $(document).on("click", '.setting_save', function() {
 			console.log("saved");
 		}
 	});
-
-//$.get('/setting', function(data) {
-//		$("#matchsetting").html(data);
-//	});
 
 	$("#setting_update").css('display','block');
 });

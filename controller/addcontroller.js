@@ -3,53 +3,44 @@ var model = require('../model/addmodel');
 var path = require('path');	
 var fs = require('fs');
 exports.addAsPlayer = function(req, res) {
+//	model.fetchplayer(req.body,res);
 	res.render('pages/add', {
-		title : '',
+		title : 'Add New Player',
 		errors: '',
+		values:''
 	})
 };
-exports.adddata = function(req, res) {
-	console.log(req.files);
-	req.assert('f_name', 'Name is required').notEmpty();      
-	req.assert('l_name', 'Name is required').notEmpty();      
+exports.addPlayerData = function(req, res) {
+
+	req.assert('f_name', 'First Name is required').notEmpty();      
+	req.assert('l_name', 'Last Name is required').notEmpty(); 
+	req.assert('oss_id', 'OSSCube Id  is required').notEmpty();
 	req.assert('phone', 'Phone is required').notEmpty();   
-	req.assert('email', 'Email is required').notEmpty();
     req.assert('email', 'A valid email is required').isEmail();  
     req.assert('address', 'Address is required').notEmpty();
-    
+
     var errors = req.validationErrors();  
+    console.log(errors);
     if( !errors){   //No errors were found.  Passed Validation!
         res.render('pages/add', { 
-        	title : 'Add New User',
+        	title : 'Add New Player',
                 errors: '',
+                values:''
         }); 
-        var tempPath = req.files.userPhoto.path,
-        targetPath = path.resolve('./uploads/'+req.files.userPhoto.name);
-    if (path.extname(req.files.userPhoto.name).toLowerCase() === '.png') {
-        fs.rename(tempPath, targetPath, function(err) {
-            if (err) throw err;
-            console.log("Upload completed!");
-        });
-    } else {
-        fs.unlink(tempPath, function () {
-            if (err) throw err;
-            console.error("Only .png files are allowed!");
-        });
-    }
-        
-        
-        model.adddata(req.body,res,req.files);
+       
+        model.addplayerdata(req.body,res);
     }
     else {   //Display errors to user
         res.render('pages/add', { 
             errors: errors,
+            values:req.body,
             title : 'Add New User',
         });
     }
 	
 };
-exports.list = function(req, res) {
-	model.listdata(req,res);
+exports.playerList = function(req, res) {
+	model.listPlayer(req,res);
 };
 
 

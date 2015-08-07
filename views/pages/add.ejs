@@ -1,15 +1,35 @@
-<body>
-<div id = "center" class="col-sm-12">
 
-<form enctype="multipart/form-data" id = "form_id" method = 'post'>
-<label class="label_class">First Name</label><input name = "f_name" id = "f_name" class = "field_class" type = "text" >
-<p>Last Name<input  name = "l_name" id = "l_name" class = "button_class" type = "text" ></p>
-<p>Phone<input name = "phone" id = "phone" class = "button_class" type = "text" ></p>
-<p>Email Id<input name = "email" id = "email" class = "button_class" type = "text" ></p>
-<p>Address<input name = "address" id = "address" class = "button_class" type = "text" ></p>
-<input name = "id" class = "button_class" type = "hidden">
-<input class = "button_class" type = "submit" id="playeradd" value  = "Save">
+<div id = "register_div">
+
+<form name="player_reg_form" id = "form_id" method = 'post'>
+<table id="addplayertbl_div">
+<tr><td>
+<label class="label_class">First Name</label></td><td><input name = "f_name" id = "f_name" class = "field_class" type = "text" 
+value=<%=values.f_name ?values.f_name:'' %>></td></tr>
+<tr><td><label class="label_class">Last Name</label></td><td><input  name = "l_name" id = "l_name" class = "field_class" type = "text"
+value=<%=values.l_name ?values.l_name:'' %>></td></tr>
+<tr><td><label class="label_class">OSS ID</label></td><td><input name = "oss_id" id = "oss_id" class = "field_class" type = "text"
+value=<%=values.oss_id ?values.oss_id:'' %>></td></tr>
+<tr><td><label class="label_class">Phone</label></td><td><input name = "phone" id = "phone" class = "field_class" type = "text"
+value=<%=values.phone ?values.phone:'' %> ></td></tr>
+<tr><td><label class="label_class">Email Id</label></td><td><input name = "email" id = "email" class = "field_class" type = "text" 
+value=<%=values.email ?values.email:'' %>></td></tr>
+<tr><td><label class="label_class">Address</label></td><td><input name = "address" id = "address" class = "field_class" type = "text" 
+value=<%=values.address ?values.address:'' %>></td></tr>
+</table>
+<input name = "id" class = "field_class" type = "hidden">
+
+<div style="text-align:center">  
+    <input class = "match_player_save" id ="playeradd" type = "button" Value = "Save"> 
+    <input class = "match_player_save" id ="show_list" type = "button" Value = "Show List" data-dismiss="modal"> 
+</div>   
 
 </form>
 </div>
-</body>
+<script>
+<% for (var i = 0; i < errors.length; i++) { %>
+var label = '<label id="<%= errors[i].param %>_error" class="text-danger error_class" for=" <%= errors[i].param %>"><%=errors[i].msg %></label>';
+$(label ).insertAfter( "#<%= errors[i].param %>");
+<% } %>
+
+</script>
