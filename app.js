@@ -12,7 +12,9 @@ var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
 var path = require('path');
-
+var flash = require('connect-flash');
+var session = require('express-session');
+var cookieSession = require('cookie-session');
 //var csv = require('ya-csv');
 // Configuration
 
@@ -29,7 +31,7 @@ app.configure(function() {
 	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
-
+	app.use(flash());
 });
 
 app.configure('development', function() {
@@ -45,6 +47,8 @@ app.configure('production', function() {
 
 // Routes
 app.get('/', function(req, res) {
+	var session = req.session;
+	console.log(session);
 	var title = 'Learning node';
 	res.render('pages/index', {
 		title : title,
@@ -59,7 +63,7 @@ app.get('/', function(req, res) {
 //app.get('/teaminfo', adminuser.teamInfo);
 
 //Player list
-app.get('/list', adminuser.playerList);
+app.get('/list', adduser.playerList);
 //Team list
 app.get('/teamlist', adminuser.teamList);
 app.get('/teamname', adminuser.teamName);

@@ -3,53 +3,43 @@ var model = require('../model/addmodel');
 var path = require('path');	
 var fs = require('fs');
 exports.addAsPlayer = function(req, res) {
-	res.render('pages/add', {
-		title : '',
-		errors: '',
-	})
+	model.addAsPlayer(req.body,res);
+	
 };
-exports.adddata = function(req, res) {
-	console.log(req.files);
-	req.assert('f_name', 'Name is required').notEmpty();      
-	req.assert('l_name', 'Name is required').notEmpty();      
+exports.addPlayerData = function(req, res) {
+
+	req.assert('f_name', 'First Name is required').notEmpty();      
+	req.assert('l_name', 'Last Name is required').notEmpty(); 
+	req.assert('oss_id', 'OSSCube Id  is required').notEmpty();
 	req.assert('phone', 'Phone is required').notEmpty();   
-	req.assert('email', 'Email is required').notEmpty();
     req.assert('email', 'A valid email is required').isEmail();  
     req.assert('address', 'Address is required').notEmpty();
-    
+
     var errors = req.validationErrors();  
-    if( !errors){   //No errors were found.  Passed Validation!
-        res.render('pages/add', { 
-        	title : 'Add New User',
-                errors: '',
-        }); 
-        var tempPath = req.files.userPhoto.path,
-        targetPath = path.resolve('./uploads/'+req.files.userPhoto.name);
-    if (path.extname(req.files.userPhoto.name).toLowerCase() === '.png') {
-        fs.rename(tempPath, targetPath, function(err) {
-            if (err) throw err;
-            console.log("Upload completed!");
-        });
-    } else {
-        fs.unlink(tempPath, function () {
-            if (err) throw err;
-            console.error("Only .png files are allowed!");
-        });
-    }
-        
-        
-        model.adddata(req.body,res,req.files);
+    console.log(errors);
+    if(errors == false){   //No errors were found.  Passed Validation!
+    	  var array = req.body.email_list.split(',');
+        for(var i=0 ; i<array.length; i++) {
+        	if(array[i] == req.body.email) {
+        		var obj = {};
+        		obj.param='email';
+        		obj.msg='Email is already registerd';
+        		obj.value ='';
+        		var errors = [];
+        		errors.push(obj);
+        		res.send(errors);
+        	} 
+        }
+        model.addplayerdata(req.body,res);
+       
     }
     else {   //Display errors to user
-        res.render('pages/add', { 
-            errors: errors,
-            title : 'Add New User',
-        });
+        res.send(errors);
     }
 	
 };
-exports.list = function(req, res) {
-	model.listdata(req,res);
+exports.playerList = function(req, res) {
+	model.listPlayer(req,res);
 };
 
 

@@ -13,17 +13,34 @@ function deleteUser(id) {
 }
 $(document).on("click", '#add_new_player', function() {
 	$.get('/addAsPlayer', function(data) {
+		$(".modal-body").html(data);
+	});
+	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
 	});
 });
 
 $(document).on("click", '#playeradd', function() {
-	var formData = $('#form_id').serialize();
-	
-	alert(formData);
-	
-	$.get('/addPlayerData', function(data) {
-//		$(".jumbotron").html(data);
+	var formData = $('#form_id').serializeArray();
+	$.ajax({
+		url: "/addPlayerData",
+		data: formData,
+		method: "POST",
+		success: function(result){
+			console.log(result);
+			console.log("errlng"+result.length);
+			if(result.length < 10) {
+				for(i = 0; i < result.length; i ++) {
+					$("."+result[i].param).html(result[i].msg);
+				}
+			}
+			else {
+				$('#myModal').modal('toggle');
+			}
+		}
+	});
+	$.get('/list', function(data) {
+		$(".jumbotron").html(data);
 	});
 });
 
@@ -56,7 +73,7 @@ $(document).on("click", '#dash_admin', function() {
 });
 
 //For playing team list
-$(document).on("click", '#playing_team', function() {
+$(document).on("click", '#match_setting', function() {
 	$.get('/teamlist', function(data) {
 		$(".scoreboard").html(data);
 	});
@@ -219,10 +236,6 @@ $(document).on("click", '.setting_save', function() {
 			console.log("saved");
 		}
 	});
-
-//$.get('/setting', function(data) {
-//		$("#matchsetting").html(data);
-//	});
 
 	$("#setting_update").css('display','block');
 });

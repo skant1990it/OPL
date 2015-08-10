@@ -1,13 +1,31 @@
 var connection = require('../connection');
-exports.listdata = function(req,res) {
+exports.listPlayer = function(req,res) {
 
-	var queryString = 'SELECT * FROM user';
+	var queryString = 'SELECT * FROM player';
 	
 	connection.query(queryString, function(err, rows, fields) {
+//		console.log(rows);
 		res.render('pages/list', {
 			title : rows
 		});
 		 
+	});
+};
+
+
+exports.addAsPlayer = function(req,res) {
+	var email = [];
+	var queryString = connection.query("SELECT * FROM player");
+	queryString.on('result', function(rows) {
+		//console.log(rows.email);
+		email.push(rows.email);
+	}).on('end',function(){
+		res.render('pages/add', {
+			title : 'Add New Player',
+			errors: '',
+			values:'',
+			email: email,
+		})
 	});
 };
 
@@ -21,15 +39,19 @@ exports.listdataapi = function(req,res) {
 	});
 };
 
-exports.adddata = function(req,res,reqImg) {
+exports.addplayerdata = function(req,res,reqImg) {
 
-	var queryString = "INSERT INTO user (first_name,last_name,phone,email,address,image) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"','"+ reqImg.userPhoto.name +"');";
+	var queryString = "INSERT INTO player (first_name,last_name,oss_id,phone,email,address) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.oss_id +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"');";
 	
 	console.log(queryString);
+	var playerListstring = "SELECT * FROm Player";
 	connection.query(queryString, function(err, rows, fields) {
-		res.redirect("pages/list");
-//		return exports.listdata(req,res);
+		res.render('pages/list', {
+			title : rows
+		});
+
 	});
+	
 };
 
 exports.editdata = function(data,res) {

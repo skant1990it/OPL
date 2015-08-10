@@ -6,9 +6,11 @@ var over=1;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
   $('#batplayer1').html('');
     $('#batplayer2').html('');
-$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover('destroy')
+$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover('destroy');
  ball = $(this).attr('checkclass');
  ball++;
+ if(ball == 7){over++;}
+ console.log("over"+over);
 
 $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover]").popover();
 
@@ -26,8 +28,6 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
     
   
  $('.popover-show').on('show.bs.popover', function () {
-   console.log($('input[type="button"][class="player_btn batsman green"]').val());
-      console.log($('input[type="button"][class="player_btn batsman lightgreen"]').val());
       $('#batplayer1').html($('input[type="button"][class="player_btn batsman green"]').val());
        $('#batplayer1_id').val($('input[type="button"][class="player_btn batsman green"]').attr('data'));
        $('#batplayer2').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
@@ -37,9 +37,9 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
 
 });
 
-$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover]").popover();
+$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover][data-bind=popover]").popover();
 
-  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover({
+  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-bind=popover]").popover({
         html : true, 
         content: function() {
       
@@ -157,7 +157,8 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
                  checked=<%= i==7 ? "true" : "false" %>>
                  <% } else{  %>              
                  <% if(i==8){%>
-                   <input type="checkbox"  name="check1_1" class="overball ball1 popover-top popover-show" data-placement="top" checkclass="1" value= <%= i %> id=<%=i %>
+                   <input type="checkbox"  name="check1_1" class="overball ball1 popover-top popover-show" 
+                   data-bind="popover" data-placement="top" checkclass="1" value= <%= i %> id=<%=i %>
        
        >
                   <% } else{%>

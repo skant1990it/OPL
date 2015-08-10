@@ -4,24 +4,35 @@
 
 var bowlerId;
 var batsmanId;
-var battingPlayer = [];
+var enablenextrowflag=0;
 $(document).on('click', 'input[type="button"][class="player_btn bowler"]', function() {
 	 $('input[type="button"][class="player_btn bowler green"]').removeClass('green');
 	 $(this).addClass('green');
 });
 
-var count;
+
 $(document).on('click', 'input[type="button"][class*="player_btn batsman"]', function() {
 	 batsmanId= $(this).attr('data');
 	if($(this).hasClass('green')){
 		$("#bat"+batsmanId).removeClass('green');
-		count--;
+	
 	}else{
-		if(count<2){
-			$("#bat"+batsmanId).addClass('green');
-			count++;
-		}else{
+		if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') 
+				&& $('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen')){
+			
 			alert("Only 2 batsman can be selected");
+		}else if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') ){
+			$("#bat"+batsmanId).removeClass('green').addClass('lightgreen');
+			$("table#score_table tr[id="+enablenextrowflag+"]").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',false);
+			
+		}else if($('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen')){	console.log("ligreen");
+			$("#bat"+batsmanId).removeClass('lightgreen').addClass('green');
+			$("table#score_table tr[id="+enablenextrowflag+"]").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',false);
+			
+		}else{
+			$("#bat"+batsmanId).addClass('green');
+			$("table#score_table tr[id="+enablenextrowflag+"]").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',false);
+			
 		}
 	}
 	 
@@ -81,12 +92,12 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 			  $('input[type="button"][class*="player_btn batsman"][data="'+$('input[type="radio"][name="wicketplyr"]:checked').val()+'"]')
 			  .removeClass('green lightgreen').addClass('red');
 			  batsman_active = $('input[type="button"][class="player_btn batsman red"]').attr('data');
-			  $(this).parents('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]').prop("disabled",true);
-				
+			  
+					
 		  }
 	}
 	  
-
+console.log("checked"+checkedRun);
 	  
 	  //change batsman
 	   if((ballcount < 6) && (gainedruns == '1' || gainedruns == '3' || gainedruns == '5')){
@@ -139,7 +150,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  } 
 		  else {
 			  if(i==8){
-				  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+				  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 				    	  
 			  }else{
 			  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
@@ -162,7 +173,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 			  } 
 			   else {
 				  if(i==8){
-					  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+					  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 					    	  
 				  }else{
 				  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
@@ -171,6 +182,10 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  } 
 		  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='"+check_ball+"' id='ball1'></td></tr>");
 		  newrow.insertAfter($(this).parents('tr').closest( "tr" ) );
+		  console.log($.inArray('8', checkedRun));
+		  $(this).parents('tr').closest('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]').prop("disabled",true);
+	alert("Please select a player");
+	enablenextrowflag =  $(this).parents('tr').closest('tr').next('tr').attr('id');
 	}
 	else{
 		if(checkedRun.length == '0'){
@@ -188,7 +203,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 				  } 
 				  else {
 					  if(i==8){
-						  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+						  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
 						    	  
 					  }else{
 					  newrow.append("<td><input type='checkbox' name='check"+over+"_"+check_ball+"' class='overball ball1' checkclass="+check_ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");

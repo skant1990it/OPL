@@ -8,6 +8,7 @@
     "googleapis": "^2.0.5",
     "jade": ">= 0.0.1",
     "multer" : "~0.1.6",
-    "googleapis": "*"
+    "googleapis": "*",
+    "express-session": "^1.7.6"
   }
 }
