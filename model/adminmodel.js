@@ -238,6 +238,7 @@ exports.getmatchId = function(req,res) {
 
 
 exports.addRuns = function(req,res) {
+	console.log(req);
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
 			var queryString = "INSERT into ball " +
@@ -302,13 +303,57 @@ exports.playing11Team = function(data,res) {
 	}
 };
 
+/* 
+ * @author :jyoti
+ * starting match setting*/
 
 exports.startMatch = function(req,res) {
-	var queryString = 'SELECT id FROM match_info order by id desc limit 1';
+	var matchId,battingTeam,bowlerTeam;
+	var playerid1 = [];
+	var playerid2 = [];
+
+	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for FROM match_info order by match_date desc limit 1';
 	connection.query(queryString, function(err, rows, fields) {
-		console.log(rows[0].id);
-		res.render('admin/startMatch', {
-			matchId : rows[0].id
-		})
-	});
+		matchId = rows[0].id;
+		if(rows[0].first_team == rows[0].toss_won) {
+			if(rows[0].opt_for == "bat") {
+				battingTeam = rows[0].first_team; 
+			}
+			else {
+				battingTeam = rows[0].second_team;
+			}
+		}
+		else {
+			if(rows[0].opt_for == "ball") {
+				battingTeam = rows[0].first_team; 
+			}
+			else {
+				battingTeam = rows[0].second_team;
+			}
+		}
+		bowlingTeam = (rows[0].first_team == battingTeam)? rows[0].second_team :rows[0].first_team;
+		
+	}).on('end',function(){
+	var fetchbattingPlayerQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+battingTeam+"'");
+	fetchbattingPlayerQuery .on('result', function(row) {
+		  playerid1.push({"id":row.id,"name":row.first_name});
+		  });
+	
+	var fetchbowlingQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+bowlingTeam+"'");
+		fetchbowlingQuery.on('result', function(row) {
+		  playerid2.push({"id":row.id,"name":row.first_name});
+		 
+		  }).on('end',function(){
+				res.render('admin/startMatch', {
+					matchId : matchId,
+					battinglist : playerid1,
+					bowlinglist : playerid2,
+					battingTeam : battingTeam,
+					bowlingTeam : bowlingTeam,
+					
+			});
+			});
+		 });
+	
+	
 };

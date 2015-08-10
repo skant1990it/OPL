@@ -18,6 +18,8 @@ var cookieSession = require('cookie-session');
 //var csv = require('ya-csv');
 // Configuration
 
+
+
 app.configure(function() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
@@ -85,10 +87,6 @@ app.post('/playing11', adminuser.playing11);
 //for strike batsman setting 
 app.get('/startMatch', adminuser.startMatch);
 
-//for add as player form in add ciontroller
-app.get('/addAsPlayer',adduser.addAsPlayer);
-//for player data add
-app.post('/addPlayerData',adduser.addPlayerData);
 
 
 app.get('/deleteuser/*', adduser.deletedata);
@@ -109,12 +107,17 @@ app.get('/admin', function(req, res) {
 	});
 });
 app.get('/login',adminuser.login);
+app.get('/startingPlayer',adminuser.startingPlayer);
 
 app.post('/admin',adminuser.loginuser);
 
 
 app.post('/addRuns',adminuser.addRuns);
 
+app.get('/getOverRecord/*',adminuser.getOverRecord);
+
+
+app.post('/setStartingPlayer',adminuser.setStartingPlayer);
 
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
@@ -131,7 +134,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3003, function() {
+app.listen(3009, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });
