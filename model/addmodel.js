@@ -41,7 +41,7 @@ exports.listdataapi = function(req,res) {
 
 exports.addplayerdata = function(req,res,reqImg) {
 
-	var queryString = "INSERT INTO player (first_name,last_name,oss_id,phone,email,address) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.oss_id +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"');";
+	var queryString = "INSERT INTO player (first_name,last_name,oss_id,phone,email,address,team_id) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.oss_id +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"','0');";
 	
 	console.log(queryString);
 	var playerListstring = "SELECT * FROm Player";
@@ -90,7 +90,5 @@ exports.deletedata = function(data,res,req) {
 		//return exports.listdata(req,res);
 	});
 };
-
-
 
 

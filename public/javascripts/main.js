@@ -204,8 +204,8 @@ $(document).on("click", '#playing_11_div111', function() {
 
 //For match setting
 $(document).on("click", '#setting_save', function() {
-	//$('#team_match_setting_div').css('display','block');
-	$(".match_setting_text").attr('disabled','disabled');
+	$('.team_info').attr('disabled','disabled');
+	
 	$("#setting_save").attr('disabled','disabled');
 	
 	
@@ -214,9 +214,12 @@ $(document).on("click", '#setting_save', function() {
 		$("#play_team1_name").val($("#team1_name").val());
 		$("#play_team2_name").val($("#team2_name").val());
 	}
-	
+	$(".match_setting_text").attr('disabled','disabled');
+	$("#setting_save").attr('disabled','disabled');
 	
 });
+
+
 //Save match setting details
 $(document).on("click", '.setting_save', function() {
 	var total_over = $('#total_over').val();
@@ -236,13 +239,16 @@ $(document).on("click", '.setting_save', function() {
 			console.log("saved");
 		}
 	});
-
-	$("#setting_update").css('display','block');
 });
 
-$(document).on("click", '#setting_update', function() {
+$(document).on("click", '#new_team_match', function() {
+	$('.team_info').attr('disabled',false);
 	$(".match_setting_text").attr('disabled',false);
 	$("#setting_save").attr('disabled',false);
+	$('#match_id').val('');
+//	$.get('/newMatch', function(data) {
+//	
+//	});
 });
 
 //For match setting	

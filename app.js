@@ -90,6 +90,7 @@ app.get('/addAsPlayer',adduser.addAsPlayer);
 //for player data add
 app.post('/addPlayerData',adduser.addPlayerData);
 
+
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);
 //fetch player data for display and selection on add team view

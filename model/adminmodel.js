@@ -55,10 +55,10 @@ exports.listdata = function(req,res) {
 exports.listTeam = function(req,res) {
 	
 	
-	var myDate = new Date();
-	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-	
-	var match_info_query = connection.query('SELECT * FROM match_info where match_date="'+matchDate+'" order by id desc limit 1');
+//	var myDate = new Date();
+//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+//	
+	var match_info_query = connection.query('SELECT * FROM match_info order by id desc limit 1');
 	var playerid1 = [];
 	var playerid2 = [];
 	var team = [];
@@ -97,7 +97,6 @@ exports.listTeam = function(req,res) {
 		team_query .on('result', function(row) {
 		team.push(row);
 			}).on('end',function(){
-			  console.log("bbbbb"+team);
 			  res.render('admin/showSetting', {
 					team : team, 
 					matchId : count,
@@ -196,8 +195,9 @@ exports.getmatchSetting = function(req,res) {
 };
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-	var myDate = new Date();
-	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+//	var myDate = " NOW();
+//	console.log(myDate);
+//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
@@ -209,7 +209,7 @@ exports.saveMacthSetting = function(req,res) {
 		  if(!req.match_id) {
 				console.log("insert"+uniqueId);
 				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date) " +
-						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"','"+ matchDate +"');";
+						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"',NOW());";
 			}
 			else {
 				console.log("update");

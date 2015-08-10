@@ -85,7 +85,7 @@ h4{
 .player{
 	background-color:#E0E2EC;
 	margin-bottom:15px;
-	margin-top: 20px;
+	
 	padding-left:5px;
 	min-height:50px;
 	border-radius: 3px 3px 3px 3px;
@@ -150,8 +150,9 @@ tr ,td{
 	padding:0px;
 	padding-left:5px;
 }
-#setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
-	margin-top:60px;
+.setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
+	margin-top: 116px;
+    margin-bottom: 10px;
 }
 .center_postion {
 	text-align:center;
@@ -174,13 +175,14 @@ tr ,td{
 #update_setting_btn {
 	margin-left:50%;
 }
-#team_A_select {
+.team_info {
 	float:left;
 	margin-top:10px;
+	width:150%;
 }
-#team_B_select {
-	margin-top:10px;
-	float:left;
+.team_name {
+	width:200%;
+	margin-left:75%;
 }
 #team1,#team2{
 	float:left;
@@ -229,4 +231,28 @@ tr ,td{
 }
 #addplayertbl_div{
 	width:100%;
+}
+
+.caret{
+	float:right;
+	margin-top:-4%;
+}
+
+#setting_save{	
+    margin-top: 69px;
+}
+.match_setting_text{
+	width:80%;
+}
+.playing_team11 {
+	margin-left: 33%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.toss_btn {
+	background-color:green; 
+	float:right; 
+	display:block;
+	margin-right:1%;
+	width:9%;
 }
