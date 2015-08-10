@@ -1,12 +1,15 @@
-<form>
+<form id="startmatch_frm" method="post" name="startmatch_frm">
 <input type="hidden" id = "match_id" value= "<%= matchId %>">
+<input type="hidden" id = "battingteam_id" value= "<%= battingTeam %>">
+<input type="hidden" id = "bowlingteam_id" value= "<%= bowlingTeam %>">
 
  <div class="row startmatchdiv">
             <div class="col-sm-6">
 
 First Batsman
-</div>   <div class="col-sm-6">
- <select >
+</div>  
+ <div class="col-sm-6">
+ <select id="1stbatsman_select" name="1stbatsman_select" >
 							             <option value="0">Select First Player</option>
 							             <% for(var i=0; i < battinglist.length; i++) { %>
 							             
@@ -19,7 +22,7 @@ First Batsman
             <div class="col-sm-6">
 
 Second Batsman</div>   <div class="col-sm-6">
-<select >
+<select id="2ndbatsman_select" name="2ndbatsman_select">
 							             <option value="0">Select Second Player</option>
 							             <% for(var i=0; i < battinglist.length; i++) { %>
 							             
@@ -31,7 +34,7 @@ Second Batsman</div>   <div class="col-sm-6">
             <div class="col-sm-6">
 
 First Bowler</div>   <div class="col-sm-6">
-<select >
+<select id="1stbowler_select" name="1stbowler_select">
 							             <option value="0">Select First Bowler</option>
 							             <% for(var i=0; i < bowlinglist.length; i++) { %>
 							             

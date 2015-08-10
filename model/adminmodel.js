@@ -238,6 +238,7 @@ exports.getmatchId = function(req,res) {
 
 
 exports.addRuns = function(req,res) {
+	console.log(req);
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
 			var queryString = "INSERT into ball " +
@@ -302,6 +303,9 @@ exports.playing11Team = function(data,res) {
 	}
 };
 
+/* 
+ * @author :jyoti
+ * starting match setting*/
 
 exports.startMatch = function(req,res) {
 	var matchId,battingTeam,bowlerTeam;
@@ -330,7 +334,6 @@ exports.startMatch = function(req,res) {
 		bowlingTeam = (rows[0].first_team == battingTeam)? rows[0].second_team :rows[0].first_team;
 		
 	}).on('end',function(){
-		 console.log("matchid"+matchId);
 	var fetchbattingPlayerQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+battingTeam+"'");
 	fetchbattingPlayerQuery .on('result', function(row) {
 		  playerid1.push({"id":row.id,"name":row.first_name});
@@ -341,16 +344,16 @@ exports.startMatch = function(req,res) {
 		  playerid2.push({"id":row.id,"name":row.first_name});
 		 
 		  }).on('end',function(){
-			  console.log("batting"+playerid1);
-				console.log("bowler"+playerid2);
 				res.render('admin/startMatch', {
 					matchId : matchId,
 					battinglist : playerid1,
 					bowlinglist : playerid2,
+					battingTeam : battingTeam,
+					bowlingTeam : bowlingTeam,
+					
 			});
 			});
 		 });
 	
 	
 };
-

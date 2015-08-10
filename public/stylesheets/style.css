@@ -124,6 +124,10 @@ tr ,td{
 {
     background-color:green;
 }
+.lightgreen
+{
+    background-color:rgb(183, 229, 183);
+}
 .red
 {
     background-color:red;

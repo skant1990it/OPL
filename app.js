@@ -111,6 +111,9 @@ app.post('/addRuns',adminuser.addRuns);
 
 app.get('/getOverRecord/*',adminuser.getOverRecord);
 
+
+app.post('/setStartingPlayer',adminuser.setStartingPlayer);
+
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
     console.log('File size is ' + req.files.groupfile.size);
@@ -126,7 +129,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3005, function() {
+app.listen(3009, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });
