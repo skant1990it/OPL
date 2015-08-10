@@ -4,11 +4,28 @@ exports.listPlayer = function(req,res) {
 	var queryString = 'SELECT * FROM player';
 	
 	connection.query(queryString, function(err, rows, fields) {
-		console.log(rows);
+//		console.log(rows);
 		res.render('pages/list', {
 			title : rows
 		});
 		 
+	});
+};
+
+
+exports.addAsPlayer = function(req,res) {
+	var email = [];
+	var queryString = connection.query("SELECT * FROM player");
+	queryString.on('result', function(rows) {
+		//console.log(rows.email);
+		email.push(rows.email);
+	}).on('end',function(){
+		res.render('pages/add', {
+			title : 'Add New Player',
+			errors: '',
+			values:'',
+			email: email,
+		})
 	});
 };
 

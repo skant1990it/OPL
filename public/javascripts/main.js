@@ -21,21 +21,26 @@ $(document).on("click", '#add_new_player', function() {
 });
 
 $(document).on("click", '#playeradd', function() {
-	var formData = $('#form_id').serialize();
-
+	var formData = $('#form_id').serializeArray();
 	$.ajax({
 		url: "/addPlayerData",
 		data: formData,
 		method: "POST",
 		success: function(result){
-			console.log("errormsg"+result);
-		$(".modal-body").html(result);
-//		$('#myModal').modal();
+			console.log(result);
+			console.log("errlng"+result.length);
+			if(result.length < 10) {
+				for(i = 0; i < result.length; i ++) {
+					$("."+result[i].param).html(result[i].msg);
+				}
+			}
+			else {
+				$('#myModal').modal('toggle');
+			}
 		}
 	});
 	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
-//		$('#myModal').modal('toggle');
 	});
 });
 

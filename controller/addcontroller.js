@@ -3,12 +3,8 @@ var model = require('../model/addmodel');
 var path = require('path');	
 var fs = require('fs');
 exports.addAsPlayer = function(req, res) {
-//	model.fetchplayer(req.body,res);
-	res.render('pages/add', {
-		title : 'Add New Player',
-		errors: '',
-		values:''
-	})
+	model.addAsPlayer(req.body,res);
+	
 };
 exports.addPlayerData = function(req, res) {
 
@@ -21,21 +17,24 @@ exports.addPlayerData = function(req, res) {
 
     var errors = req.validationErrors();  
     console.log(errors);
-    if( !errors){   //No errors were found.  Passed Validation!
-        res.render('pages/add', { 
-        	title : 'Add New Player',
-                errors: '',
-                values:''
-        }); 
-       
+    if(errors == false){   //No errors were found.  Passed Validation!
+    	  var array = req.body.email_list.split(',');
+        for(var i=0 ; i<array.length; i++) {
+        	if(array[i] == req.body.email) {
+        		var obj = {};
+        		obj.param='email';
+        		obj.msg='Email is already registerd';
+        		obj.value ='';
+        		var errors = [];
+        		errors.push(obj);
+        		res.send(errors);
+        	} 
+        }
         model.addplayerdata(req.body,res);
+       
     }
     else {   //Display errors to user
-        res.render('pages/add', { 
-            errors: errors,
-            values:req.body,
-            title : 'Add New User',
-        });
+        res.send(errors);
     }
 	
 };

@@ -208,6 +208,7 @@ tr ,td{
   border: 1px solid #AAAAAA;
   border-radius: 3px 3px 3px 3px;
   margin-bottom: 10px;
+	background-color:#F8F8F8;
 }
 
 .accordion-toggle,.scroll_Availability,.closed{
