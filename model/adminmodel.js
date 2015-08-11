@@ -55,10 +55,10 @@ exports.listdata = function(req,res) {
 exports.listTeam = function(req,res) {
 	
 	
-//	var myDate = new Date();
-//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-//	
-	var match_info_query = connection.query('SELECT * FROM match_info order by id desc limit 1');
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+	
+	var match_info_query = connection.query('SELECT * FROM match_info where match_date >= "'+ matchDate +'" order by id desc limit 1');
 	var playerid1 = [];
 	var playerid2 = [];
 	var team = [];
@@ -152,17 +152,6 @@ exports.listAllPlayer = function(req,res) {
 	},1000);
 };
 /**
- * call for add team member
- */
-exports.addTeamData = function(req,res,reqImg) {
-	//var queryString = "INSERT INTO user (first_name,last_name,phone,email,address,image) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"','"+ reqImg.userPhoto.name +"');";
-	
-	connection.query(queryString, function(err, rows, fields) {
-		res.redirect("pages/list");
-//		return exports.listdata(req,res);
-	});
-};
-/**
  * call for fetch team member(player list for particular team)
  */
 exports.teamPlayer = function(data,res) {
@@ -180,19 +169,6 @@ exports.teamPlayer = function(data,res) {
 	});
 };
 
-//get match setting data
-exports.getmatchSetting = function(req,res) {
-	var myDate = new Date();
-	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-	var queryString = 'SELECT * FROM match_info where match_date  = "'+ matchDate +'" order by id desc limit 1';
-	connection.query(queryString, function(err, rows, fields) {
-	console.log("r"+rows[0].id);
-			res.render('admin/matchInfo', {
-				matchId : rows,
-				newMatch : 'Yes'
-			});
-	});
-};
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
 //	var myDate = " NOW();

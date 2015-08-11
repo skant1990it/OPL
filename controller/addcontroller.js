@@ -21,6 +21,7 @@ exports.addPlayerData = function(req, res) {
     	  var array = req.body.email_list.split(',');
         for(var i=0 ; i<array.length; i++) {
         	if(array[i] == req.body.email) {
+        		var flag = "1";
         		var obj = {};
         		obj.param='email';
         		obj.msg='Email is already registerd';
@@ -29,9 +30,13 @@ exports.addPlayerData = function(req, res) {
         		errors.push(obj);
         		res.send(errors);
         	} 
+        	else {
+        		var flag = "0";
+        	}
         }
-        model.addplayerdata(req.body,res);
-       
+        if(flag == '0') {
+        	  model.addplayerdata(req.body,res);
+        } 
     }
     else {   //Display errors to user
         res.send(errors);
