@@ -1,0 +1,13 @@
+<table style="width:100%">
+  <tr>
+	  <th>Name</th>
+	  <th>Select in Team</th></tr>
+ <tr>
+<% for(var i=0; i < player.length; i++) { %>
+   <tr>
+     <td><%= player[i].first_name %> <%= player[i].last_name %></td>
+     <td><input name = "player" type = "checkbox" value  = "<%= player[i] %>">
+     </td>
+   </tr>
+<% } %>
+</table> 

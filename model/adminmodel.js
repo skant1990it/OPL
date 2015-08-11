@@ -61,7 +61,7 @@ exports.listTeam = function(req,res) {
 	var myDate = new Date();
 	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
 	
-	var match_info_query = connection.query('SELECT * FROM match_info where match_date="'+matchDate+'" order by id desc limit 1');
+	var match_info_query = connection.query('SELECT * FROM match_info where match_date >= "'+ matchDate +'" order by id desc limit 1');
 	var playerid1 = [];
 	var playerid2 = [];
 	var team = [];
@@ -100,7 +100,6 @@ exports.listTeam = function(req,res) {
 		team_query .on('result', function(row) {
 		team.push(row);
 			}).on('end',function(){
-			  console.log("bbbbb"+team);
 			  res.render('admin/showSetting', {
 					team : team, 
 					matchId : count,
@@ -156,17 +155,6 @@ exports.listAllPlayer = function(req,res) {
 	},1000);
 };
 /**
- * call for add team member
- */
-exports.addTeamData = function(req,res,reqImg) {
-	//var queryString = "INSERT INTO user (first_name,last_name,phone,email,address,image) values ('"+ req.f_name +"','"+ req.l_name +"','"+ req.phone +"','"+ req.email +"','"+ req.address +"','"+ reqImg.userPhoto.name +"');";
-	
-	connection.query(queryString, function(err, rows, fields) {
-		res.redirect("pages/list");
-//		return exports.listdata(req,res);
-	});
-};
-/**
  * call for fetch team member(player list for particular team)
  */
 exports.teamPlayer = function(data,res) {
@@ -184,23 +172,11 @@ exports.teamPlayer = function(data,res) {
 	});
 };
 
-//get match setting data
-exports.getmatchSetting = function(req,res) {
-	var myDate = new Date();
-	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-	var queryString = 'SELECT * FROM match_info where match_date  = "'+ matchDate +'" order by id desc limit 1';
-	connection.query(queryString, function(err, rows, fields) {
-	console.log("r"+rows[0].id);
-			res.render('admin/matchInfo', {
-				matchId : rows,
-				newMatch : 'Yes'
-			});
-	});
-};
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-	var myDate = new Date();
-	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+//	var myDate = " NOW();
+//	console.log(myDate);
+//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
@@ -212,7 +188,7 @@ exports.saveMacthSetting = function(req,res) {
 		  if(!req.match_id) {
 				console.log("insert"+uniqueId);
 				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date) " +
-						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"','"+ matchDate +"');";
+						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"',NOW());";
 			}
 			else {
 				console.log("update");
@@ -237,6 +213,33 @@ exports.getmatchId = function(req,res) {
 	});
 };
 
+
+
+
+exports.addRuns = function(req,res) {
+	console.log(req);
+	var extraColumnName="",extraValue=0;
+	if(req.extraruns=='0'){
+			var queryString = "INSERT into ball " +
+			  "(over_id,run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"' )";
+		}else{
+			var score ;
+			if(req.extratype == "wicket"){
+				score = '0';
+			}else{
+				score =  parseInt(req.gainedruns)+1;
+			}
+			var queryString = "INSERT into ball " +
+			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id)" +
+			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"'  )";
+		}
+
+	connection.query(queryString, function(err, rows, fields) {
+		res.send(req);
+	});
+	
+};
 exports.getTeamName = function(req,res) {
 	var queryStringTeam = 'SELECT * FROM team';
 	
@@ -378,3 +381,68 @@ exports.saveTeamData = function(data,res,upload) {
 	res.send("");
 };
 
+//for playing 11 team select
+exports.playing11Team = function(data,res) {
+	console.log("modeldata"+data.player11_id[0]);
+	for(var i =0; i <=data.player11_id.length; i++) {
+		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
+		connection.query(queryString, function(err, rows, fields) {
+			res.send(rows);
+		});
+	}
+};
+
+/* 
+ * @author :jyoti
+ * starting match setting*/
+
+exports.startMatch = function(req,res) {
+	var matchId,battingTeam,bowlerTeam;
+	var playerid1 = [];
+	var playerid2 = [];
+
+	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for FROM match_info order by match_date desc limit 1';
+	connection.query(queryString, function(err, rows, fields) {
+		matchId = rows[0].id;
+		if(rows[0].first_team == rows[0].toss_won) {
+			if(rows[0].opt_for == "bat") {
+				battingTeam = rows[0].first_team; 
+			}
+			else {
+				battingTeam = rows[0].second_team;
+			}
+		}
+		else {
+			if(rows[0].opt_for == "ball") {
+				battingTeam = rows[0].first_team; 
+			}
+			else {
+				battingTeam = rows[0].second_team;
+			}
+		}
+		bowlingTeam = (rows[0].first_team == battingTeam)? rows[0].second_team :rows[0].first_team;
+		
+	}).on('end',function(){
+	var fetchbattingPlayerQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+battingTeam+"'");
+	fetchbattingPlayerQuery .on('result', function(row) {
+		  playerid1.push({"id":row.id,"name":row.first_name});
+		  });
+	
+	var fetchbowlingQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+bowlingTeam+"'");
+		fetchbowlingQuery.on('result', function(row) {
+		  playerid2.push({"id":row.id,"name":row.first_name});
+		 
+		  }).on('end',function(){
+				res.render('admin/startMatch', {
+					matchId : matchId,
+					battinglist : playerid1,
+					bowlinglist : playerid2,
+					battingTeam : battingTeam,
+					bowlingTeam : bowlingTeam,
+					
+			});
+			});
+		 });
+	
+	
+};

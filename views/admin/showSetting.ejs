@@ -1,5 +1,9 @@
 <div id="settings-box-container col-sm-12">
-   <div class="settings-box col-sm-12">
+<%= matchId.id %>
+<input class="new_team_match" id="new_team_match" type="button" value="+New Match" style="background-color:green; float:right; display:block">
+<input type="button" class="toss_btn" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value="Toss">
+<div class="col-sm-12">
+   <div class="settings-box col-sm-6">
 					<div class="accordion-toggle scroll_Availability closed">
 						<h3 class="form-field-title">Select Team</h3>
 						<div class="settings-status"></div><div class="caret"></div>
@@ -9,11 +13,12 @@
  						<div class="row" id="teamDiv">
  
  							<form name="match_setting_form" id="match_setting_form" method="post">
- 
+  			<% if(matchId.id){%>
+  					 <input name = "match_id" id = "match_id" type = "hidden" value = "<%=matchId ? matchId.id: '' %>">
+  				<% } %>
             					<div class="col-sm-12">
                 					<div class="player " id="bowler">
                  						
-                 						<input class="new_team_match" id="new_team_match" type="button" value="+New Match" style="background-color:green; float:right; display:block"> 
                						<div id="team1">
                						 <div class="teamlist" id="team1list">
             							 <select class = "team_info" id='team_A_select'>
@@ -25,7 +30,7 @@
 							             </select>
 							         </div>
              						<div class="teamvalue" id="team1value">
-          								  <input type="text" id="team1_name" name="team1_name" readonly="" value="<%= matchId!="null" ? team1_name :''   %>">
+          								  <input type="text" class="team_name" id="team1_name" name="team1_name" readonly="" value="<%= matchId!="null" ? team1_name :''   %>">
          						    </div>
            					  </div>
            					  
@@ -40,16 +45,16 @@
 				             </select>
 				             </div>
 				            <div class="teamvalue">
-			             <input type="text" id="team2_name" name="team2_name" readonly="" value="<%= matchId!="null" ? team2_name :''   %>"></div>
+			             <input type="text" class="team_name" id="team2_name" name="team2_name" readonly="" value="<%= matchId!="null" ? team2_name :''   %>"></div>
 			             </div>
-			              
-               			 </div>  			 
+			              		 
+               			 </div>  	
  			</div>
  			</div>	
 	</div>	
 	</div>
 	</div>
-	 <div class="settings-box col-sm-12">
+	 <div class="settings-box col-sm-6">
 					<div class="accordion-toggle scroll_Availability closed">
 						<h3 class="form-field-title">Match Setting</h3>
 						<div class="settings-status"></div><div class="caret"></div>
@@ -59,37 +64,25 @@
 
 
  			    <div class="player"">
-               
-                <input class = "setting_update" id ="setting_update" type = "button" Value = "Edit Setting"
-                style="background-color:red; float:right; display:block"/> 
-              
-                <% if(matchId.id){%>
-  					 <input name = "match_id" id = "match_id" type = "hidden" value = "<%=matchId ? matchId.id: '' %>">
-  				<% } %>
-  				
-                <h3>Match Setting</h3>
+  
                 <div class="col-sm-6">
                 Total Over :  <input class = "match_setting_text"  name="total_over" id = "total_over" type = "Text" value = "<%=matchId ? matchId.total_over : '' %>">  
                 </div>
                 <div class="col-sm-6">
                 Over Limit :  <input class = "match_setting_text"  name="over_limit" id = "over_limit" type = "Text" value = "<%=matchId ?  matchId.over_limit : ''%>">  
                 </div>
-                <div style="text-align:center">  
-                 <% if(newMatch == 'Yes'){%>
+                <div style="text-align:center " id="set2_div">  
                  	<input class = "setting_save" id ="setting_save" type = "button" Value = "Save"> 
-                 <% } else { %>
-    				<input class = "setting_save" id ="update_setting_btn" type = "button" Value = "Update"
-    				style="display:none">   
-    			<% } %>
     				
 				</div>
              </div>  
+             
         </div>
   
 	</div>	</form>	
 	</div>			
 	
-	
+	</div>
 	<div class="settings-box col-sm-12" id="playing_11_div">
 					<div class="accordion-toggle scroll_Availability closed">
 						<h3 class="form-field-title">Select Playing Eleven Player</h3>
@@ -102,7 +95,7 @@
  		
             <div class="col-sm-6">
                 <div class="player" id="bowler">
-             <input type = "text" id="play_team1_name" name="play_team1_name" value="<%= matchId!="null" ? team1_name :''   %>" readonly  >
+             <input type = "text" class="playing_team11" id="play_team1_name" name="play_team1_name" value="<%= matchId!="null" ? team1_name :''   %>" readonly  >
          
               <div id = "player_list_A">
               <table style="width:100%">
@@ -113,20 +106,23 @@
 				<% for(var i=0; i < playerlist1.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist1[i].name %> </td>
-				     <td><input name = "player1" class="playercheck" type = "checkbox" id  = "<%= playerlist1[i].id %>">
+				     <td><input name = "player1" class="playercheck1" type = "checkbox" id  = "<%= playerlist1[i].id %>">
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
+				 
               </div> 
-              
+               <div style="text-align:center">  
+                 	<input class = "match_player_save" id ="match_player_save1" type = "button" Value = "Save"> 
+				</div>
                 </div>
-              
+            
             </div>
             <div class="col-sm-6">
                 <div class="player" id="batsman">
                    
-                <input type = "text" id="play_team2_name" name="play_team2_name" value="<%= matchId!="null" ? team2_name :''   %>" readonly  >
+                <input type = "text" class="playing_team11" id="play_team2_name" name="play_team2_name" value="<%= matchId!="null" ? team2_name :''   %>" readonly  >
               
              <div id = "player_list_B">
              <table style="width:100%">
@@ -137,15 +133,16 @@
 				<% for(var i=0; i < playerlist2.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist2[i].name %> </td>
-				     <td><input name = "player2" class="playercheck" type = "checkbox" id  = "<%= playerlist2[i].id %>">
+				     <td><input name = "player2" class="playercheck2" type = "checkbox" id  = "<%= playerlist2[i].id %>">
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
-				            
-
+				         
              </div> 
-            
+            <div style="text-align:center">  
+                 	<input class = "match_player_save" id ="match_player_save2" type = "button" Value = "Save"> 
+				</div>   
                 </div>
 			
             </div> 

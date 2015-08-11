@@ -52,7 +52,7 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
-	model.addRuns(req.params,res);
+		model.addRuns(req.body,res);
 };
 
 exports.matchSetting = function(req, res) {
@@ -85,7 +85,17 @@ exports.fetchPlayer = function(req, res) {
 exports.assignPlayerToTeam = function(req, res) {
     model.assignPlayerToTeam(req.body,res);
 };
+//for playing 11 team select
+exports.playing11 = function(req, res) {
+    model.playing11Team(req.body,res);
+};
 
+exports.getOverRecord = function(req, res) {
+	console.log(req.body);
+    //model.getOverRecord(req.body,res);
+};
+
+<<<<<<< HEAD
 exports.tournamentSetting = function(req, res) {
 	model.tournamentSetting(req.params,res);
 };
@@ -124,3 +134,7 @@ exports.saveTeamData = function(req, res) {
 	}
 };
 
+//for strike barsman setting
+exports.startMatch = function(req, res) {
+	model.startMatch(req.body,res);
+};

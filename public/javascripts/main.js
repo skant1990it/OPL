@@ -11,12 +11,39 @@ function deleteUser(id) {
 		});
 	}
 }
-$(document).on("click", '#add_new', function() {
-
-	$.get('/add', function(data) {
+$(document).on("click", '#add_new_player', function() {
+	$.get('/addAsPlayer', function(data) {
+		$(".modal-body").html(data);
+	});
+	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
 	});
 });
+
+$(document).on("click", '#playeradd', function() {
+	var formData = $('#form_id').serializeArray();
+	$.ajax({
+		url: "/addPlayerData",
+		data: formData,
+		method: "POST",
+		success: function(result){
+			console.log(result);
+			console.log("errlng"+result.length);
+			if(result.length < 10) {
+				for(i = 0; i < result.length; i ++) {
+					$("."+result[i].param).html(result[i].msg);
+				}
+			}
+			else {
+				$('#myModal').modal('toggle');
+			}
+		}
+	});
+	$.get('/list', function(data) {
+		$(".jumbotron").html(data);
+	});
+});
+
 $(document).on("click", '#list_view', function() {
 	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
@@ -34,7 +61,11 @@ $(document).on("click", '#admin', function() {
 });
 
 $(document).on("click", '#dash_admin', function() {
+	$.get('/startMatch', function(data) {
+		$(".start-Match").html(data);
 
+	});
+	
 	$.get('/admin', function(data) {
 		$(".scoreboard").html(data);
 
@@ -42,7 +73,7 @@ $(document).on("click", '#dash_admin', function() {
 });
 
 //For playing team list
-$(document).on("click", '#playing_team', function() {
+$(document).on("click", '#match_setting', function() {
 	$.get('/teamlist', function(data) {
 		$(".scoreboard").html(data);
 	});
@@ -173,8 +204,8 @@ $(document).on("click", '#playing_11_div111', function() {
 
 //For match setting
 $(document).on("click", '#setting_save', function() {
-	//$('#team_match_setting_div').css('display','block');
-	$(".match_setting_text").attr('disabled','disabled');
+	$('.team_info').attr('disabled','disabled');
+	
 	$("#setting_save").attr('disabled','disabled');
 	
 	
@@ -183,9 +214,12 @@ $(document).on("click", '#setting_save', function() {
 		$("#play_team1_name").val($("#team1_name").val());
 		$("#play_team2_name").val($("#team2_name").val());
 	}
-	
+	$(".match_setting_text").attr('disabled','disabled');
+	$("#setting_save").attr('disabled','disabled');
 	
 });
+
+
 //Save match setting details
 $(document).on("click", '.setting_save', function() {
 	var total_over = $('#total_over').val();
@@ -205,28 +239,60 @@ $(document).on("click", '.setting_save', function() {
 			console.log("saved");
 		}
 	});
-
-//$.get('/setting', function(data) {
-//		$("#matchsetting").html(data);
-//	});
-
-	$("#setting_update").css('display','block');
 });
 
-$(document).on("click", '#setting_update', function() {
+$(document).on("click", '#new_team_match', function() {
+	$('.team_info').attr('disabled',false);
 	$(".match_setting_text").attr('disabled',false);
 	$("#setting_save").attr('disabled',false);
+	$('#match_id').val('');
+//	$.get('/newMatch', function(data) {
+//	
+//	});
 });
 
 //For match setting	
-$(document).on("click", '.playercheck', function() {
-//	$.get('/newmatch', function(data) {
-//		$(".scoreboard").html(data);
-//	});
-	alert($('input[name="player1"]:checked').attr('id'));
-	
+$(document).on("click", '#match_player_save1', function() {
+	var match_id = $("#match_id").val();
+	var checkedPlayer1=[];
+	$('input[name="player1"]:checked').each(function(){
+		checkedPlayer1.push($(this).attr('id'));
+	});
+	console.log(checkedPlayer1);
+
+	$.ajax({
+		url: "/playing11",
+		data: {
+			"player11_id" : checkedPlayer1,
+			"match_id" : match_id,
+		},
+		method: "POST",
+		success: function(result){
+			console.log("playing 11 added");
+		}
+	});
 });
 
+$(document).on("click", '#match_player_save2', function() {
+	var checkedPlayer2=[];
+	var match_id = $("#match_id").val();
+	$('input[name="player2"]:checked').each(function(){
+		checkedPlayer2.push($(this).attr('id'));
+	});
+	console.log(checkedPlayer2);
+	$.ajax({
+		url: "/playing11",
+		data: {
+			"player11_id" : checkedPlayer2,
+			"match_id" : match_id,
+		},
+		method: "POST",
+		success: function(result){
+			console.log("playing 11 added");
+		}
+	});
+});
+	
 $(document).on("keyup", '#search_box', function() {
 	//$('.setting_update').show();
 	var playerName = $('#search_box').val();
