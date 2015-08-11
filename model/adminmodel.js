@@ -3,6 +3,9 @@
  */
 
 var connection = require('../connection');
+var uuid = require('node-uuid');
+var path = require('path');
+var fs = require('fs');
 /**
  * Call for fetch admin details from DB and validate admin
  */
@@ -265,3 +268,113 @@ exports.assignPlayerToTeam = function(data,res) {
 	var queryString = "UPDATE player SET team_id ='"+ data.team_id +"' where id = '"+ data.player_id +"'";
 	connection.query(queryString);
 };
+
+exports.tournamentSetting = function(data,res) {
+	var queryString = "SELECT * FROM tournament ";
+	var tournament_year = [];
+	var flag = 1;
+	var current_year = new Date().getFullYear();
+	connection.query(queryString, function(err, rowsp, fields) {
+		for(var i=0; i < rowsp.length; i++) {
+			tournament_year.push(rowsp[i].tournament_year);
+			if(rowsp[i].tournament_year == current_year) {
+				flag = 0;
+			}
+		}
+		if(flag) {
+			tournament_year.push(current_year);
+		}
+		res.render('admin/tournamentSetting', {
+			tournamentYear : tournament_year,
+		});
+	});
+
+};
+exports.fetchSelectedYearData = function(data,res) {
+	var where = '';
+	if(typeof data.selected_year != "undefined"){
+		where = " WHERE tournament_year = '"+data.selected_year+"'";
+	}
+
+	var queryString = "SELECT *, t.id as tournamentId FROM tournament as t LEFT JOIN team as te ON t.id=te.tournament_id "+where;
+	var tournament_data = [];
+	var flag = 1;
+	var current_year = new Date().getFullYear();
+	connection.query(queryString, function(err, rowsp, fields) {
+		for(var i=0; i < rowsp.length; i++) {
+			if(rowsp[i].tournament_year != current_year) {
+				rowsp[i].edit = 0;
+			}
+		}
+		//console.log(rowsp);
+		res.render('admin/tournamentInfoTemplate', {
+			selectedData : rowsp,
+		});
+	});
+
+};
+
+exports.saveTournamentData = function(data,res) {
+	
+	if((typeof data.tournament_id != "undefined") && (data.tournament_id != "")) {
+		var queryStringTournament = "UPDATE tournament SET tournament_name = '"+data.tournament_name +"', tournament_year = '"+ new Date().getFullYear() +"', no_of_teams='"+ data.no_of_teams +"',max_number_of_players='"+ data.max_number_of_players +"' WHERE id='"+data.tournament_id+"'";
+		var uniqueIdTournament = data.tournament_id;
+	}
+	else {
+		var uniqueIdTournament = uuid.v1();
+		var queryStringTournament = "INSERT INTO tournament values ('"+ uniqueIdTournament +"','"+ data.tournament_name +"','"+ new Date().getFullYear() +"','"+ data.no_of_teams +"','"+ data.max_number_of_players +"');";
+	}
+	var queryStringTeam = 'INSERT INTO team values ';
+	var teamData = new Array();
+	connection.query(queryStringTournament, function(err, rows, fields) {
+		var queryStringTeamDelete = "DELETE FROM team where tournament_id='"+data.tournament_id+"'";
+		connection.query(queryStringTeamDelete);
+		for(var i = 1; i <= data.no_of_teams; i ++) {
+			var uniqueIdTeam = uuid.v1();
+			queryStringTeam += "('"+ uniqueIdTeam +"','"+ uniqueIdTournament +"','Team "+i+"','Captain "+i+"','','','',''),";
+			teamData[i] = {
+				team_id: uniqueIdTeam, 
+				tournament_id: uniqueIdTournament, 
+				team_name: "Team "+i,
+				captain_name: "Captain "+i,
+			};
+		}
+		teamData[parseInt(data.no_of_teams) + 1] = {isError : 0};
+		if(data.no_of_teams >= 1) {
+			connection.query(queryStringTeam.slice(0,-1), function(err, rows, fields) {
+				res.send(teamData);
+			});
+		}
+	});
+};
+
+exports.saveTeamData = function(data,res,upload) {
+	console.log(data);
+	for(var i = 0; i < data.total_rows; i ++) {
+		var fileUpload = 0;
+		if(typeof upload["logo_"+i] != "undefined") {
+			var tempPath = upload["logo_"+i].path;
+			var extension = path.extname(upload["logo_"+i].name);
+			targetPath = path.resolve('./uploads/'+data["team_id_"+i]+extension);
+			var ext = ['.gif','.png','.jpg','.jpeg'];
+			for(var j = 0,len = ext.length; j < len; j ++) {
+				if(fs.existsSync('./uploads/'+data["team_id_"+i]+ext[j])){
+					fs.unlinkSync('./uploads/'+data["team_id_"+i]+ext[j]);
+				}
+			}
+			fs.rename(tempPath, targetPath, function(err) {
+			   if (err) throw err;
+			});
+			var fileUpload = 1;
+		}
+		if(fileUpload) {
+			var queryString = "UPDATE team SET team_name = '"+data["team_name_"+i]+"',captain='"+data["captain_"+i]+"', logo='"+data["team_id_"+i]+extension+"' WHERE id='"+data["team_id_"+i]+"' AND tournament_id='"+data["tournament_id_"+i]+"'";
+		}
+		else {
+			var queryString = "UPDATE team SET team_name = '"+data["team_name_"+i]+"',captain='"+data["captain_"+i]+"' WHERE id='"+data["team_id_"+i]+"' AND tournament_id='"+data["tournament_id_"+i]+"'";
+		}
+		connection.query(queryString);
+	}
+	res.send("");
+};
+

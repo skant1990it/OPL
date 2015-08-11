@@ -1,0 +1,91 @@
+
+	<fieldset class='customfieldset'>
+		<legend class='customlegend'>Tournament Info</legend>
+		<form method="post" action="javascript:void(0);" id="tournamentForm">
+			<table>
+				<tr>
+					<th>Tournament Name</th>
+					<th>No. Of Teams</th>
+					<th>Max No. Of Players</th>
+					<th></th>
+				</tr>
+				<tr>
+				<% if(selectedData.length > 0 && selectedData[0].edit == 0) { %>
+					<% for(var i=0; i < selectedData.length; i++ ) { %>
+						<% if(i == 0) { %>
+							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].tournament_name%>'></td>
+							<td>No. Of Teams: <input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].no_of_teams%>'></td>
+							<td>Max No. Of Players: <input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].max_number_of_players%>'></td>
+						<% } %>
+					<% } %>
+				<% } else { %>
+					<td>
+						<input type='hidden' name="tournament_id" value='<%if(selectedData.length > 0){%><%=selectedData[0].tournamentId%><%}%>' name='tournament_id'>
+						<input type='text' value='<% if(selectedData.length > 0) { %><%= selectedData[0].tournament_name%> <% } %>' name='tournament_name' id='tournament_name'>
+						<br/>
+						<span class="tournament_name" style="color:red;"></span>
+					</td>
+					<td>
+						<input type='text' value='<% if(selectedData.length > 0) { %><%= selectedData[0].no_of_teams%><% } %>' name='no_of_teams' id='no_of_teams'>
+						<br/>
+						<span class="no_of_teams" style="color:red;"></span>
+					</td>
+					<td>
+						<input  type='text' value='<% if(selectedData.length > 0) { %><%= selectedData[0].max_number_of_players%><% } %>' name='max_number_of_players' id='max_number_of_players'>
+						<br/>
+						<span class="max_number_of_players" style="color:red;"></span></td>
+					<td><input type='button' value='Save' onclick='saveTournamentData();'></td>
+				<% } %>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<br/>
+	<br/>
+	<fieldset class='customfieldset'>
+		<legend class='customlegend'>Team Info</legend>
+		<form method="post" action="javascript:void(0);" id="teamForm" enctype="multipart/form-data">
+			<table id="team_info">
+				<tr>
+					<th>Team Name</th>
+					<th>Team Logo</th>
+					<th>Captain</th>
+					<th>No Of Wins</th>
+					<th>No Of Loss</th>
+				</tr>
+				<% if(selectedData.length > 0) { %>
+					<% for(var i=0; i < selectedData.length; i++ ) { %>
+						<tr>
+							<td>
+								<% if(i + 1 == selectedData.length) { %>
+									<input type='hidden' id="total_rows" value='<%= i + 1 %>' name='total_rows'>
+								<% } %>
+								<input type='hidden' name='team_id_<%=i%>' value='<%= selectedData[i].id%>'>
+								<input type='hidden' name='tournament_id_<%=i%>' value='<%= selectedData[i].tournament_id%>'>
+								<input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' size = '12' value='<%= selectedData[i].team_name%>' name="team_name_<%= i %>" id="team_name_<%= i %>">
+								<% if(selectedData[i].logo) { %>
+									<img src="<%= selectedData[i].logo%>" alt="Smiley face" height="35" width="35">
+								<% } %>
+								<br/>
+								<span class="team_name_<%= i %>" style="color:red;"></span>
+							</td>
+							<td>
+								<input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='file' value='' name="logo_<%= i %>" id="logo_<%= i %>">
+								<br/>
+								<span class="logo_<%= i %>" style="color:red;"></span>
+							</td>
+							
+							<td>
+								<input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].captain%>' size = '12' name="captain_<%= i %>" id="captain_<%= i %>">
+								<br/>
+								<span class="captain_<%= i %>" style="color:red;"></span>
+							</td>
+							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> size = '12' type='text' value='<%= selectedData[i].no_of_won_match%>' disabled></td>
+							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> size = '12' type='text' value='<%= selectedData[i].no_of_loss_match%>' disabled></td>
+						</tr>
+					<% } %>	
+				<% } %>	
+			</table>
+		</form>
+	</fieldset>
+

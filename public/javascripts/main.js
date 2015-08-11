@@ -48,7 +48,7 @@ $(document).on("click", '#playing_team', function() {
 	});
 
 });
-//For playing team list
+//for adding teammember to a team
 $(document).on("click", '#add_team', function() {
 
 	$.get('/addTeam', function(data) {
@@ -256,6 +256,115 @@ $(document).on("keyup", '#search_box', function() {
 	});
 });
 
+$(document).on("click", '#tournament_setting', function() {
+	$.get('/tournamentSetting', function(data) {
+		$(".scoreboard").html(data);
+	});
+
+});
+
+$(document).on("change", '#tournament_year', function() {
+	var selectedYear = $('#tournament_year').val();
+	$.ajax({
+		url: "/fetchSelectedYearData",
+		data: {
+			"selected_year" : selectedYear,
+		},
+		method: "POST",
+		success: function(result){
+			$('#tournament_section2').html(result);
+			var noOfRows = $('#team_info tr').length;
+			console.log(noOfRows);
+			var TotalRows = $("#no_of_teams").val();;
+			for(var i = noOfRows - 1  ; i < TotalRows ; i ++) {
+				$('#team_info tr').last().after("<tr><td><input type='text' value='' name='team_name_"+i+"' id='team_name_"+i+"'></td><td><input  type='file' value='' name='logo_"+i+"' id='logo_"+i+"'></td><td><input  type='text' value='' name='captain_"+i+"' id='captain_"+i+"'></td><td><input  type='text' value='' name='no_of_wins' disabled></td><td><input  type='text' value='' name='no_of_loss' disabled></td></tr>");
+				$('#total_rows').val(parseInt($('#total_rows').val()) + 1);
+			}
+			if(noOfRows != 1) {
+				$('#team_info tr').last().after("<tr><td colspan='5'><input type='button' value='Save' onclick='saveTeamData();'></td></tr>");
+			}
+		}
+	});
+});
+function saveTournamentData() {
+	$.ajax({
+		url: "/saveTournamentData",
+		data: $("#tournamentForm").serialize(),
+		method: "POST",
+		success: function(result){
+			var isError = result[Object.keys(result)[Object.keys(result).length - 1]].isError;
+			if(result.length > 0 && isError) {
+				console.log(result);
+				for(i = 0; i < result.length; i ++) {
+
+					$("."+result[i].param).html(result[i].msg);
+				}
+			}
+			else {
+				$("#tournamentForm").find('span').html("");
+				$('#tournamentForm').find('input, textarea, button, select').attr('disabled','disabled');
+				$("#team_info").find("tr:gt(0)").remove();
+				var noOfTeams = $("#no_of_teams").val();
+				for(var i=1,j=0; i <= noOfTeams; i ++,j++) {
+					$('#team_info tr').last().after("<tr><td><input type='hidden' name='team_id_"+j+"' value='"+result[i].team_id+"'><input type='hidden' name='tournament_id_"+j+"' value='"+result[i].tournament_id+"'><input type='text' size = '12' name='team_name_"+j+"' value='"+result[i].team_name+"'></td><td><input  type='file' name='logo_"+j+"' value=''></td><td><input size = '12' type='text' name='captain_"+j+"' value='"+result[i].captain_name+"'></td><td><input size = '12'  type='text' value='' disabled></td><td><input size = '12' type='text' value='' disabled></td></tr>");
+				}
+				$('#team_info tr').last().after("<tr><td colspan='5'><input type='button' value='Save' onclick='saveTeamData();'></td></tr>");
+			}
+		}
+	});
+}
+
+function saveTeamData() {
+	var fields_data = $("#teamForm").serialize();
+	var form_data = new FormData();
+	var file_data_pass = '';
+	var correctFileFormat = 1;
+	for (var i = 0, len=$("#no_of_teams").val(); i < len; i++) {
+		if(typeof $('#logo_'+i).prop('files') != "undefined") {
+			$.each($('#logo_'+i).prop("files"), function(k,v){
+				var filename = v['name'];	
+				var ext = filename.split('.').pop().toLowerCase();
+				if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+					$('.logo_'+i).html("Upload only image files");
+					correctFileFormat = 0
+				}
+				else {
+					file_data_pass = $('#logo_'+i).prop('files')[0];
+					form_data.append('logo_'+i, file_data_pass);
+				}
+			});
+		}
+	}
+	if(correctFileFormat) {
+		var arr = fields_data.split("&");
+		for(var i = 0 , len= arr.length; i < len; i++) {
+			var arr1 = arr[i].split("=");
+			arr1[1] = arr1[1].replace('+', ' ');
+			form_data.append( arr1[0], arr1[1]);
+		}
+		$.ajax({
+			url : '/saveTeamData',
+			cache : false,
+			contentType : false,
+			processData : false,
+			method : 'post',
+			data : form_data,
+			success : function(result) {
+				if(result.length > 0) {
+					for(i = 0; i < result.length; i ++) {
+						$("."+result[i].param).html(result[i].msg);
+					}
+				}
+				else {
+					$("#teamForm").find('span').html("");
+					$('#teamForm').find('input, textarea, button, select').attr('disabled','disabled');
+					$('#tournamentForm').find('input, textarea, button, select').attr('disabled','disabled');
+					alert("Data Saved Successfully");
+				}
+			},
+		});	
+	}
+}
 
 
 
