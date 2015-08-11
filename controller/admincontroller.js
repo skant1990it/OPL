@@ -95,7 +95,6 @@ exports.getOverRecord = function(req, res) {
     //model.getOverRecord(req.body,res);
 };
 
-<<<<<<< HEAD
 exports.tournamentSetting = function(req, res) {
 	model.tournamentSetting(req.params,res);
 };
