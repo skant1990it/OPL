@@ -104,7 +104,7 @@ app.post('/fetchSelectedYearData', adminuser.fetchSelectedYearData);
 app.post('/saveTournamentData', adminuser.saveTournamentData);
 app.post('/saveTeamData', adminuser.saveTeamData);
 
-
+app.get('/scoreboard',adminuser.fetchPlayerForMatch);
 
 //for admin module
 

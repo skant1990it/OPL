@@ -145,3 +145,6 @@ exports.tossMatch = function(req, res) {
 exports.tossUpdateData = function(req, res) {
 	model.tossUpdateData(req.body,res);
 };
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
+};
