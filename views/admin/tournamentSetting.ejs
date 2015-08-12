@@ -1,0 +1,25 @@
+<div id = "container" style="width:100%;" >
+	<div id="tournament_section1">
+		<table style="width:60%;">
+			<tr>
+				<td>Tournament Year</td>
+				<td>
+					<select id="tournament_year">
+					<option value=""></option>
+					<% for(var i=0; i < tournamentYear.length; i++) { %>
+						<option value="<%= tournamentYear[i]%>"><%= tournamentYear[i]%></option>
+					<% } %>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<% if(typeof errors != "undefined" && errors.length > 0) { %>
+	<h1>ashdfvdsv</h1>
+	<% } %>
+	<div id="tournament_section2"></div>
+</div>
+

@@ -1,18 +1,17 @@
 <body>
 <table style="width:100%">
   <tr>
-	  <th>Id</th>
+	  <th>Sl No</th>
 	  <th>First Name</th>
-	  <th>Action</th></tr>
+	  <th>Last Name</th>
+	  <th>Team Name</th></tr>
  <tr>
 <% for(var i=0; i < title.length; i++) { %>
    <tr>
      <td><%= i+1 %></td>
      <td><%= title[i].first_name %></td>
-     <td><a href="/edituser/<%= title[i].id %>">Edit</a>
-     <input type = "button" value  = "delete"  onclick="deleteUser(<%= title[i].id %>);">
-       <a href="/deleteuser/<%= title[i].id %>">Delete</a>
-       <input type = "button" class= "abc modal-toggle" value  = "View" data-toggle="modal" data-target="#myModal" id = "<%= title[i].id %>"></td>
+      <td><%= title[i].last_name %></td>
+     <td>Team Name will show</td>
    </tr>
 <% } %>
 

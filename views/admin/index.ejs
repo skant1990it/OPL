@@ -1,13 +1,91 @@
+<script type="text/javascript">
 
+var ball= 1;
+var over=1;
+
+$(document).on('click', 'input[type="button"][class*="ball"]', function() {
+  $('#batplayer1').html('');
+    $('#batplayer2').html('');
+$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover('destroy');
+ ball = $(this).attr('checkclass');
+ ball++;
+ if(ball == 7){over++;}
+ console.log("over"+over);
+
+$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover]").popover();
+
+  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover({
+        html : true, 
+        content: function() {
+      
+          return $('#selectedPlayercontent').html();
+        },
+        title: function() {
+          return $('#popoverExampleTwoHiddenTitle').html();
+        },
+      
+    });
+    
+  
+ $('.popover-show').on('show.bs.popover', function () {
+      $('#batplayer1').html($('input[type="button"][class="player_btn batsman green"]').val());
+       $('#batplayer1_id').val($('input[type="button"][class="player_btn batsman green"]').attr('data'));
+       $('#batplayer2').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
+        $('#batplayer2_id').val($('input[type="button"][class="player_btn batsman lightgreen"]').attr('data'));
+   });
+  
+
+});
+
+$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover][data-bind=popover]").popover();
+
+  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-bind=popover]").popover({
+        html : true, 
+        content: function() {
+      
+          return $('#selectedPlayercontent').html();
+        },
+        title: function() {
+          return $('#popoverExampleTwoHiddenTitle').html();
+        },
+      
+    });
+
+ console.log($('input[type="button"][class="player_btn batsman green"]').val());
+      console.log($('input[type="button"][class="player_btn batsman lightgreen"]').val());
+   
+ $('.popover-show').on('show.bs.popover', function () {
+ 
+      $('#batplayer1').html($('input[type="button"][class="player_btn batsman green"]').val());
+       $('#batplayer1_id').val($('input[type="button"][class="player_btn batsman green"]').attr('data'));
+       $('#batplayer2').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
+        $('#batplayer2_id').val($('input[type="button"][class="player_btn batsman lightgreen"]').attr('data'));
+   });
+  
+ 
+
+</script>
+ 
+<div id="selectedPlayercontent" style="display: none">
+     <div>
+        <label id="batplayer1"></label><input type="radio" id="batplayer1_id" name="wicketplyr"></br>
+        <label id="batplayer2"></label><input type="radio" id="batplayer2_id" name="wicketplyr">
+
+</div>
+  </div>
 <body class="container">
 <header>
         <% include ../admin/addplayer %>
     </header>
-    <main>
+
     <form id="scoreform"  name="scoreform" method="POST">
+     <div class="row">
+            <div class="col-sm-6">
+            <input type="button" value="Start Match" id="match_start">
+       </div>
+       </div>
         <div class="row">
             <div class="col-sm-6">
-            
                 <div class="player" id="bowler">
                 <h3>
                 <input type="button" value="Bowler"></h3>
@@ -26,7 +104,7 @@
                 
               <% for(var i=0; i <batsman_array.length; i++) { %>
                  <input type="button" class="player_btn batsman" value= "<%=batsman_array[i].name %>" id=bat<%=batsman_array[i].id%>>
-                 <% } %>
+             <% } %>
                 </div>
 
             </div>
@@ -41,9 +119,9 @@
                 <input class="label_btn" type="button" value="Over"></h3>
                 <% for(var i=1; i <=11; i++) { %>
                 <% if(i==1){ %>
-                <input type="button" class="over_btn active " value= <%= i %> id=over<%= i %>>
+                <input type="button" class="over_btn active " value= <%= i %> name=over<%= i %> id=<%= i %>>
                <% }else{ %>
-                 <input type="button" class="over_btn " value= <%= i %> id=over<%= i %>>
+                 <input type="button" class="over_btn" value= <%= i %> name=over<%= i %> id=<%= i %>>
                 <% }%>
                  <% } %>
                 </div>
@@ -75,18 +153,29 @@
                  <% for(var i=1; i <=10; i++) { %>
                 
                  <td><% if(i<=7){ %>
-                 <input type="radio"  name="radio1_1" class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>
-                 checked=<%= i==7 ? "true" : "false" %>
-                 >
-                 <% } else{%>
-                  <input type="checkbox"  name="check1" class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>
+                 <input type="radio"  name="radio1_1_1" class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>
+                 checked=<%= i==7 ? "true" : "false" %>>
+                 <% } else{  %>              
+                 <% if(i==8){%>
+                   <input type="checkbox"  name="check1_1" class="overball ball1 popover-top popover-show" 
+                   data-bind="popover" data-placement="top" checkclass="1" value= <%= i %> id=<%=i %>
+       
+       >
+                  <% } else{%>
+                  <input type="checkbox"  name="check1_1" class="overball ball1" checkclass="1" value= <%= i %> id=<%=i %>
                   group=<%= i==8 ? "wicket[]" : "extra[]" %> >
-                 <% } %>
-                 </td>
+                 <% } }%>
+                   </td>
                 
                  <% } %>
                  <td><input type="button" name="ball1_1"value="OK" class ="ball1" checkclass="1" id="ball1"></td>
                  </tr>
+                  <div id="wickettakendiv" style="display:none">
+                 <lable id="currentplayer1"></lable> <input type="radio"  name="player1_wikt" id="" ></br>
+                   <lable id="currentplayer2"></lable> <input type="radio"  name="player2_wikt" id=""  >
+                 
+               </div>
+               
                  
                  
                  
@@ -140,12 +229,15 @@
 
             </div>
         </div>
-        
+     <button type="button" class="btn btn-primary popover-top"
+      data-toggle="popover" title="Popover title" 
+      data-content="Default popover">Popover on top</button>    
       </form>  
-    </main>
+  
      <footer>
         <% include ../partials/footer %>
     </footer>
+
  
  <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog ">
