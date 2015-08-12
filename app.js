@@ -3,7 +3,6 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
 var bodyParser = require("body-parser");
 var app = module.exports = express.createServer();
 var adduser = require('./controller/addcontroller');
@@ -27,7 +26,6 @@ app.configure(function() {
 	app.use(express.bodyParser());
 	app.use(expressValidator());
 	app.use(express.methodOverride());
-	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
 	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
@@ -92,6 +90,9 @@ app.get('/startMatch', adminuser.startMatch);
 app.get('/addAsPlayer',adduser.addAsPlayer);
 //for player data add
 app.post('/addPlayerData',adduser.addPlayerData);
+//toss match 
+app.get('/tossMatch',adminuser.tossMatch);
+app.post('/tossUpdateData',adminuser.tossUpdateData);
 
 app.get('/deleteuser/*', adduser.deletedata);
 app.post('/updatedata', adduser.updatedata);

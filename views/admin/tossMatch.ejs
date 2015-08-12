@@ -1,0 +1,27 @@
+<body>
+<form enctype="multipart/form-data" id = "toss_form_id" method="POST">
+
+<div class="row form-group">
+	<div class="col-sm-4">
+	<label class="toss_team_name"><h4>Won By:</h4></label>
+	<label class="toss_team_name"><h4>Decided To:</h4></label>
+	</div>
+  	<input name = "match_id" id = "match_id" type = "hidden" value="<%= match_id %>">
+	<div class="col-sm-8">
+		<select class = "toss_team_name_select" name="toss_select" id='toss_select'>
+		     <option  id = "<%= team1 %>"" value="<%= team1 %>"><%= team1Name %></option>
+		     <option  id = "<%= team2 %>"" value="<%= team2 %>"><%= team2Name %></option>
+		</select>
+	</div>
+	<div class="col-sm-8">
+		<select class = "toss_opt_select" name ="opt_select" id='opt_select'>
+		     <option  id = "bat" value="bat">Bat</option>
+		     <option  id = "bowl" value="bowl">Bowl</option>
+		</select>
+	</div>
+</div>
+ <input class = "button_class" id="toss_save" type = "button" value  = "Save">
+<input class ="cancel" type = "button" value  = "Cancel" data-dismiss="modal">
+
+</form>
+</body>

@@ -141,3 +141,11 @@ exports.saveTeamData = function(req, res) {
 exports.startMatch = function(req, res) {
 	model.startMatch(req.body,res);
 };
+
+//for toss of match setting 
+exports.tossMatch = function(req, res) {
+	model.tossMatch(req.body,res);
+};
+exports.tossUpdateData = function(req, res) {
+	model.tossUpdateData(req.body,res);
+};
