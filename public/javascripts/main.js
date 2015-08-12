@@ -65,6 +65,8 @@ $(document).on("click", '#dash_admin', function() {
 //		$(".start_match_title").text("hello");
 		$(".start-Match").html(data);
 
+	});
+	
 	$.get('/admin', function(data) {
 		$(".scoreboard").html(data);
 
@@ -319,12 +321,10 @@ $(document).on("click", '.toss_btn', function() {
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");
 		$(".toss-Match").html(data);
-$(document).on("click", '#tournament_setting', function() {
-	$.get('/tournamentSetting', function(data) {
-		$(".scoreboard").html(data);
+		
 	});
-
 });
+
 
 $(document).on("change", '#tournament_year', function() {
 	var selectedYear = $('#tournament_year').val();
@@ -429,8 +429,6 @@ function saveTeamData() {
 	}
 }
 
-	});
-});
 
 $(document).on("click", '#toss_save', function() {
 	var formData = $('#toss_form_id').serializeArray();
@@ -444,3 +442,9 @@ $(document).on("click", '#toss_save', function() {
 	});
 });
 
+$(document).on("click", '#tournament_setting', function() {
+	$.get('/tournamentSetting', function(data) {
+		$(".scoreboard").html(data);
+	});
+
+});
