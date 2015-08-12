@@ -330,6 +330,49 @@ exports.startMatch = function(req,res) {
 			});
 			});
 		 });
+};
+
+//Toss match
+exports.tossMatch = function(req,res) {
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
 	
-	
+	 var team1, team2, team1name ,team2name ,match_id;
+	var queryString = connection.query('SELECT * FROM match_info where match_date >= "'+ matchDate +'" order by id desc limit 1');
+	queryString.on('result', function(row) {
+	 team1 = row.first_team;
+	 team2 = row.second_team;
+	 match_id = row.id;
+	  }).on('end',function(){
+		  console.log(team1);
+		  var queryString2 = connection.query("SELECT team_name FROM team where id='"+team1+"'");
+			queryString2.on('result', function(row1) {
+			 team1name = row1.team_name;
+			 console.log("team1name"+row1.team_name);
+		  });
+			 var queryString3 = connection.query("SELECT team_name FROM team where id='"+team2+"'");
+				queryString3.on('result', function(row2) {
+				 team2name = row2.team_name;
+				 console.log("team1name"+row2.team_name);
+				 
+				 
+			  }).on('end',function(){
+					res.render('admin/tossMatch', {
+						team1Name : team1name,
+						team2Name : team2name,
+						team1 : team1,
+						team2 : team2,
+						match_id : match_id
+				});
+			  });
+				
+		});
+};
+
+//for toss update match info table
+exports.tossUpdateData = function(data,res) {
+		var queryString = "UPDATE match_info SET toss_won ='"+ data.toss_select +"',opt_for ='"+ data.opt_select +"' where id = '"+ data.match_id +"'";
+		connection.query(queryString, function(err, rows, fields) {
+			res.send(rows);
+		});
 };

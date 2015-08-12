@@ -62,6 +62,7 @@ $(document).on("click", '#admin', function() {
 
 $(document).on("click", '#dash_admin', function() {
 	$.get('/startMatch', function(data) {
+//		$(".start_match_title").text("hello");
 		$(".start-Match").html(data);
 
 	});
@@ -196,12 +197,6 @@ $(document).on("change", '#team_B_select', function() {
 
 });
 
-//For playing 11 setting
-$(document).on("click", '#playing_11_div111', function() {
-
-	alert("helo");
-});
-
 //For match setting
 $(document).on("click", '#setting_save', function() {
 	$('.team_info').attr('disabled','disabled');
@@ -246,9 +241,6 @@ $(document).on("click", '#new_team_match', function() {
 	$(".match_setting_text").attr('disabled',false);
 	$("#setting_save").attr('disabled',false);
 	$('#match_id').val('');
-//	$.get('/newMatch', function(data) {
-//	
-//	});
 });
 
 //For match setting	
@@ -322,6 +314,26 @@ $(document).on("keyup", '#search_box', function() {
 	});
 });
 
+$(document).on("click", '.toss_btn', function() {
+	$.get('/tossMatch', function(data) {
+		$(".modal-header").hide();
+		$(".toss-Match").css('display','inline-block');
+		$(".modal-footer").hide();
+//		$(".start_match_title").text("Match Toss");
+		$(".toss-Match").html(data);
 
+	});
+});
 
+$(document).on("click", '#toss_save', function() {
+	var formData = $('#toss_form_id').serializeArray();
+	$.ajax({
+		url: "/tossUpdateData",
+		data:formData,
+		method: "POST",
+		success: function(result){
+			$('#myModal').modal('toggle');
+		}
+	});
+});
 

@@ -1,7 +1,9 @@
 <div id="settings-box-container col-sm-12">
 <%= matchId.id %>
+<% if(matchId.id){%>
 <input class="new_team_match" id="new_team_match" type="button" value="+New Match" style="background-color:green; float:right; display:block">
 <input type="button" class="toss_btn" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value="Toss">
+	<% } %>
 <div class="col-sm-12">
    <div class="settings-box col-sm-6">
 					<div class="accordion-toggle scroll_Availability closed">
@@ -22,31 +24,25 @@
                						<div id="team1">
                						 <div class="teamlist" id="team1list">
             							 <select class = "team_info" id='team_A_select'>
-							             <option value="0">Select Team A</option>
 							             <% for(var i=0; i < team.length; i++) { %>
 							             
 							             <option  id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
 							             <% } %>
 							             </select>
 							         </div>
-             						<div class="teamvalue" id="team1value">
-          								  <input type="text" class="team_name" id="team1_name" name="team1_name" readonly="" value="<%= matchId!="null" ? team1_name :''   %>">
-         						    </div>
+             					
            					  </div>
-           					  
+           					  <div id="teamvs">V/S</div>
            				 <div id="team2">
             				<div class="teamlist">
             				<select class = "team_info" id='team_B_select'>
-				             <option value="0">Select Team B</option>
 				             <% for(var i=0; i < team.length; i++) { %>
 				             
 				             <option id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
 				             <% } %>
 				             </select>
 				             </div>
-				            <div class="teamvalue">
-			             <input type="text" class="team_name" id="team2_name" name="team2_name" readonly="" value="<%= matchId!="null" ? team2_name :''   %>"></div>
-			             </div>
+				           </div>
 			              		 
                			 </div>  	
  			</div>

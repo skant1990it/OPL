@@ -179,10 +179,19 @@ tr ,td{
 #update_setting_btn {
 	margin-left:50%;
 }
-.team_info {
-	float:left;
-	margin-top:10px;
-	width:150%;
+#team_A_select {
+	float: left;
+    margin-top: 35%;
+    width: 175%;
+    margin-left: 230%;
+    margin-bottom: 30%;
+}
+#team_B_select {
+	float: left;
+    margin-top: 25%;
+    width: 175%;
+    margin-left: 230%;
+
 }
 .team_name {
 	width:200%;
@@ -258,4 +267,41 @@ tr ,td{
 	display:block;
 	margin-right:1%;
 	width:9%;
+}
+#toss_form_id {
+	margin-top:20px;
+}
+.toss_winnig_lebel {
+	float:left;
+}
+.toss-Match {
+	width:100%;
+}
+.toss_team_name {
+	margin-right:20px;
+}
+.toss_team_name_select {
+	height: 30px;
+	float:left;
+	margin-left: -20px;
+    margin-top: 4px;
+	width:50%;
+}
+.toss_opt_select {
+	height: 30px;
+	float:left;
+	margin-left: -20px;
+    margin-top: 20px;
+	width:50%;
+}
+#toss_save {
+	margin-left:31%;
+}
+#teamvs {
+	    margin-left: 45%;
+}
+select,.team_info{
+	border-radius: 3px 3px 3px 3px;
+	background-color:#F8F8F8;
+	height:50%;
 }
