@@ -12,10 +12,13 @@ var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
 var path = require('path');
-
+var session = require('express-session');
+var appSession;
 //var csv = require('ya-csv');
 // Configuration
-
+app.use(session({
+		secret: 'qwerty'
+}));
 app.configure(function() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
@@ -27,7 +30,7 @@ app.configure(function() {
 	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
-
+	
 });
 
 app.configure('development', function() {

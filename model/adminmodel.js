@@ -3,20 +3,17 @@
  */
 
 var connection = require('../connection');
-
 /**
  * Call for fetch admin details from DB and validate admin
  */
 exports.login = function(req,res) {
 var queryString = 'SELECT * FROM admin';
-
 connection.query(queryString, function(err, rows, fields) {
-
-	if(req.email == rows[0].username && req.password == rows[0].password) {
-		console.log("valid user");
+	if(req.body.email == rows[0].username && req.body.password == rows[0].password) {
+		req.session.email = req.body.email;
 		res.render('admin/dashboard', {
 			title : rows,
-			validAdmin : 'Yes'
+			validAdmin : 'Yes',
 		});
 	}
 	else {
@@ -27,7 +24,6 @@ connection.query(queryString, function(err, rows, fields) {
 		});
 	}
 	});
-	
 };
 /**
  * call after validation failed in admin login
@@ -296,22 +292,51 @@ exports.assignPlayerToTeam = function(data,res) {
 exports.fetchPlayerForMatchModel = function(req,res){
 	var bowlers_array = [];
 	var batsman_array = [];
-	var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='46ee5ceb-39c3-11e5-9601-94de80c7dad5'");
-		queryForMatchPlayer .on('result', function(rows) {
-			tempObj = {};
-			if(rows.team_id == 1){
-				tempObj = {'name':rows.first_name , 'id' : rows.id}
-				bowlers_array.push(tempObj);
-			}else if(rows.team_id == 2){
-				tempObj = {'name':rows.first_name , 'id' : rows.id}
-				batsman_array.push(tempObj);
-			}
+	var match_id = "";
+	var tossWinningTeamId;
+	var tossLossingTeamId;
+	var batting_team_id = '';
+	var bowling_team_id = '';
+	var player_list = [];
+	var queryForMatchInfo = connection.query("SELECT * FROM match_info ORDER BY match_date DESC LIMIT 1;");
+ 	queryForMatchInfo.on('result',function(rows){
+ 		match_id = rows.id;
+ 		tossWinningTeamId = rows.toss_won;
+ 		if(tossWinningTeamId!="" && rows.opt_for!=""){
+ 			if(rows.first_team == tossWinningTeamId){
+ 				tossLossingTeamId = rows.second_team;
+ 			}else{
+ 				tossLossingTeamId = rows.first_team;
+ 			}
+ 			if(rows.opt_for == 'bat'){
+ 				batting_team_id = tossWinningTeamId;
+ 				bowling_team_id = tossLossingTeamId;
+ 			}else if(rows.opt_for == 'ball'){
+ 				bowling_team_id = tossWinningTeamId;
+ 				batting_team_id = tossLossingTeamId;
+ 			}
+ 		}else{
+ 			batting_team_id = rows.first_team;
+ 			bowling_team_id = rows.second_team;	
+ 		}		
+ 	}).on('end',function(){	
+ 		var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='"+match_id+"'");
+		queryForMatchPlayer.on('result', function(rows) {			
+				tempObj = {};
+				if(rows.team_id == bowling_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					bowlers_array.push(tempObj);
+				}else if(rows.team_id == batting_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					batsman_array.push(tempObj);
+				}
 		}).on('end',function(){
 			res.render('admin/index', {
 			  	bowlers_array : bowlers_array,
 			  	batsman_array: batsman_array,
 			});
-		});
+		});	
+ 	});
 };
 //for playing 11 team select
 exports.playing11Team = function(data,res) {
