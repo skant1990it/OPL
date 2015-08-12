@@ -11,6 +11,7 @@ var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
 var  gapi = require('./lib/gapi');
 var path = require('path');
+var multer = require('multer');
 var flash = require('connect-flash');
 var session = require('express-session');
 var cookieSession = require('cookie-session');
@@ -51,7 +52,6 @@ app.get('/', function(req, res) {
 		url: gapi.url
 	});
 });
-
 
 
 /* Configure the multer. */
@@ -97,6 +97,13 @@ app.post('/updatedata', adduser.updatedata);
 app.post('/fetchPlayer', adminuser.fetchPlayer);
 //assign player to a team
 app.post('/assignPlayerToTeam', adminuser.assignPlayerToTeam);
+//manage tournament setting
+app.get('/tournamentSetting', adminuser.tournamentSetting);
+//fetch the data for the selected month
+app.post('/fetchSelectedYearData', adminuser.fetchSelectedYearData);
+app.post('/saveTournamentData', adminuser.saveTournamentData);
+app.post('/saveTeamData', adminuser.saveTeamData);
+
 
 
 //for admin module
