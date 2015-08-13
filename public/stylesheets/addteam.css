@@ -5,9 +5,6 @@
 #player_list input {
 	width: 80%; 
 }
-.ui-drop-hover {
-    
-}
 .highlight {
    background-color: #FFFF55 !important;
     border: 2px solid #bbb;

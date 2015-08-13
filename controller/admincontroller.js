@@ -94,15 +94,61 @@ exports.getOverRecord = function(req, res) {
 	model.getOverRecord(req.body,res);
 };
 
+exports.tournamentSetting = function(req, res) {
+	model.tournamentSetting(req.params,res);
+};
+
+exports.fetchSelectedYearData = function(req, res) {
+	model.fetchSelectedYearData(req.body,res);
+};
+
+exports.saveTournamentData = function(req, res) {
+	req.assert('tournament_name', 'Invalid Tournament Name').notEmpty();
+	req.assert('no_of_teams', 'Invalid No Of Teams').notEmpty().isInt();
+	req.assert('max_number_of_players', 'Invalid Max No Of Players').notEmpty().isInt();
+	var errors = req.validationErrors();
+	
+	if( !errors){
+		model.saveTournamentData(req.body,res);
+	}
+    else {
+    	errors[errors.length] = {isError : 1};
+    	res.send(errors);
+    }
+};
+
+exports.saveTeamData = function(req, res) {
+	//Object.keys(req.body).length;  # to find object length
+	for(var i = 0; i < req.body.total_rows; i ++) {
+		req.assert('team_name_'+i, 'Invalid Team Name').notEmpty();
+		req.assert('captain_'+i, 'Invalid Captain').notEmpty();
+	}
+	var errors = req.validationErrors();
+	if(!errors){
+		model.saveTeamData(req.body,res,req.files);
+	}
+	else {
+		res.send(errors);
+	}
+};
+
 //for strike barsman setting
 exports.startMatch = function(req, res) {
 	model.startMatch(req.body,res);
-
 };
 
 exports.fetchMatchDetails = function(req, res) {
 	model.fetchMatchDetails(req.body,res);
 
 };
-
+//for toss of match setting 
+exports.tossMatch = function(req, res) {
+	model.tossMatch(req.body,res);
+};
+exports.tossUpdateData = function(req, res) {
+	model.tossUpdateData(req.body,res);
+};
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
+};
 
