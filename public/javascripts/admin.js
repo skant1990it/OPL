@@ -49,7 +49,6 @@ var overcount=1;
 
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
-	
 	if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') && $('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen') ){
 		CheckPlayerFlag = 0;
 	}else{
@@ -97,8 +96,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  }
 	}
 	  
-console.log("checked"+checkedRun);
-	  
+	
 	  //change batsman
 	   if((ballcount < 6) && (gainedruns == '1' || gainedruns == '3' || gainedruns == '5')){
 		  
@@ -108,13 +106,6 @@ console.log("checked"+checkedRun);
 			   
 	  }
 	   bowlerId = $('input[type="button"][class="player_btn bowler green"]').attr('data'); 
-	  console.log("over  "+overcount+
-				"ball  "+check_ball+
-				"extraruns  "+extraruns+
-				"extratype   "+extraType+
-				"gainedruns  "+gainedruns+
-				"bowler  "+bowlerId+
-				"batsman_id  "+batsman_active);
 	
 		$.ajax({
 		url: "/addRuns",
@@ -126,6 +117,8 @@ console.log("checked"+checkedRun);
 			"gainedruns":gainedruns,
 			"bowler":bowlerId,
 			"batsman_id":batsman_active,
+			"matchId" : $("#match_id_score").val(),
+			"team1Id" : $("#battingteam_id_score").val()
 		
 		},
 		
@@ -141,7 +134,7 @@ console.log("checked"+checkedRun);
 		if ( $.inArray('9', checkedRun)>=0  || $.inArray('10', checkedRun)>=0) {
 		radiocount++;
 		nextballcount++;
-	var currentRow = $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr');
+	  var currentRow = $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr');
 	  var currentTr= currentRow.attr('id');
 	  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td></td>");
 	  for(var i=1; i <=10; i++) { 
@@ -162,7 +155,10 @@ console.log("checked"+checkedRun);
 	  flag = 1;
 	}
 	else if($.inArray('8', checkedRun)>=0){
-			
+		  if($.inArray('8', checkedRun)>=0 && $('input[type="radio"][name="wicketplyr"]:checked').val() == undefined ){
+			  $(this).parents('tr').find("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']")
+				.prop('checked',false); 
+		  }
 		ballcount++;
 		check_ball++;
 		var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr').attr('id');
@@ -182,9 +178,16 @@ console.log("checked"+checkedRun);
 		  } 
 		  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='"+check_ball+"' id='ball1'></td></tr>");
 		  newrow.insertAfter($(this).parents('tr').closest( "tr" ) );
-		  console.log($.inArray('8', checkedRun));
-		  $(this).parents('tr').closest('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]').prop("disabled",true);
-	alert("Please select a player");
+		  if($.inArray('8', checkedRun)>=0 && $('input[type="radio"][name="wicketplyr"]:checked').val() == undefined ){
+			  $(this).parents('tr').closest('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]')
+			  .prop("disabled",false);
+	
+		  }else{
+		  $(this).parents('tr').closest('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]')
+		  .prop("disabled",true);
+		  alert("Please select a player");
+		  }	
+		 
 	enablenextrowflag =  $(this).parents('tr').closest('tr').next('tr').attr('id');
 	}
 	else{
@@ -239,8 +242,43 @@ console.log("checked"+checkedRun);
 		  }
 		 ballcount=1;
 	  }
+	  
+	  console.log($.inArray('9', checkedRun));
+	  if ( $.inArray('9', checkedRun)>=0){
+		  var tot_wide=parseInt($('#tot_wide').html())+1;
+		  $('#tot_wide').html(tot_wide);
+		  $('#tot_totalruns').html(parseInt($('#tot_totalruns').html())+1);
+	  } else if( $.inArray('10', checkedRun)>=0 ){
+		  var tot_noball=parseInt($('#tot_noball').html())+1;
+		  $('#tot_noball').html(tot_noball);
+		  $('#tot_totalruns').html(parseInt($('#tot_totalruns').html())+1);
+	  }else if( $.inArray('8', checkedRun)>=0 ) {
+		  var tot_wicket=parseInt($('#tot_wickets').html())+1;
+		  $('#tot_wickets').html(tot_wicket);
+	 }else{
+		 var tot_run=parseInt($('#tot_totalruns').html())+parseInt(gainedruns);
+		  $('#tot_totalruns').html(tot_run);
+	 }
+	  var tot_extra=parseInt($('#tot_wide').html())+parseInt($('#tot_noball').html());
+	  $('#tot_extras').html(tot_extra);
+	  
+	 
+	/*	
+	
+	  $.ajax({
+			url: "/fetchMatchDetails",
+			data: {
+				matchId : $("#match_id_score").val(),
+				team1Id : $("#battingteam_id_score").val(),
+				team2Id : $("#bowlingteam_id_score").val(),
+			},
+			method: "POST",
+			success: function(result){
+				console.log("saved");
+			}
+		});*/
 }else{
-	alert("please select one player");
+	alert("Please select one player");
 } 
 	 
 });
@@ -248,8 +286,8 @@ console.log("checked"+checkedRun);
 
 $(document).on('click', 'input[type="button"][class*="over_btn completed"]', function() {
 	var overId =($(this).attr('id'));
-	var matchId = $("#match_id").val();
-	var teamId = $("#team_id").val();
+	var matchId = $("#match_id_score").val();
+	var teamId = $("#battingteam_id_score").val();
 	$.ajax({
 		url: "/getOverRecord",
 		data: {
@@ -257,9 +295,13 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 			matchId : matchId,
 			teamId : teamId,
 		},
-		method: "GET",
+		method: "POST",
 		success: function(result){
-			console.log("saved");
+		   $(".start_match_title").html('Over Details');
+			$(".start-Match").html('');
+			$(".over-details").html(result);
+			$("#start_match_btn").html('Cancel');
+			$("#back_to_home").hide();
 		}
 	});
 });
@@ -273,5 +315,14 @@ $(document).on('click', "#start_match_btn", function() {
 	 $("div #batsman").find('input[type="button"][id="bat'+firstbatsman+'"]').addClass('green');
 	 $("div #batsman").find('input[type="button"][id="bat'+secondbatsman+'"]').addClass('lightgreen');
 	 $("div #bowler").find('input[type="button"][id="ball'+firstbowler+'"]').addClass('green');
+	 $('#match_id_score').val( $('#match_id').val());
+	 $('#battingteam_id_score').val( $('#battingteam_id').val());
+	 $('#bowlingteam_id_score').val( $('#bowlingteam_id').val());
+	 
+	 $('#tot_over_id').val( $('#tot_over').val());
+	 $('#overlimit_id').val( $('#over_limit').val());
+	 
+	 $('#bat1span').html( $('input[type="button"][class="player_btn batsman green"]').val());
+	 $('#bat2span').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
 	});
 

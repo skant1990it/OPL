@@ -91,13 +91,17 @@ exports.playing11 = function(req, res) {
 };
 
 exports.getOverRecord = function(req, res) {
-	console.log(req.body);
-    //model.getOverRecord(req.body,res);
+	model.getOverRecord(req.body,res);
 };
 
 //for strike barsman setting
 exports.startMatch = function(req, res) {
 	model.startMatch(req.body,res);
+
+};
+
+exports.fetchMatchDetails = function(req, res) {
+	model.fetchMatchDetails(req.body,res);
 
 };
 

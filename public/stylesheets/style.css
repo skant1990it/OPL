@@ -234,3 +234,9 @@ tr ,td{
 #addplayertbl_div{
 	width:100%;
 }
+#heading{
+	min-height:55px;
+}
+#overdetails {
+	padding:0px;
+}

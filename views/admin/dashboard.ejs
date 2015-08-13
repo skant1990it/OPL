@@ -1,12 +1,12 @@
  <head>
     <% include ../partials/head %>
 </head>
-<body class="container">
+<body class="container" >
 <header>
         <% include ../partials/dashheader %>
     </header>
     <main>
-        <div class="row">
+        <div class="row" id="backgrnd">
             <div class="col-sm-12">
             
                 <div class="scoreboard" id="jumbotron">
@@ -20,15 +20,17 @@
     <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog ">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4class="start_match_title">Start Match Setting</h4>
+            <div class="modal-header" id="heading">
+                <h4 class="start_match_title">Start Match Setting</h4>
             </div>
             <div class="modal-body start-Match">
+            </div>
+            <div class="modal-body over-details" id="overdetails">
             </div>
             <div class="modal-footer">
             	<button type="submit" class="btn btn-primary" id="start_match_btn">Start Match</button>
                 <button type="button" class="btn btn-primary back_to_home" id="back_to_home" 
-                id="backhome_btn">Back to Home</button>
+                id="backhome_btn" onClick="window.location.reload();">Back to Home</button>
             </div>
         </div>
     </div>

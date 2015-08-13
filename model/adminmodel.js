@@ -238,12 +238,11 @@ exports.getmatchId = function(req,res) {
 
 
 exports.addRuns = function(req,res) {
-	console.log(req);
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
 			var queryString = "INSERT into ball " +
-			  "(over_id,run,score,batsman_id,ball_id)" +
-			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"' )";
+			  "(over_id,run,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"' )";
 		}else{
 			var score ;
 			if(req.extratype == "wicket"){
@@ -252,8 +251,8 @@ exports.addRuns = function(req,res) {
 				score =  parseInt(req.gainedruns)+1;
 			}
 			var queryString = "INSERT into ball " +
-			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id)" +
-			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"'  )";
+			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"'  )";
 		}
 
 	connection.query(queryString, function(err, rows, fields) {
@@ -312,7 +311,7 @@ exports.startMatch = function(req,res) {
 	var playerid1 = [];
 	var playerid2 = [];
 
-	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for FROM match_info order by match_date desc limit 1';
+	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for,total_over,over_limit FROM match_info order by match_date desc limit 1';
 	connection.query(queryString, function(err, rows, fields) {
 		matchId = rows[0].id;
 		if(rows[0].first_team == rows[0].toss_won) {
@@ -332,6 +331,8 @@ exports.startMatch = function(req,res) {
 			}
 		}
 		bowlingTeam = (rows[0].first_team == battingTeam)? rows[0].second_team :rows[0].first_team;
+		over_limit = rows[0].over_limit;
+		total_over = rows[0].total_over;
 		
 	}).on('end',function(){
 	var fetchbattingPlayerQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+battingTeam+"'");
@@ -350,6 +351,8 @@ exports.startMatch = function(req,res) {
 					bowlinglist : playerid2,
 					battingTeam : battingTeam,
 					bowlingTeam : bowlingTeam,
+					overLimit : over_limit ,
+					totalOver : total_over
 					
 			});
 			});
@@ -357,3 +360,17 @@ exports.startMatch = function(req,res) {
 	
 	
 };
+
+
+exports.getOverRecord = function(req,res) {
+	var overdetails = [];
+	var queryString = "SELECT wide,noball,wicket,run,ball_id from ball where match_id='"+req.matchId+"' and team_id='"+req.teamId+"' " +
+			"and over_id='"+req.overId+"' ";
+	console.log(queryString);
+	connection.query(queryString, function(err, rows, fields) {
+		console.log(rows);
+		res.render('admin/showOverDetails', {
+			details : rows,
+			});
+	});
+}

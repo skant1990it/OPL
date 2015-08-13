@@ -113,9 +113,10 @@ app.post('/admin',adminuser.loginuser);
 
 app.post('/addRuns',adminuser.addRuns);
 
-app.get('/getOverRecord/*',adminuser.getOverRecord);
+app.post('/getOverRecord',adminuser.getOverRecord);
 
 
+app.post('/fetchMatchDetails',adminuser.fetchMatchDetails);
 app.post('/setStartingPlayer',adminuser.setStartingPlayer);
 
 app.post('/upload/group', function(req, res) {
