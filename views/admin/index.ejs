@@ -93,7 +93,7 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
                 <input type="button" class="bowler_btn" value="Bowler" disabled></h3>
                 
               <% for(var i=0; i <bowlers_array.length; i++) { %>
-             <input type="button" class="player_btn bowler" value="<%=bowlers_array[i].name %>" id=<%=bowlers_array[i].id%>>
+             <input type="button" class="player_btn bowler" value="<%=bowlers_array[i].name %>" id=ball<%=bowlers_array[i].id%>>
                   <% } %>
                 </div>
                 

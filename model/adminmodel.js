@@ -382,7 +382,6 @@ exports.saveTeamData = function(data,res,upload) {
 
 //for playing 11 team select
 exports.playing11Team = function(data,res) {
-	console.log("modeldata"+data.player11_id[0]);
 	for(var i =0; i <=data.player11_id.length; i++) {
 		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
 		connection.query(queryString, function(err, rows, fields) {
@@ -412,7 +411,7 @@ exports.startMatch = function(req,res) {
 			}
 		}
 		else {
-			if(rows[0].opt_for == "ball") {
+			if(rows[0].opt_for == "bowl") {
 				battingTeam = rows[0].first_team; 
 			}
 			else {
