@@ -52,6 +52,7 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
+	console.log(req.body);
 		model.addRuns(req.body,res);
 };
 

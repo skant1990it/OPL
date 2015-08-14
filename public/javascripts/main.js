@@ -62,7 +62,9 @@ $(document).on("click", '#admin', function() {
 
 $(document).on("click", '#dash_admin', function() {
 	$.get('/startMatch', function(data) {
-//		$(".start_match_title").text("hello");
+//		$(".start_match_title").text("hello");over-details
+		$(".over-details").hide();
+		$(".toss-Match").hide();
 		$(".start-Match").html(data);
 
 	});
@@ -317,6 +319,7 @@ $(document).on("keyup", '#search_box', function() {
 $(document).on("click", '.toss_btn', function() {
 	$.get('/tossMatch', function(data) {
 		$(".modal-header").hide();
+		$(".start-Match").hide();
 		$(".toss-Match").css('display','inline-block');
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");

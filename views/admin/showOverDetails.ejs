@@ -2,27 +2,55 @@
       <div class="col-sm-12">
            <div class="player" id="score">
                 <table id="score_table" name="score_table">
-               		 <tr><th>  Balls</th><th>  1</th> <th>2 </th> <th> 3</th> <th>  4</th> <th> 5   </th> <th> 6    </th>
-                            <th>      Dot     </th> <th>Wicket</th> <th>  Wide  </th> <th>    No Ball </th><th></th></tr>
-                  <%= details[0].wide %>
-                 
-                 <% for(var j=1; j <=details.length; j++) { %>
-               
-                <tr id="1" >
-                <td>1</td>
-                 <% for(var i=1; i <=10; i++) { %>
-                
-                 <td><% if(i<=7){ %>
-                 <input type="radio"  name="radio1" class="overball ball1" checkclass="1" >
-                 <% } else{  %>              
-                   <input type="checkbox"  name="check1_1" class="overball ball1" >
-                 <%  }%>
-                   </td>
-                 <% } %>
-                  </tr>
-                    <% } %>
-                  </table>
-                  </div>
-                  </div>
-                  </div>
+               		 <tr>
+                      <th>  Balls</th>
+                      <th>  1</th>
+                      <th>2 </th>
+                      <th> 3</th>
+                      <th>  4</th>
+                      <th> 5   </th> 
+                      <th> 6    </th>
+                      <th>      Dot     </th>
+                      <th>Wicket</th>
+                      <th>  Wide  </th>
+                      <th>    No Ball </th>
+                      <th></th>
+                    </tr>
+                <% var checkedRuns=[]; %>
+                <% for(var j=0; j <details.length; j++) { %>
+                        <% checkedRuns.pop(); %>
+                        <% if(details[j].wide == 1 ){ %>
+                         <% checkedRuns.push(9); %>
+                        <% } else if(details[j].noball == 1 ) { %>
+                        <% checkedRuns.push(10); %>
+                        <% } else if(details[j].wicket == 1 ) { %>
+                       <% checkedRuns.push(8); %>
+                        <% } %>
+                        <%= checkedRuns %>
+                        	
+                     <tr>
+                       <td><%= details[j].ball_id %></td>
+                         <% for(var i=1; i <=10; i++) { %>
+                  
+                           <td>
+                             <% if(i<=7){ %>
+                               <input type="radio"  name="radio1" class="overball ball1" checkclass="1" >
+                              <% }else{  %>  
+                              	
+                                       <% if(i == checkedRuns){%>
+                                       <input type="checkbox"  name="radio1" class="overball ball1" checked >
+                                       <% } else { %> 
+                                       <input type="checkbox"  name="radio1" class="overball ball1"  >
+                                       <% } %>
+                                        
+                                       
+                              <%  }%>
+                            </td>
+                         <% } %>
+                       </tr>
+                <% } %>
+               </table>
+            </div>
+      </div>
+  </div>
                   

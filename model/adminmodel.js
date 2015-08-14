@@ -219,20 +219,31 @@ exports.getmatchId = function(req,res) {
 exports.addRuns = function(req,res) {
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
+		if(req.wicket == "no"){
 			var queryString = "INSERT into ball " +
 			  "(over_id,run,score,batsman_id,ball_id,match_id,team_id)" +
 			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"' )";
+		
 		}else{
+			var queryString = "INSERT into ball " +
+			  "(over_id,run,wicket,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','1','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"' )";
+		}
+	}else{
 			var score ;
-			if(req.extratype == "wicket"){
-				score = '0';
+			if(req.wicket == "yes"){
+				score = '1';
+				var queryString = "INSERT into ball " +
+				  "(over_id,"+req.extratype+",wicket,run,score,batsman_id,ball_id,match_id,team_id)" +
+				  " values ('"+req.over+"','1','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"'  )";
+			
 			}else{
 				score =  parseInt(req.gainedruns)+1;
-			}
 			var queryString = "INSERT into ball " +
 			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id,match_id,team_id)" +
 			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"'  )";
-		}
+		}}
+		
 
 	connection.query(queryString, function(err, rows, fields) {
 		res.send(req);
@@ -504,8 +515,11 @@ exports.fetchPlayerForMatchModel = function(req,res){
 	var player_list = [];
 	var queryForMatchInfo = connection.query("SELECT * FROM match_info ORDER BY match_date DESC LIMIT 1;");
  	queryForMatchInfo.on('result',function(rows){
+ 		console.log(rows);
  		match_id = rows.id;
  		tossWinningTeamId = rows.toss_won;
+ 		total_over = rows.total_over;
+ 		over_limit = rows.over_limit;
  		if(tossWinningTeamId!="" && rows.opt_for!=""){
  			if(rows.first_team == tossWinningTeamId){
  				tossLossingTeamId = rows.second_team;
@@ -524,6 +538,10 @@ exports.fetchPlayerForMatchModel = function(req,res){
  			bowling_team_id = rows.second_team;	
  		}		
  	}).on('end',function(){	
+ 		var fetchBattingteamname = connection.query("SELECT team_name FROM team where id='"+batting_team_id+"'");
+ 		fetchBattingteamname.on('result', function(rows) {
+ 			battingTeamName= rows.team_name;
+ 		});
  		var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='"+match_id+"'");
 		queryForMatchPlayer.on('result', function(rows) {			
 				tempObj = {};
@@ -538,6 +556,9 @@ exports.fetchPlayerForMatchModel = function(req,res){
 			res.render('admin/index', {
 			  	bowlers_array : bowlers_array,
 			  	batsman_array: batsman_array,
+			  	battingTeamName :battingTeamName,
+			  	total_over:total_over,
+			  	over_limit:over_limit
 			});
 		});	
  	});
@@ -545,12 +566,13 @@ exports.fetchPlayerForMatchModel = function(req,res){
 
 
 exports.getOverRecord = function(req,res) {
+	
 	var overdetails = [];
 	var queryString = "SELECT wide,noball,wicket,run,ball_id from ball where match_id='"+req.matchId+"' and team_id='"+req.teamId+"' " +
 			"and over_id='"+req.overId+"' ";
-	console.log(queryString);
 	connection.query(queryString, function(err, rows, fields) {
 		console.log(rows);
+		
 		res.render('admin/showOverDetails', {
 			details : rows,
 			});
