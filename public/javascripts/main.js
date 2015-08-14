@@ -200,15 +200,7 @@ $(document).on("change", '#team_B_select', function() {
 //For match setting
 $(document).on("click", '#setting_save', function() {
 	$('.team_info').attr('disabled','disabled');
-	
 	$("#setting_save").attr('disabled','disabled');
-	
-	
-	var id=$("#match_id").val();
-	if(id!='undefined'){
-		$("#play_team1_name").val($("#team1_name").val());
-		$("#play_team2_name").val($("#team2_name").val());
-	}
 	$(".match_setting_text").attr('disabled','disabled');
 	$("#setting_save").attr('disabled','disabled');
 	
@@ -245,7 +237,6 @@ $(document).on("click", '#new_team_match', function() {
 
 //For match setting	
 $(document).on("click", '#match_player_save1', function() {
-	var match_id = $("#match_id").val();
 	var checkedPlayer1=[];
 	$('input[name="player1"]:checked').each(function(){
 		checkedPlayer1.push($(this).attr('id'));
@@ -256,7 +247,7 @@ $(document).on("click", '#match_player_save1', function() {
 		url: "/playing11",
 		data: {
 			"player11_id" : checkedPlayer1,
-			"match_id" : match_id,
+			"team_id" : $('#team1_id_value').val(),
 		},
 		method: "POST",
 		success: function(result){
@@ -267,7 +258,6 @@ $(document).on("click", '#match_player_save1', function() {
 
 $(document).on("click", '#match_player_save2', function() {
 	var checkedPlayer2=[];
-	var match_id = $("#match_id").val();
 	$('input[name="player2"]:checked').each(function(){
 		checkedPlayer2.push($(this).attr('id'));
 	});
@@ -276,10 +266,11 @@ $(document).on("click", '#match_player_save2', function() {
 		url: "/playing11",
 		data: {
 			"player11_id" : checkedPlayer2,
-			"match_id" : match_id,
+			"team_id" : $('#team2_id_value').val(),
 		},
 		method: "POST",
 		success: function(result){
+			console.log("playeradd1"+result);
 			console.log("playing 11 added");
 		}
 	});

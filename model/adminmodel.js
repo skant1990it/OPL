@@ -60,7 +60,7 @@ exports.listTeam = function(req,res) {
 	
 	var myDate = new Date();
 	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-	
+	var currentYear = myDate.getFullYear();
 	var match_info_query = connection.query('SELECT * FROM match_info where match_date >= "'+ matchDate +'" order by id desc limit 1');
 	var playerid1 = [];
 	var playerid2 = [];
@@ -68,6 +68,7 @@ exports.listTeam = function(req,res) {
 	var count = '';
 	var team1_name = '';
 	var team2_name = '';
+	var tournament_id = [];
 	match_info_query .on('result', function(row) {
 	 if(row=='' ){
 			count = "null";
@@ -75,14 +76,15 @@ exports.listTeam = function(req,res) {
 			count = row;
 		}
 	  }).on('end', function() {
+		
 	 	var team1_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.first_team +"'");
 		team1_player_query .on('result', function(row) {
-			  playerid1.push({"id":row.id,"name":row.first_name});
+			  playerid1.push({"id":row.id,"name":row.first_name,"match_id":row.match_id,"team_id":row.team_id});
 			  });
 		
 		var team2_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.second_team +"'");
 		team2_player_query .on('result', function(row) {
-			  playerid2.push({"id":row.id,"name":row.first_name});
+			  playerid2.push({"id":row.id,"name":row.first_name,"match_id":row.match_id,"team_id":row.team_id});
 			 
 			  });
 		
@@ -96,21 +98,29 @@ exports.listTeam = function(req,res) {
 			team2_name = row.team_name;
 			  });
 		
-		var team_query = connection.query("SELECT * FROM team");
-		team_query .on('result', function(row) {
-		team.push(row);
-			}).on('end',function(){
-			  res.render('admin/showSetting', {
-					team : team, 
-					matchId : count,
-					newMatch : 'Yes',
-					playerlist1 : playerid1,
-					playerlist2 : playerid2,
-					team1_name : team1_name,
-					team2_name : team2_name
-			});
+		var tournament_id_query = connection.query("SELECT id FROM tournament where tournament_year  = '"+ currentYear +"'");
+		tournament_id_query .on('result', function(row) {
+			
+			tournament_id.push(row.id);
+		 }).on('end',function(){
+			
+			console.log(tournament_id);
+			var team_query = connection.query("SELECT * FROM team where tournament_id = '"+ tournament_id +"'");
+			team_query .on('result', function(row) {
+			team.push(row);
+				}).on('end',function(){
+					console.log(team1_name);
+				  res.render('admin/showSetting', {
+						team : team, 
+						matchId : count,
+						newMatch : 'Yes',
+						playerlist1 : playerid1,
+						playerlist2 : playerid2,
+						team1_name : team1_name,
+						team2_name : team2_name
+				});
+			 });
 		 });
-		
 		  // all rows have been received 
 	  });
 };
@@ -174,14 +184,10 @@ exports.teamPlayer = function(data,res) {
 
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-//	var myDate = " NOW();
-//	console.log(myDate);
-//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
-//		console.log("uid"+rows[0]['record_id']);
-//		uniqueId.push(rows[0]['record_id']);
 		uniqueId = rows[0]['record_id'];
 	}).on('end',function(){
 		  console.log("bbbbb"+uniqueId.record_id);
@@ -382,12 +388,27 @@ exports.saveTeamData = function(data,res,upload) {
 
 //for playing 11 team select
 exports.playing11Team = function(data,res) {
-	for(var i =0; i <=data.player11_id.length; i++) {
-		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
-		connection.query(queryString, function(err, rows, fields) {
-			res.send(rows);
-		});
-	}
+	console.log(data.player11_id);
+	var matchId = [];
+	var getMatchId = connection.query("SELECT id from match_info order by match_date desc limit 1 ");
+	getMatchId.on('result', function(row) {
+		matchId.push(row.id);
+	}).on('end',function(){
+		//for(var i =0; i < data.player11_id.length; i++) {
+			
+			console.log("pllll"+data.player11_id);
+			
+			var queryString1 = "UPDATE player SET match_id ='"+ matchId +"' where id in ( "+ data.player11_id +") " +
+					"AND team_id = '"+data.team_id+"'";
+			console.log(queryString1);
+			connection.query(queryString1);
+			
+			var queryString2 = "UPDATE player SET match_id ='0' where id not in ( "+ data.player11_id +") " +
+			"AND team_id = '"+data.team_id+"'";
+			console.log(queryString2);
+			connection.query(queryString2);
+		//}
+	});
 };
 
 /* 
