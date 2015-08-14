@@ -1,5 +1,4 @@
 <div id="settings-box-container col-sm-12">
-<%= matchId.id %>
 <% if(matchId.id){%>
 <input class="new_team_match" id="new_team_match" type="button" value="+New Match" style="background-color:green; float:right; display:block">
 <input type="button" class="toss_btn" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value="Toss">
@@ -23,10 +22,11 @@
                  						
                						<div id="team1">
                						 <div class="teamlist" id="team1list">
-            							 <select class = "team_info" id='team_A_select'>
+               						 	 <select class = "team_info" id='team_A_select'>
+            							 <option id="team1select" value="0">Select First Team</option>
 							             <% for(var i=0; i < team.length; i++) { %>
-							             
-							             <option  id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
+							               <option  id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"
+							             <%= (team[i].team_name == team1_name) ? "selected":"" %>><%= team[i].team_name %></option>
 							             <% } %>
 							             </select>
 							         </div>
@@ -36,9 +36,11 @@
            				 <div id="team2">
             				<div class="teamlist">
             				<select class = "team_info" id='team_B_select'>
+            				 <option id="team2select" value="0">Select Second Team</option>
 				             <% for(var i=0; i < team.length; i++) { %>
-				             
-				             <option id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"><%= team[i].team_name %></option>
+				            
+				             <option id = "<%= team[i].id %>"" value="<%= team[i].team_name %>"
+				             <%= (team[i].team_name == team2_name) ? "selected":"" %> ><%= team[i].team_name %></option>
 				             <% } %>
 				             </select>
 				             </div>
@@ -102,13 +104,15 @@
 				<% for(var i=0; i < playerlist1.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist1[i].name %> </td>
-				     <td><input name = "player1" class="playercheck1" type = "checkbox" id  = "<%= playerlist1[i].id %>">
+				     <td><input name = "player1" class="playercheck1" type = "checkbox" id  = "<%= playerlist1[i].id %>"
+				     <%= (playerlist1[i].match_id == matchId.id) ? "checked":"" %> >
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
 				 
               </div> 
+              <input id="team1_id_value" type = "hidden" Value = "<%= playerlist1[0].team_id %>">
                <div style="text-align:center">  
                  	<input class = "match_player_save" id ="match_player_save1" type = "button" Value = "Save"> 
 				</div>
@@ -129,13 +133,15 @@
 				<% for(var i=0; i < playerlist2.length; i++) { %>
 				   <tr>
 				     <td><%= playerlist2[i].name %> </td>
-				     <td><input name = "player2" class="playercheck2" type = "checkbox" id  = "<%= playerlist2[i].id %>">
+				     <td><input name = "player2" class="playercheck2" type = "checkbox" id  = "<%= playerlist2[i].id %>"
+				     <%= (playerlist2[i].match_id == matchId.id) ? "checked":"" %> >
 				     </td>
 				   </tr>
 				<% } %>
 				</table> 
 				         
              </div> 
+             <input id="team2_id_value" type = "hidden" Value = "<%= playerlist2[0].team_id %>">
             <div style="text-align:center">  
                  	<input class = "match_player_save" id ="match_player_save2" type = "button" Value = "Save"> 
 				</div>   
