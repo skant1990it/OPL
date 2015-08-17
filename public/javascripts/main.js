@@ -321,7 +321,7 @@ $(document).on("click", '.toss_btn', function() {
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");
 		$(".toss-Match").html(data);
-		
+
 	});
 });
 
@@ -446,5 +446,8 @@ $(document).on("click", '#tournament_setting', function() {
 	$.get('/tournamentSetting', function(data) {
 		$(".scoreboard").html(data);
 	});
+});
 
+$(document).on('click','#logout',function(){
+	window.location.href = '/logout';
 });

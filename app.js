@@ -33,7 +33,10 @@ app.configure(function() {
 	
 	app.use(flash());
 });
-
+app.use(function(req, res, next) { 
+	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'); 
+	next(); 
+});
 app.configure('development', function() {
 	app.use(express.errorHandler({
 		dumpExceptions : true,
@@ -47,13 +50,19 @@ app.configure('production', function() {
 
 // Routes
 app.get('/', function(req, res) {
-	var session = req.session;
-	console.log(session);
-	var title = 'Learning node';
-	res.render('pages/index', {
-		title : title,
-		url: gapi.url
-	});
+	if(req.session.email){
+			res.render('admin/dashboard', {
+			title : '',
+			validAdmin : 'Yes',
+		});
+	}else{
+		var title = 'Learning node';
+		res.render('pages/index', {
+			title : title,
+			url: gapi.url
+		});	
+	}
+	
 });
 
 
@@ -129,6 +138,12 @@ app.post('/admin',adminuser.loginuser);
 
 app.post('/addRuns',adminuser.addRuns);
 
+app.get('/logout',function(req,res) {
+	if(req.session.email){
+		req.session.destroy(function(){});	
+	}
+	res.redirect('/');
+});
 
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);

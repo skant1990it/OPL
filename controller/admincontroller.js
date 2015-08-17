@@ -26,12 +26,11 @@ exports.loginuser = function(req, res) {
     req.assert('password', 'Password is required').notEmpty();
     
     var errors = req.validationErrors();  
-    console.log(errors);
     if( !errors){   //No errors were found.  Passed Validation! 
-        model.login(req.body,res);
+        model.login(req,res);
     }
     else {   //Display errors to user
-    	model.loginErr(req.body,res,errors);
+    	model.loginErr(req,res,errors);
     }
   
 };

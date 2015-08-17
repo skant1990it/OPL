@@ -12,8 +12,8 @@ var fs = require('fs');
 exports.login = function(req,res) {
 var queryString = 'SELECT * FROM admin';
 connection.query(queryString, function(err, rows, fields) {
-	if(req.email == rows[0].username && req.password == rows[0].password) {
-		//req.session.email = req.body.email;
+	if(req.body.email == rows[0].username && req.body.password == rows[0].password) {
+		req.session.email = req.body.email;
 		res.render('admin/dashboard', {
 			title : rows,
 			validAdmin : 'Yes',
