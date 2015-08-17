@@ -70,14 +70,14 @@ $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popove
 <header>
         <% include ../admin/addplayer %>
     </header>
-
+  <input type="hidden" id = "match_id_score" value="<%= match_id %>">
+<input type="hidden" id = "battingteam_id_score" value="<%= batting_team_id %>" >
+<input type="hidden" id = "bowlingteam_id_score" value="<%= bowling_team_id %>">
+<input type="hidden" id = "tot_over_id" value="<%= total_over %>">
+<input type="hidden" id = "overlimit_id" value="<%= over_limit %>">
     <form id="scoreform"  name="scoreform" method="POST">
     
-    <input type="hidden" id = "match_id_score" >
-<input type="hidden" id = "battingteam_id_score" >
-<input type="hidden" id = "bowlingteam_id_score">
-<input type="hidden" id = "tot_over_id">
-<input type="hidden" id = "overlimit_id">
+  
      <div class="row">
             <div class="col-sm-6">
             <input type="button" value="Start Match" id="match_start">
@@ -118,9 +118,9 @@ $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popove
                 <input class="label_btn" type="button" value="Over" disabled></h3>
                 <% for(var i=1; i <=  total_over ; i++) { %>
                 <% if(i==1){ %>
-                <input type="button" class="over_btn active " value= <%= i %> name=over<%= i %> id=<%= i %> data-toggle="modal" data-target="#myModal">
+                <input type="button" class="over_btn active " value= <%= i %> name=over<%= i %> id=<%= i %>  data-target="#myModal">
                <% }else{ %>
-                 <input type="button" class="over_btn" value= <%= i %> name=over<%= i %> id=<%= i %>>
+                 <input type="button" class="over_btn" value= <%= i %> name=over<%= i %> id=<%= i %>   data-target="#myModal">
                 <% }%>
                  <% } %>
                 </div>
