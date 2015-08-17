@@ -93,6 +93,7 @@ h4{
 #score{
 	min-height:180px;
 	padding:0px;
+	margin-top:15px;
 }
 #scoringdiv{
 	background-color:#B9BED5;
@@ -245,6 +246,14 @@ tr ,td{
 #addplayertbl_div{
 	width:100%;
 }
+
+#heading{
+	min-height:55px;
+}
+#overdetails {
+	padding:0px;
+}
+
 .caret{
 	float:right;
 	margin-top:-4%;
@@ -305,3 +314,4 @@ select,.team_info{
 	background-color:#F8F8F8;
 	height:50%;
 }
+

@@ -68,3 +68,11 @@
 #batplayer1_id,#batplayer2_id{
 	margin-left:12px;
 }
+.bowlerruns{
+	width:100%;
+}
+.runsgiven{
+	float:left;
+	width:18%;
+	border:1px solid;
+}

@@ -51,6 +51,7 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
+	console.log(req.body);
 		model.addRuns(req.body,res);
 };
 
@@ -94,8 +95,7 @@ exports.fetchPlayerForMatch = function(req,res){
 };
 
 exports.getOverRecord = function(req, res) {
-	console.log(req.body);
-    //model.getOverRecord(req.body,res);
+	model.getOverRecord(req.body,res);
 };
 
 exports.tournamentSetting = function(req, res) {
@@ -141,6 +141,10 @@ exports.startMatch = function(req, res) {
 	model.startMatch(req.body,res);
 };
 
+exports.fetchMatchDetails = function(req, res) {
+	model.fetchMatchDetails(req.body,res);
+
+};
 //for toss of match setting 
 exports.tossMatch = function(req, res) {
 	model.tossMatch(req.body,res);
@@ -148,3 +152,7 @@ exports.tossMatch = function(req, res) {
 exports.tossUpdateData = function(req, res) {
 	model.tossUpdateData(req.body,res);
 };
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
+};
+

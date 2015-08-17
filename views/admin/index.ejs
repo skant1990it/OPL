@@ -6,15 +6,12 @@ var over=1;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
   $('#batplayer1').html('');
     $('#batplayer2').html('');
-$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover('destroy');
- ball = $(this).attr('checkclass');
- ball++;
- if(ball == 7){over++;}
- console.log("over"+over);
+$("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"']").popover('destroy');
+ ball = $(this).parents('tr').closest('tr').next('tr').find('input[type=button]').attr('checkclass');
+ if($(this).attr('checkclass') == 6){over++;ball=1;}
+$("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popover]").popover();
 
-$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover]").popover();
-
-  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"']").popover({
+  $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"']").popover({
         html : true, 
         content: function() {
       
@@ -37,9 +34,9 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
 
 });
 
-$("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover][data-bind=popover]").popover();
+$("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popover][data-bind=popover]").popover();
 
-  $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-bind=popover]").popover({
+  $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-bind=popover]").popover({
         html : true, 
         content: function() {
       
@@ -50,10 +47,7 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
         },
       
     });
-
- console.log($('input[type="button"][class="player_btn batsman green"]').val());
-      console.log($('input[type="button"][class="player_btn batsman lightgreen"]').val());
-   
+  
  $('.popover-show').on('show.bs.popover', function () {
  
       $('#batplayer1').html($('input[type="button"][class="player_btn batsman green"]').val());
@@ -62,7 +56,6 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
         $('#batplayer2_id').val($('input[type="button"][class="player_btn batsman lightgreen"]').attr('data'));
    });
   
- 
 
 </script>
  
@@ -79,6 +72,12 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
     </header>
 
     <form id="scoreform"  name="scoreform" method="POST">
+    
+    <input type="hidden" id = "match_id_score" >
+<input type="hidden" id = "battingteam_id_score" >
+<input type="hidden" id = "bowlingteam_id_score">
+<input type="hidden" id = "tot_over_id">
+<input type="hidden" id = "overlimit_id">
      <div class="row">
             <div class="col-sm-6">
             <input type="button" value="Start Match" id="match_start">
@@ -88,11 +87,11 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
             <div class="col-sm-6">
                 <div class="player" id="bowler">
                 <h3>
-                <input type="button" value="Bowler"></h3>
+                <input type="button" class="bowler_btn" value="Bowler" disabled></h3>
                 
               <% for(var i=0; i <bowlers_array.length; i++) { %>
-                 <input type="button" class="player_btn bowler" value="<%=bowlers_array[i].name %>" id=<%=bowlers_array[i].id%>>
-                 <% } %>
+             <input type="button" class="player_btn bowler" value="<%=bowlers_array[i].name %>" id=ball<%=bowlers_array[i].id%> data="<%=bowlers_array[i].id%>">
+                  <% } %>
                 </div>
                 
             </div>
@@ -100,26 +99,26 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
                 
                 <div class="player" id="batsman">
                   <h3>
-                <input type="button" value="Batsman"></h3>
+                <input type="button" class="bowler_btn" value="Batsman" disabled></h3>
                 
               <% for(var i=0; i <batsman_array.length; i++) { %>
-                 <input type="button" class="player_btn batsman" value= "<%=batsman_array[i].name %>" id=bat<%=batsman_array[i].id%>>
-             <% } %>
+                <input type="button" class="player_btn batsman" value= "<%=batsman_array[i].name %>" id=bat<%=batsman_array[i].id%> data="<%=batsman_array[i].id%>">
+                  <% } %>
                 </div>
 
             </div>
         </div>
-        
+       
         <div  class="col-sm-12" id="scoringdiv">
         <div class="row">
             <div class="col-sm-12">
             
                 <div class="player" id="over">
                   <h3 >
-                <input class="label_btn" type="button" value="Over"></h3>
-                <% for(var i=1; i <=11; i++) { %>
+                <input class="label_btn" type="button" value="Over" disabled></h3>
+                <% for(var i=1; i <=  total_over ; i++) { %>
                 <% if(i==1){ %>
-                <input type="button" class="over_btn active " value= <%= i %> name=over<%= i %> id=<%= i %>>
+                <input type="button" class="over_btn active " value= <%= i %> name=over<%= i %> id=<%= i %> data-toggle="modal" data-target="#myModal">
                <% }else{ %>
                  <input type="button" class="over_btn" value= <%= i %> name=over<%= i %> id=<%= i %>>
                 <% }%>
@@ -193,22 +192,24 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
             
                 <div class="player" id="batting">
                 	<div class="run">
-                	<h4>Batsman 1</h4>
+                	<span id="bat1span"></span>
+                	<span id="batman1run"></span>
                 	</div>
                 	<div class="run">
-                	<h4>Batsman 2</h4>
+                	<span id="bat2span"></span>
+                		<span id="batman2run"></span>
                 	</div>
                 	
                 	<div class="summary">
                 	
-                	<h5>Team Name</h5></br>
+                	Team Name<span id="bat2span"><%= battingTeamName %></span></br>
                 	
                 
-                	<h5>Total Wides</h5></br>
-                	<h5>Total No Balls</h5></br>
-                	<h5>Total Extras</h5></br>
-                	<h5>Total Wickets</h5></br>
-                		<h5>Total Runs</h5>
+                	Wides<span id="tot_wide">0</span></br>
+                	 No Balls<span id="tot_noball">0</span></br>
+                	 Extras<span id="tot_extras">0</span></br>
+                	 Wickets<span id="tot_wickets">0</span></br>
+                		Total Runs<span id="tot_totalruns">0</span>
                 	
                 </div>
                 </div>
@@ -217,21 +218,21 @@ $("input[type=checkbox][id=8][name='check"+over+"_"+ball+"'][data-toggle=popover
             <div class="col-sm-6">
                 
                 <div class="player" id="bowling">
-                  <% for(var i=1; i <=11; i++) { %>
-                <input type="button" class="bowler_name" value="bowler<%= i %>">
-                   <% for(var j=1; j <=4; j++) { %>
+                  <% for(var i=0; i <bowlers_array.length; i++) { %>
+                  <div class="row col-sm-12 bowlerruns" >
+                <input type="button" class="bowler_name runsgiven" value="<%=bowlers_array[i].name %>">
+                   <% for(var j=1; j <=  over_limit ; j++) { %>
                 
-                <input type="text" class="runs_given">
+                <div class= "runsgiven" id="<%= bowlers_array[i].name %>_<%= j %>" name="<%=bowlers_array[i].name %>"></div>
                 
                  <% } %>
+                 </div>
                   <% } %>
                 </div>
 
             </div>
         </div>
-     <button type="button" class="btn btn-primary popover-top"
-      data-toggle="popover" title="Popover title" 
-      data-content="Default popover">Popover on top</button>    
+   
       </form>  
   
      <footer>

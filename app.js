@@ -116,7 +116,7 @@ app.post('/fetchSelectedYearData', adminuser.fetchSelectedYearData);
 app.post('/saveTournamentData', adminuser.saveTournamentData);
 app.post('/saveTeamData', adminuser.saveTeamData);
 
-
+app.get('/scoreboard',adminuser.fetchPlayerForMatch);
 
 //for admin module
 
@@ -145,6 +145,13 @@ app.get('/logout',function(req,res) {
 	res.redirect('/');
 });
 
+app.post('/getOverRecord',adminuser.getOverRecord);
+
+
+app.post('/fetchMatchDetails',adminuser.fetchMatchDetails);
+app.post('/setStartingPlayer',adminuser.setStartingPlayer);
+
+
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
     console.log('File size is ' + req.files.groupfile.size);
@@ -160,7 +167,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3004, function() {
+app.listen(3009, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });
