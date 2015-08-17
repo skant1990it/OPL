@@ -18,7 +18,8 @@ First Batsman
 							             
 							             <option  id = "<%= battinglist[i].id %>"" value="<%= battinglist[i].name %>"><%= battinglist[i].name %></option>
 							             <% } %>
-							             </select>
+							             </select><br>
+							             <span id="1st_batsman_select" style="color:red;"></span>
 							             </div>
 							             </div>
 <div class="row startmatchdiv">
@@ -31,7 +32,8 @@ Second Batsman</div>   <div class="col-sm-6">
 							             
 							             <option  id = "<%= battinglist[i].id %>"" value="<%= battinglist[i].name %>"><%= battinglist[i].name %></option>
 							             <% } %>
-							             </select>  </div>
+							             </select><br>
+							             <span id="2nd_batsman_select" style="color:red;"></span>  </div>
 							             </div>
 							       <div class="row startmatchdiv">
             <div class="col-sm-6">
@@ -43,6 +45,7 @@ First Bowler</div>   <div class="col-sm-6">
 							             
 							             <option  id = "<%= bowlinglist[i].id %>"" value="<%= bowlinglist[i].name %>"><%= bowlinglist[i].name %></option>
 							             <% } %>
-							             </select> </div>
+							             </select> <br>
+							             <span id="1st_bowler_select" style="color:red;"></span></div>
 							             </div>
 </form>

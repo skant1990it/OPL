@@ -201,16 +201,15 @@ $(document).on("change", '#team_B_select', function() {
 
 //For match setting
 $(document).on("click", '#setting_save', function() {
-	$('.team_info').attr('disabled','disabled');
-	$("#setting_save").attr('disabled','disabled');
-	$(".match_setting_text").attr('disabled','disabled');
-	$("#setting_save").attr('disabled','disabled');
+	
 	
 });
 
 
 //Save match setting details
 $(document).on("click", '.setting_save', function() {
+	var team1 = $('#team_A_select :selected').val();
+	var team2 = $('#team_B_select :selected').val();
 	var total_over = $('#total_over').val();
 	var over_limit = $('#over_limit').val();
 	$.ajax({
@@ -226,6 +225,10 @@ $(document).on("click", '.setting_save', function() {
 		method: "POST",
 		success: function(result){
 			console.log("saved");
+			$('.team_info').attr('disabled','disabled');
+			$("#setting_save").attr('disabled','disabled');
+			$(".match_setting_text").attr('disabled','disabled');
+			$("#setting_save").attr('disabled','disabled');
 		}
 	});
 });

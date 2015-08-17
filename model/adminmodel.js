@@ -188,7 +188,7 @@ exports.teamPlayer = function(data,res) {
 
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-
+console.log(req);
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
@@ -617,7 +617,10 @@ exports.fetchPlayerForMatchModel = function(req,res){
 			  	batsman_array: batsman_array,
 			  	battingTeamName :battingTeamName,
 			  	total_over:total_over,
-			  	over_limit:over_limit
+			  	over_limit:over_limit,
+			  	batting_team_id:batting_team_id,
+				bowling_team_id:bowling_team_id,
+			  	match_id:match_id,
 			});
 		});	
  	});
@@ -626,11 +629,10 @@ exports.fetchPlayerForMatchModel = function(req,res){
 
 exports.getOverRecord = function(req,res) {
 	
-	var overdetails = [];
 	var queryString = "SELECT wide,noball,wicket,run,ball_id from ball where match_id='"+req.matchId+"' and team_id='"+req.teamId+"' " +
 			"and over_id='"+req.overId+"' ";
 	connection.query(queryString, function(err, rows, fields) {
-		
+		console.log(rows);
 		res.render('admin/showOverDetails', {
 			details : rows,
 			});

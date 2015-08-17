@@ -181,17 +181,17 @@ tr ,td{
 	margin-left:50%;
 }
 #team_A_select {
-	float: left;
-    margin-top: 35%;
-    width: 175%;
-    margin-left: 230%;
-    margin-bottom: 30%;
-}
+    margin-top: 40%;
+    width: 200%;
+	text-align: center;
+    margin-left: 1%;
+	    margin-bottom: 20%;
+	}
 #team_B_select {
-	float: left;
-    margin-top: 25%;
-    width: 175%;
-    margin-left: 230%;
+	 margin-top: 15%;
+    width: 200%;
+	text-align: center;
+    margin-left: 1%;
 
 }
 .team_name {
@@ -201,6 +201,7 @@ tr ,td{
 #team1,#team2{
 	float:left;
 	width:100%;
+	margin-left:35%;
 }
 .teamlist,.teamvalue{
 	float:left;
@@ -216,9 +217,7 @@ tr ,td{
 	margin-bottom:20px;
 	margin-top:10%;
 }
-.accordion-fold{
-	display:none;	
-}
+
 
 #settings-box-container .settings-box {
   border: 1px solid #AAAAAA;
@@ -314,4 +313,14 @@ select,.team_info{
 	background-color:#F8F8F8;
 	height:50%;
 }
-
+#first_team_select {
+	width:10px;
+	float:left;
+	padding-top:0px;
+}
+option { 
+    text-align: center;
+}
+#errordivteam{
+	float:left;
+}
