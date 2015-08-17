@@ -51,7 +51,6 @@ var overcount=1;
 
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1,wicket;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
-	$(this).hide();
 	if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') && $('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen') ){
 		CheckPlayerFlag = 0;
 	}else{
