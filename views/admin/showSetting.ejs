@@ -3,13 +3,12 @@
 <input class="new_team_match" id="new_team_match" type="button" value="+New Match" style="background-color:green; float:right; display:block">
 <input type="button" class="toss_btn" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value="Toss">
 	<% } %>
-<div class="col-sm-12">
    <div class="settings-box col-sm-6">
-					<div class="accordion-toggle scroll_Availability closed">
+					<div class="accordion-toggle scroll_Availability open">
 						<h3 class="form-field-title">Select Team</h3>
-						<div class="settings-status"></div><div class="caret"></div>
+						<div class="settings-status"></div>
 					</div>
-					<div class="accordion-fold" style="display: none;">
+					<div class="accordion-fold" >
 					<div class="field-group">
  						<div class="row" id="teamDiv">
  
@@ -53,11 +52,11 @@
 	</div>
 	</div>
 	 <div class="settings-box col-sm-6">
-					<div class="accordion-toggle scroll_Availability closed">
+					<div class="accordion-toggle scroll_Availability open">
 						<h3 class="form-field-title">Match Setting</h3>
-						<div class="settings-status"></div><div class="caret"></div>
+						<div class="settings-status"></div>
 					</div>
-					<div class="accordion-fold" style="display: none;">
+					<div class="accordion-fold" >
 						<div class="field-group">
 
 
@@ -82,11 +81,11 @@
 	
 	</div>
 	<div class="settings-box col-sm-12" id="playing_11_div">
-					<div class="accordion-toggle scroll_Availability closed">
+					<div class="accordion-toggle scroll_Availability open">
 						<h3 class="form-field-title">Select Playing Eleven Player</h3>
-						<div class="settings-status"></div><div class="caret"></div>
+						<div class="settings-status"></div>
 					</div>
-					<div class="accordion-fold" style="display: none;">
+					<div class="accordion-fold">
 						<div class="field-group">
 			
 			<div class="row"  id = "team_match_setting_div">
@@ -153,41 +152,6 @@
 	</div>		</div>
 				
  </div> 
- 
-          
-<script type="text/javascript">
-$(document).ready(function() {
-
-	$(".accordion-toggle").click(function(){
-
-		var clickedID = this.id;
-
-		if ($(this).hasClass('closed')) {
-			$(this).removeClass('closed').addClass('open').next().show();
-		} else {
-			$(this).next().hide();
-
-			$(this).removeClass('open').addClass('closed');
-		}
-
-	});
-	$(".accordion-toggle a").click(function(e) {
-		e.stopPropagation();//stop sub links toggling divs
-	});
-
- $('#team_A_select option') .filter(function() { 
-           return $.trim($(this).text()) == $('#team1_name').val(); 
-       })
-       .attr('selected', true);
- $('#team_B_select option') .filter(function() { 
-           return $.trim($(this).text()) == $('#team2_name').val(); 
-       })
-       .attr('selected', true);
-
-});
-</script>
-         
-         
  
 </div>  
 

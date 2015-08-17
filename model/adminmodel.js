@@ -189,7 +189,7 @@ exports.teamPlayer = function(data,res) {
 
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-
+console.log(req);
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {

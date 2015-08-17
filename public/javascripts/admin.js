@@ -343,8 +343,32 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 
 $(document).on('click', "#start_match_btn", function() {
 	var firstbatsman = $('#1stbatsman_select option:selected').attr('id');
+	if(firstbatsman == undefined) {
+		$('#1st_batsman_select').html('Select First batsman');
+		return false;
+	}
+	else {
+		$('#1st_batsman_select').html('');
+	}
 	var secondbatsman = $('#2ndbatsman_select option:selected').attr('id');
+	if(secondbatsman == undefined) {
+		$('#2nd_batsman_select').html('Select Second batsman');
+		return false;
+	} else if(secondbatsman == firstbatsman) {
+		$('#2nd_batsman_select').html('Already selected');
+		return false;
+	}
+	else {
+		$('#2nd_batsman_select').html('');
+	}
 	var firstbowler = $('#1stbowler_select option:selected').attr('id');
+	if(firstbowler == undefined) {
+		$('#1st_bowler_select').html('Select First bowler');
+		return false;
+	}
+	else {
+		$('#1st_bowler_select').html('');
+	}
 	 $('#myModal').modal('toggle');
 	 $("div #batsman").find('input[type="button"][id="bat'+firstbatsman+'"]').addClass('green');
 	 $("div #batsman").find('input[type="button"][id="bat'+secondbatsman+'"]').addClass('lightgreen');
