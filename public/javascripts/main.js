@@ -62,6 +62,8 @@ $(document).on("click", '#admin', function() {
 
 $(document).on("click", '#dash_admin', function() {
 	$.get('/startMatch', function(data) {
+		 $('#myModal').modal('toggle');
+		$("#cancelbtn").hide();
 //		$(".start_match_title").text("hello");over-details
 		$(".over-details").hide();
 		$(".toss-Match").hide();

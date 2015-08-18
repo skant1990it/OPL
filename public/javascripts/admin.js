@@ -355,7 +355,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 
 $(document).on('click', 'input[type="button"][class*="over_btn completed"]', function() {
 	 $('#myModal').modal('toggle');
-		
+	 $("#cancelbtn").show();
 	var overId =($(this).attr('id'));
 	$(".start-Match").hide();
 	$(".over-details").show();
@@ -374,7 +374,7 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 		   $(".start_match_title").html('Over Details');
 			$(".start-Match").html('');
 			$(".over-details").html(result);
-			$("#start_match_btn").html('Cancel');
+			$("#start_match_btn").hide();
 			$("#back_to_home").hide();
 		}
 	});
@@ -385,6 +385,7 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 
 
 $(document).on('click', "#start_match_btn", function() {
+	
 	var firstbatsman = $('#1stbatsman_select option:selected').attr('id');
 	if(firstbatsman == undefined) {
 		$('#1st_batsman_select').html('Select First batsman');
@@ -412,7 +413,7 @@ $(document).on('click', "#start_match_btn", function() {
 	else {
 		$('#1st_bowler_select').html('');
 	}
-	 $('#myModal').modal('toggle');
+	 $('#myModal').modal('hide');
 	 $("div #batsman").find('input[type="button"][id="bat'+firstbatsman+'"]').addClass('green');
 	 $("div #batsman").find('input[type="button"][id="bat'+secondbatsman+'"]').addClass('lightgreen');
 	 $("div #bowler").find('input[type="button"][id="ball'+firstbowler+'"]').addClass('green');
