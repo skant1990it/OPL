@@ -316,6 +316,7 @@ $(document).on("click", '.toss_btn', function() {
 	$.get('/tossMatch', function(data) {
 		$(".modal-header").hide();
 		$(".start-Match").hide();
+		$("#overdetails").hide();
 		$(".toss-Match").css('display','inline-block');
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");
@@ -430,6 +431,7 @@ function saveTeamData() {
 
 
 $(document).on("click", '#toss_save', function() {
+	
 	var formData = $('#toss_form_id').serializeArray();
 	$.ajax({
 		url: "/tossUpdateData",
