@@ -1,18 +1,17 @@
 <!-- views/partials/header.ejs -->
+<div id="headerimg">
+</div>
+<nav class="navbar col-sm-12" role="navigation" id="menu">
+   <div class="bs-example">
 
-<nav class="navbar navbar-default col-sm-12" role="navigation">
-    <div class="container-fluid">
+            <ul class="nav nav-tabs" id="menuline">
+            <li class="active vrline">
+				<a href="#" class = ""  id ="home" value  = "Home">Home</a></li>
+            <li class=" vrline"><a href="#" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false"  id ="add_new_player" value  = "Register as Player" >Register as Player</a></li>
+			<li class=" vrline"><a href="#" class = ""  value  = "Player" id = "list_view">Player</a></li>
+			<li class=" vrline"><a href="#" class = "" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value  = "Admin" id = "admin">Admin</a></li>
 
-        <div class="navbar-header">
-            
-        </div>
-        <ul class="nav navbar-nav col-sm-12">
-            <li>
-				<input class = "button_class" type = "button" id ="home" value  = "Home"></li>
-            <li><input data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" class = "button_class" type = "button" id ="add_new_player" value  = "Register as Player" ></li>
-			<li><input class = "button_class" type = "button" value  = "Player" id = "list_view"></li>
-			<li><input class = "button_class" type = "button" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" value  = "Admin" id = "admin"></li>
-       		 </ul>
-    </div>
-    
+      
+	</ul>
+</div>
 </nav>

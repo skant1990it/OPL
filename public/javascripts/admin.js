@@ -59,7 +59,11 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	if(CheckPlayerFlag == 0){
 	
 	var over =  $('input[type="button"][class*="over_btn active"]').attr('id');
-	var check_ball = $(this).attr('checkclass');	 
+	var check_ball = $(this).attr('checkclass');	
+	if(check_ball == 1){
+		$('input[type="button"][class*="player_btn bowler"]').prop('disabled',true);		
+		 
+	}
 	var checkedRun=[];
 	var check_over,radiocount=1;
 	var gainedruns;
@@ -300,11 +304,11 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  $("table#score_table").find("tr:gt(0)").find('input[type="radio"][id="7"]').prop('checked',true);
 		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"]').attr('name',"radio"+nextover+"_1_1");
 		 $("table#score_table").find("tr:eq(1)").find('input[type="checkbox"]').attr('name',"check"+nextover+"_1");
-		 if($.inArray('8', checkedRun)>=0 || $.inArray('9', checkedRun)>=0 || $.inArray('10', checkedRun)>=0){
+		 if($.inArray('8', checkedRun)>=0 ){
 			 $("table#score_table").find("tr:eq(1)").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',true);
 					 
 		 }else{
-		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',false);
+		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',true);
 		 }
 		 if(gainedruns == '2' || gainedruns == '4' || gainedruns == '6'){
 			   $('input[type="button"][class="player_btn batsman green"][data="'+oncrease_player+'"]').removeClass('green').addClass('lightgreen');

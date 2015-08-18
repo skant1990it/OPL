@@ -151,10 +151,6 @@ tr ,td{
 .team_name {
 	margin-left:160px;
 }
-#match_setting {
-	padding:0px;
-	padding-left:5px;
-}
 .setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
 	margin-top: 116px;
     margin-bottom: 10px;
@@ -323,4 +319,28 @@ option {
 }
 #errordivteam{
 	float:left;
+}
+
+#headerimg{
+	background-image: url("../images/header1.png");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	height:225px;
+	padding-top:0px;
+}
+.container{
+	padding-top:10px;
+	background-color:#333333;
+}
+#menu{
+	background-color:#333333;
+}
+#menuline{
+	border-bottom: 1px solid #333333;
+	
+}
+.vrline{
+  border-right: 1px solid #428bca;
 }
