@@ -362,7 +362,10 @@ option {
 	border-radius: 3px 3px 3px 3px;
 }
 
-
+.player_btn_cls,.over_btn_cls {
+	color:#FFFC93;
+	background-color:#8BBE82;
+}
 
 #batting{
 	background-color:#4E5534;
