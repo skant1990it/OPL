@@ -117,7 +117,8 @@ app.post('/saveTournamentData', adminuser.saveTournamentData);
 app.post('/saveTeamData', adminuser.saveTeamData);
 
 app.get('/scoreboard',adminuser.fetchPlayerForMatch);
-
+//Add news feed
+app.get('/newsFeed',adminuser.newsFeed);
 //for admin module
 
 /*app.get('/admin', function(req, res) {
@@ -168,7 +169,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3009, function() {
+app.listen(3008, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

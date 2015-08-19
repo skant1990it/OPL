@@ -455,6 +455,11 @@ $(document).on('click','#logout',function(){
 });
 $(document).on("click", '#dashboard', function() {
 	$.get('/dashboard', function(data) {
+	});
+});
+
+$(document).on("click", '#news_feed', function() {
+	$.get('/newsFeed', function(data) {
 		$(".scoreboard").html(data);
 	});
 });
