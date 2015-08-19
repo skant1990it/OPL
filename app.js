@@ -151,6 +151,7 @@ app.post('/getOverRecord',adminuser.getOverRecord);
 app.post('/fetchMatchDetails',adminuser.fetchMatchDetails);
 app.post('/setStartingPlayer',adminuser.setStartingPlayer);
 
+app.get('/dashboard',adminuser.dashBoard);
 
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);

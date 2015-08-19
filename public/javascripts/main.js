@@ -453,3 +453,8 @@ $(document).on('click','#logout',function(){
 	window.location.href = '/logout';
 
 });
+$(document).on("click", '#dashboard', function() {
+	$.get('/dashboard', function(data) {
+		$(".scoreboard").html(data);
+	});
+});

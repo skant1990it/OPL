@@ -156,3 +156,7 @@ exports.fetchPlayerForMatch = function(req,res){
 	model.fetchPlayerForMatchModel(req.params,res);
 };
 
+exports.dashBoard = function(req, res) {
+	res.render('admin/dashAdmin');
+};
+
