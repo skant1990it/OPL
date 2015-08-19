@@ -431,3 +431,7 @@ $(document).on('click', "#start_match_btn", function() {
 	 $('input[type="button"][class*="player_btn batsman"]').prop('disabled',true);
 	});
 
+$(document).on('click', ".vrline", function() {
+	 $("#menuline").find("li").removeClass('active');
+ $(this).addClass('active');
+});

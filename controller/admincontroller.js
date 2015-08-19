@@ -155,4 +155,8 @@ exports.tossUpdateData = function(req, res) {
 exports.fetchPlayerForMatch = function(req,res){
 	model.fetchPlayerForMatchModel(req.params,res);
 };
+//Add news feed
+exports.newsFeed = function(req, res) {
+	res.render('admin/newsfeed');
+};
 

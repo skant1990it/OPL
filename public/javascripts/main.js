@@ -453,3 +453,9 @@ $(document).on('click','#logout',function(){
 	window.location.href = '/logout';
 
 });
+
+$(document).on("click", '#news_feed', function() {
+	$.get('/newsFeed', function(data) {
+		$(".scoreboard").html(data);
+	});
+});
