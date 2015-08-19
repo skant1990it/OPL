@@ -83,9 +83,12 @@ h4{
 	margin-bottom:-10px;
 }
 .player{
-	background-color:#E0E2EC;
+	background-image: url("../images/greengrass2.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
 	margin-bottom:15px;
-	
+	background-color:#61802F;
 	padding-left:5px;
 	min-height:50px;
 	border-radius: 3px 3px 3px 3px;
@@ -95,10 +98,7 @@ h4{
 	padding:0px;
 	margin-top:15px;
 }
-#scoringdiv{
-	background-color:#B9BED5;
-	
-}
+
 .player_btn{
 	height:50px;
 	width:85px;
@@ -343,4 +343,27 @@ option {
 }
 .vrline{
   border-right: 1px solid #428bca;
+}
+ #bowler {
+	background-image: url("../images/greengrass2.jpg");
+ 	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+	background-color:#F8F8F8;
+	border-radius: 3px 3px 3px 3px;
+}
+
+#batsman{
+	background-image: url("../images/greengrass2.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+	background-color:#F8F8F8;
+	border-radius: 3px 3px 3px 3px;
+}
+
+
+
+#batting{
+	background-color:#4E5534;
 }
