@@ -453,8 +453,16 @@ $(document).on('click','#logout',function(){
 	window.location.href = '/logout';
 
 });
-$(document).on("click", '#dashboard', function() {
+$(document).on("click", '.dashboard', function() {
 	$.get('/dashboard', function(data) {
+		$(".scoreboard").html(data);
+	});
+});
+
+$(document).on("click", '#back_to_home', function() {
+	$('#myModal').modal('toggle');
+	$.get('/dashboard', function(data) {
+		$(".scoreboard").html(data);
 	});
 });
 
