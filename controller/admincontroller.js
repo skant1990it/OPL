@@ -161,6 +161,7 @@ exports.newsFeed = function(req, res) {
 };
 
 exports.dashBoard = function(req, res) {
-	res.render('admin/dashAdmin');
+	model.dashBoard(req.body,res);
+//	res.render('admin/dashAdmin');
 };
 

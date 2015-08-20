@@ -638,3 +638,12 @@ exports.getOverRecord = function(req,res) {
 			});
 	});
 }
+
+
+exports.dashBoard = function(req,res) {
+	
+	var queryString = "SELECT * from tournament where tournament_year = '2015'";
+	connection.query(queryString, function(err, rows, fields) {
+		res.send(rows);
+	});
+}

@@ -377,3 +377,18 @@ option {
 #menuline>li.active>a {
 	color:#4E5534;
 }
+
+#menuline>li>a:focus {
+    text-decoration: none;
+    background-color: #919E73;
+	border:none;
+}
+
+.graphcontainer{
+	float:left;
+		width: 45%; 
+	height: 250px;
+	margin: 0 auto;
+	margin-right:5%;
+	margin-bottom:3%;
+}
