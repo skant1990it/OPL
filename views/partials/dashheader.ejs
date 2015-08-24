@@ -1,16 +1,22 @@
 <!-- views/partials/header.ejs -->
+<div id="headerimg">
+</div>
+<div class="row" id="headerdiv">
+<nav class="row navbar" role="navigation">
+   <div class="bs-example">
 
-<nav class="row navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-        </div>
-        <ul class="row nav navbar-nav">
-            <li><input class = "button_class" type = "button" id = "dashboard" value  = "Home"></li>
-			<li><input data-backdrop="static"  class = "button_class" type = "button" value  = "ScoreBoard" id = "dash_admin" data-toggle="modal" data-target="#myModal"></li>
-			<li><input class = "button_class" type = "button" value  = "Match Setting" id = "match_setting"></li>
-
-			<li><input class = "button_class" type = "button" value  = "Add Team" id = "add_team"></li>
-			<li><input class = "button_class" type = "button" value  = "Tournament Setting" id = "tournament_setting"></li>
+          <ul class="nav nav-tabs" id="menuline">
+            <li class=" vrline dashboard"><a  href="#" id ="dashboard" class="dashboard" >Dashboard</a></li>
+			<li class=" vrline dash_admin"><a href="#" data-backdrop="static" id = "dash_admin"  data-toggle="modal" data-target="#myModal">ScoreBoard</a></li>
+			<li class=" vrline"><a href="#" id = "match_setting">Match Setting</a></li>
+			<li class=" vrline"><a  href="#"  id = "add_team">Add Team</a></li>
+			<li class=" vrline"><a  href="#" id = "tournament_setting">Tournament Setting</a></li>
+			<li class=" vrline"><a  href="#"  id = "news_feed">Add News Feed</a></li>
+            <li class=" vrline"><a  href="#" id = "logout">Logout</a></li>
        		 </ul>
-    </div>
+</div>
+   
+       
+   
 </nav>
+</div>

@@ -61,13 +61,19 @@ $(document).on("click", '#admin', function() {
 });
 
 $(document).on("click", '#dash_admin', function() {
+	$("#graph_div").css('display',"none");
+	$(".scoreboard").css('display','block');
 	$.get('/startMatch', function(data) {
-//		$(".start_match_title").text("hello");
+//		 $('#myModal').modal('toggle');
+		$("#cancelbtn").hide();
+//		$(".start_match_title").text("hello");over-details
+		$(".over-details").hide();
+		$(".toss-Match").hide();
 		$(".start-Match").html(data);
 
 	});
 	
-	$.get('/admin', function(data) {
+	$.get('/scoreboard', function(data) {
 		$(".scoreboard").html(data);
 
 	});
@@ -75,6 +81,8 @@ $(document).on("click", '#dash_admin', function() {
 
 //For playing team list
 $(document).on("click", '#match_setting', function() {
+	$("#graph_div").css('display',"none");
+	$(".scoreboard").css('display','block');
 	$.get('/teamlist', function(data) {
 		$(".scoreboard").html(data);
 	});
@@ -82,7 +90,9 @@ $(document).on("click", '#match_setting', function() {
 });
 //for adding teammember to a team
 $(document).on("click", '#add_team', function() {
-
+	$("#graph_div").css('display',"none");
+	$(".scoreboard").css('display','block');
+	
 	$.get('/addTeam', function(data) {
 		$(".scoreboard").html(data);
 		$( ".draggable" ).draggable({
@@ -199,24 +209,15 @@ $(document).on("change", '#team_B_select', function() {
 
 //For match setting
 $(document).on("click", '#setting_save', function() {
-	$('.team_info').attr('disabled','disabled');
 	
-	$("#setting_save").attr('disabled','disabled');
-	
-	
-	var id=$("#match_id").val();
-	if(id!='undefined'){
-		$("#play_team1_name").val($("#team1_name").val());
-		$("#play_team2_name").val($("#team2_name").val());
-	}
-	$(".match_setting_text").attr('disabled','disabled');
-	$("#setting_save").attr('disabled','disabled');
 	
 });
 
 
 //Save match setting details
 $(document).on("click", '.setting_save', function() {
+	var team1 = $('#team_A_select :selected').val();
+	var team2 = $('#team_B_select :selected').val();
 	var total_over = $('#total_over').val();
 	var over_limit = $('#over_limit').val();
 	$.ajax({
@@ -232,6 +233,10 @@ $(document).on("click", '.setting_save', function() {
 		method: "POST",
 		success: function(result){
 			console.log("saved");
+			$('.team_info').attr('disabled','disabled');
+			$("#setting_save").attr('disabled','disabled');
+			$(".match_setting_text").attr('disabled','disabled');
+			$("#setting_save").attr('disabled','disabled');
 		}
 	});
 });
@@ -245,7 +250,6 @@ $(document).on("click", '#new_team_match', function() {
 
 //For match setting	
 $(document).on("click", '#match_player_save1', function() {
-	var match_id = $("#match_id").val();
 	var checkedPlayer1=[];
 	$('input[name="player1"]:checked').each(function(){
 		checkedPlayer1.push($(this).attr('id'));
@@ -256,7 +260,7 @@ $(document).on("click", '#match_player_save1', function() {
 		url: "/playing11",
 		data: {
 			"player11_id" : checkedPlayer1,
-			"match_id" : match_id,
+			"team_id" : $('#team1_id_value').val(),
 		},
 		method: "POST",
 		success: function(result){
@@ -267,7 +271,6 @@ $(document).on("click", '#match_player_save1', function() {
 
 $(document).on("click", '#match_player_save2', function() {
 	var checkedPlayer2=[];
-	var match_id = $("#match_id").val();
 	$('input[name="player2"]:checked').each(function(){
 		checkedPlayer2.push($(this).attr('id'));
 	});
@@ -276,10 +279,11 @@ $(document).on("click", '#match_player_save2', function() {
 		url: "/playing11",
 		data: {
 			"player11_id" : checkedPlayer2,
-			"match_id" : match_id,
+			"team_id" : $('#team2_id_value').val(),
 		},
 		method: "POST",
 		success: function(result){
+			console.log("playeradd1"+result);
 			console.log("playing 11 added");
 		}
 	});
@@ -317,12 +321,15 @@ $(document).on("keyup", '#search_box', function() {
 $(document).on("click", '.toss_btn', function() {
 	$.get('/tossMatch', function(data) {
 		$(".modal-header").hide();
+		$(".start-Match").hide();
+		$("#overdetails").hide();
 		$(".toss-Match").css('display','inline-block');
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");
 		$(".toss-Match").html(data);
 	});
 });
+
 
 $(document).on("change", '#tournament_year', function() {
 	var selectedYear = $('#tournament_year').val();
@@ -426,15 +433,10 @@ function saveTeamData() {
 		});	
 	}
 }
-$(document).on("click", '#tournament_setting', function() {
-	$.get('/tournamentSetting', function(data) {
-		$(".scoreboard").html(data);
-	});
-
-});
 
 
 $(document).on("click", '#toss_save', function() {
+	
 	var formData = $('#toss_form_id').serializeArray();
 	$.ajax({
 		url: "/tossUpdateData",
@@ -485,4 +487,236 @@ function fetchMatchDetails(match_id) {
 			$( "#tabs" ).tabs();
 		}
 	});
+}
+$(document).on("click", '#tournament_setting', function() {
+	$("#graph_div").css('display',"none");
+	$(".scoreboard").css('display','block');
+	$.get('/tournamentSetting', function(data) {
+		$(".scoreboard").html(data);
+	});
+});
+
+$(document).on('click','#logout',function(){
+	window.location.href = '/logout';
+
+});
+$(document).on("click", '.dashboard', function() {
+	$(".scoreboard").css('display','none');
+	$("#graph_div").css('display','block');
+graph();
+});
+
+$(document).on("click", '#back_to_home', function() {
+	$('#myModal').modal('toggle');
+	 $(".dash_admin").removeClass('active');
+	 $(".dash_admin").find("a").removeClass('focus');  
+	 $(".dashboard").addClass('active').find("a").addClass('focus');
+	 $("#graph_div").css('display',"block");
+	 $(".scoreboard").css('display','none');
+});
+
+$(document).on("click", '#news_feed', function() {
+	$("#graph_div").css('display',"none");
+	$(".scoreboard").css('display','block');
+	$.get('/newsFeed', function(data) {
+		$(".scoreboard").html(data);
+	});
+});
+$( document ).ready(function() {
+	$.get('/dashboard', function(data) {
+		graph(data);
+	});
+//	graph();
+});
+function graph(data){
+console.log(data);
+    $('#container1').highcharts({
+        title: {
+            text: 'Tournament',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Vikash kumar',
+            x: -20
+        },
+        xAxis: {
+            categories: ['No of team','Max no of player']
+        },
+        yAxis: {
+            title: {
+                text: 'tournament Year'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [4,14]
+        }, {
+            name: 'New York',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: 'Berlin',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+            name: 'London',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+    
+    
+    $('#container2').highcharts({
+        title: {
+            text: 'Team',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Vikash kumar',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'New York',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: 'Berlin',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+            name: 'London',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+
+    $('#container3').highcharts({
+        title: {
+            text: 'Team player',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Vikash kumar',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'New York',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: 'Berlin',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+            name: 'London',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+    
+    $('#container4').highcharts({
+        title: {
+            text: 'Current year match status',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Vikash kumar',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'New York',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: 'Berlin',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+            name: 'London',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+
+
 }

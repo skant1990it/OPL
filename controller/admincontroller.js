@@ -1,4 +1,4 @@
-/**
+	/**
  * @author vikash
  */
 var model = require('../model/adminmodel');
@@ -26,12 +26,11 @@ exports.loginuser = function(req, res) {
     req.assert('password', 'Password is required').notEmpty();
     
     var errors = req.validationErrors();  
-    console.log(errors);
     if( !errors){   //No errors were found.  Passed Validation! 
-        model.login(req.body,res);
+        model.login(req,res);
     }
     else {   //Display errors to user
-    	model.loginErr(req.body,res,errors);
+    	model.loginErr(req,res,errors);
     }
   
 };
@@ -52,6 +51,7 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
+	console.log(req.body);
 		model.addRuns(req.body,res);
 };
 
@@ -90,9 +90,12 @@ exports.playing11 = function(req, res) {
     model.playing11Team(req.body,res);
 };
 
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
+};
+
 exports.getOverRecord = function(req, res) {
-	console.log(req.body);
-    //model.getOverRecord(req.body,res);
+	model.getOverRecord(req.body,res);
 };
 
 exports.tournamentSetting = function(req, res) {
@@ -138,6 +141,10 @@ exports.startMatch = function(req, res) {
 	model.startMatch(req.body,res);
 };
 
+exports.fetchMatchDetails = function(req, res) {
+	model.fetchMatchDetails(req.body,res);
+
+};
 //for toss of match setting 
 exports.tossMatch = function(req, res) {
 	model.tossMatch(req.body,res);
@@ -145,3 +152,16 @@ exports.tossMatch = function(req, res) {
 exports.tossUpdateData = function(req, res) {
 	model.tossUpdateData(req.body,res);
 };
+exports.fetchPlayerForMatch = function(req,res){
+	model.fetchPlayerForMatchModel(req.params,res);
+};
+//Add news feed
+exports.newsFeed = function(req, res) {
+	res.render('admin/newsfeed');
+};
+
+exports.dashBoard = function(req, res) {
+	model.dashBoard(req.body,res);
+//	res.render('admin/dashAdmin');
+};
+

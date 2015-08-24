@@ -11,25 +11,22 @@ var fs = require('fs');
  */
 exports.login = function(req,res) {
 var queryString = 'SELECT * FROM admin';
-
 connection.query(queryString, function(err, rows, fields) {
+	if(req.body.email == rows[0].username && req.body.password == rows[0].password) {
+		req.session.email = req.body.email;
 
-	if(req.email == rows[0].username && req.password == rows[0].password) {
-		console.log("valid user");
 		res.render('admin/dashboard', {
 			title : rows,
-			validAdmin : 'Yes'
+			validAdmin : 'Yes',
 		});
 	}
 	else {
-		console.log("Invalid user");
 		res.render('pages/index', {
 			title : rows,
 			validAdmin : 'No'
 		});
 	}
 	});
-	
 };
 /**
  * call after validation failed in admin login
@@ -60,57 +57,75 @@ exports.listTeam = function(req,res) {
 	
 	var myDate = new Date();
 	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
-	
+	var currentYear = myDate.getFullYear();
 	var match_info_query = connection.query('SELECT * FROM match_info where match_date >= "'+ matchDate +'" order by id desc limit 1');
-	var playerid1 = [];
+	var playerid1 = []; var playerlist2 = []; var playerlist1 = [];
 	var playerid2 = [];
 	var team = [];
 	var count = '';
 	var team1_name = '';
 	var team2_name = '';
+	var tournament_id = [];
 	match_info_query .on('result', function(row) {
-	 if(row=='' ){
+		// connection.query(match_info_query, function(err, row){
+		 if(row=='' ){
 			count = "null";
 		}else{
 			count = row;
 		}
 	  }).on('end', function() {
-	 	var team1_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.first_team +"'");
-		team1_player_query .on('result', function(row) {
-			  playerid1.push({"id":row.id,"name":row.first_name});
-			  });
-		
-		var team2_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.second_team +"'");
-		team2_player_query .on('result', function(row) {
-			  playerid2.push({"id":row.id,"name":row.first_name});
-			 
-			  });
-		
-		var team1_query = connection.query("SELECT team_name FROM team where id = '"+ count.first_team +"'");
-		team1_query.on('result', function(row) {
-			team1_name = row.team_name;
-			  });
-		
-		var team2_query = connection.query("SELECT team_name FROM team where id = '"+ count.second_team +"'");
-		team2_query.on('result', function(row) {
-			team2_name = row.team_name;
-			  });
-		
-		var team_query = connection.query("SELECT * FROM team");
-		team_query .on('result', function(row) {
-		team.push(row);
-			}).on('end',function(){
-			  res.render('admin/showSetting', {
-					team : team, 
-					matchId : count,
-					newMatch : 'Yes',
-					playerlist1 : playerid1,
-					playerlist2 : playerid2,
-					team1_name : team1_name,
-					team2_name : team2_name
-			});
+		   if(count==''){
+			  	matchId = '',
+				newMatch = 'Yes',
+				playerlist1 = [],
+				playerlist2 = [],
+				team1_name = '',
+				team2_name = ''
+		  }else{  
+			  var team1_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.first_team +"'");
+				team1_player_query .on('result', function(row) {
+					  playerid1.push({"id":row.id,"name":row.first_name,"match_id":row.match_id,"team_id":row.team_id});
+					  });
+				
+				var team2_player_query = connection.query("SELECT * FROM player where team_id = '"+ count.second_team +"'");
+				team2_player_query .on('result', function(row) {
+					  playerid2.push({"id":row.id,"name":row.first_name,"match_id":row.match_id,"team_id":row.team_id});
+					 
+					  });
+				
+				var team1_query = connection.query("SELECT team_name FROM team where id = '"+ count.first_team +"'");
+				team1_query.on('result', function(row) {
+					team1_name = row.team_name;
+					  });
+				
+				var team2_query = connection.query("SELECT team_name FROM team where id = '"+ count.second_team +"'");
+				team2_query.on('result', function(row) {
+					team2_name = row.team_name;
+					  });
+				
+		  }
+	 	
+		var tournament_id_query = connection.query("SELECT id FROM tournament where tournament_year  = '"+ currentYear +"'");
+		tournament_id_query .on('result', function(row) {
+			tournament_id.push(row.id);
+		 }).on('end',function(){
+			
+			var team_query = connection.query("SELECT * FROM team where tournament_id = '"+ tournament_id +"'");
+			team_query .on('result', function(row) {
+			
+			team.push(row);
+				}).on('end',function(){
+							res.render('admin/showSetting', {
+						team : team, 
+						matchId : count,
+						newMatch : 'Yes',
+						playerlist1 : playerid1,
+						playerlist2 : playerid2,
+						team1_name : team1_name,
+						team2_name : team2_name
+				});
+			 });
 		 });
-		
 		  // all rows have been received 
 	  });
 };
@@ -162,7 +177,6 @@ exports.teamPlayer = function(data,res) {
 	var queryString  = "SELECT * from player WHERE team_id = '"+ data +"'";
 	
 	connection.query(queryString, function(err, rows, fields) {
-		console.log(rows);
 		res.render('admin/playerList', {
 			player : rows,
 			id : data,
@@ -174,27 +188,19 @@ exports.teamPlayer = function(data,res) {
 
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-//	var myDate = " NOW();
-//	console.log(myDate);
-//	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+console.log(req);
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
-//		console.log("uid"+rows[0]['record_id']);
-//		uniqueId.push(rows[0]['record_id']);
 		uniqueId = rows[0]['record_id'];
 	}).on('end',function(){
-		  console.log("bbbbb"+uniqueId.record_id);
 		  if(!req.match_id) {
-				console.log("insert"+uniqueId);
 				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date) " +
 						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"',NOW());";
 			}
 			else {
-				console.log("update");
 				var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' ,first_team='"+ req.team1_name +"',second_team='"+ req.team2_name +"' where id = '"+ req.match_id +"'";
-				console.log(queryString);
-			}
+				}
 			
 			connection.query(queryString, function(err, rows, fields) {
 				res.send(rows);
@@ -217,23 +223,33 @@ exports.getmatchId = function(req,res) {
 
 
 exports.addRuns = function(req,res) {
-	console.log(req);
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
+		if(req.wicket == "no"){
 			var queryString = "INSERT into ball " +
-			  "(over_id,run,score,batsman_id,ball_id)" +
-			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"' )";
+			  "(over_id,run,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"' )";
+		
 		}else{
+			var queryString = "INSERT into ball " +
+			  "(over_id,run,wicket,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','"+req.gainedruns+"','1','"+req.gainedruns+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"' )";
+		}
+	}else{
 			var score ;
-			if(req.extratype == "wicket"){
-				score = '0';
+			if(req.wicket == "yes"){
+				score = '1';
+				var queryString = "INSERT into ball " +
+				  "(over_id,"+req.extratype+",wicket,run,score,batsman_id,ball_id,match_id,team_id)" +
+				  " values ('"+req.over+"','1','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"'  )";
+			
 			}else{
 				score =  parseInt(req.gainedruns)+1;
-			}
 			var queryString = "INSERT into ball " +
-			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id)" +
-			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"'  )";
-		}
+			  "(over_id,"+req.extratype+",run,score,batsman_id,ball_id,match_id,team_id)" +
+			  " values ('"+req.over+"','1' ,'"+req.gainedruns+"','"+score+"','"+req.batsman_id+"','"+req.ball+"','"+req.matchId+"','"+req.team1Id+"'  )";
+		}}
+		
 
 	connection.query(queryString, function(err, rows, fields) {
 		res.send(req);
@@ -272,6 +288,55 @@ exports.assignPlayerToTeam = function(data,res) {
 	connection.query(queryString);
 };
 
+exports.fetchPlayerForMatchModel = function(req,res){
+	var bowlers_array = [];
+	var batsman_array = [];
+	var match_id = "";
+	var tossWinningTeamId;
+	var tossLossingTeamId;
+	var batting_team_id = '';
+	var bowling_team_id = '';
+	var player_list = [];
+	var queryForMatchInfo = connection.query("SELECT * FROM match_info ORDER BY match_date DESC LIMIT 1;");
+ 	queryForMatchInfo.on('result',function(rows){
+ 		match_id = rows.id;
+ 		tossWinningTeamId = rows.toss_won;
+ 		if(tossWinningTeamId!="" && rows.opt_for!=""){
+ 			if(rows.first_team == tossWinningTeamId){
+ 				tossLossingTeamId = rows.second_team;
+ 			}else{
+ 				tossLossingTeamId = rows.first_team;
+ 			}
+ 			if(rows.opt_for == 'bat'){
+ 				batting_team_id = tossWinningTeamId;
+ 				bowling_team_id = tossLossingTeamId;
+ 			}else if(rows.opt_for == 'ball'){
+ 				bowling_team_id = tossWinningTeamId;
+ 				batting_team_id = tossLossingTeamId;
+ 			}
+ 		}else{
+ 			batting_team_id = rows.first_team;
+ 			bowling_team_id = rows.second_team;	
+ 		}		
+ 	}).on('end',function(){	
+ 		var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='"+match_id+"'");
+		queryForMatchPlayer.on('result', function(rows) {			
+				tempObj = {};
+				if(rows.team_id == bowling_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					bowlers_array.push(tempObj);
+				}else if(rows.team_id == batting_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					batsman_array.push(tempObj);
+				}
+		}).on('end',function(){
+			res.render('admin/index', {
+			  	bowlers_array : bowlers_array,
+			  	batsman_array: batsman_array,
+			});
+		});	
+ 	});
+};
 exports.tournamentSetting = function(data,res) {
 	var queryString = "SELECT * FROM tournament ";
 	var tournament_year = [];
@@ -309,7 +374,6 @@ exports.fetchSelectedYearData = function(data,res) {
 				rowsp[i].edit = 0;
 			}
 		}
-		//console.log(rowsp);
 		res.render('admin/tournamentInfoTemplate', {
 			selectedData : rowsp,
 		});
@@ -352,7 +416,6 @@ exports.saveTournamentData = function(data,res) {
 };
 
 exports.saveTeamData = function(data,res,upload) {
-	console.log(data);
 	for(var i = 0; i < data.total_rows; i ++) {
 		var fileUpload = 0;
 		if(typeof upload["logo_"+i] != "undefined") {
@@ -383,13 +446,22 @@ exports.saveTeamData = function(data,res,upload) {
 
 //for playing 11 team select
 exports.playing11Team = function(data,res) {
-	console.log("modeldata"+data.player11_id[0]);
-	for(var i =0; i <=data.player11_id.length; i++) {
-		var queryString = "UPDATE player SET match_id ='"+ data.match_id +"' where id = '"+ data.player11_id[i] +"'";
-		connection.query(queryString, function(err, rows, fields) {
-			res.send(rows);
-		});
-	}
+	var matchId = [];
+	var getMatchId = connection.query("SELECT id from match_info order by match_date desc limit 1 ");
+	getMatchId.on('result', function(row) {
+		matchId.push(row.id);
+	}).on('end',function(){
+		//for(var i =0; i < data.player11_id.length; i++) {
+			
+			var queryString1 = "UPDATE player SET match_id ='"+ matchId +"' where id in ( "+ data.player11_id +") " +
+					"AND team_id = '"+data.team_id+"'";
+			connection.query(queryString1);
+			
+			var queryString2 = "UPDATE player SET match_id ='0' where id not in ( "+ data.player11_id +") " +
+			"AND team_id = '"+data.team_id+"'";
+				connection.query(queryString2);
+		//}
+	});
 };
 
 /* 
@@ -401,7 +473,7 @@ exports.startMatch = function(req,res) {
 	var playerid1 = [];
 	var playerid2 = [];
 
-	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for FROM match_info order by match_date desc limit 1';
+	var queryString = 'SELECT id,first_team,second_team,toss_won,opt_for,total_over,over_limit FROM match_info order by match_date desc limit 1';
 	connection.query(queryString, function(err, rows, fields) {
 		matchId = rows[0].id;
 		if(rows[0].first_team == rows[0].toss_won) {
@@ -413,7 +485,7 @@ exports.startMatch = function(req,res) {
 			}
 		}
 		else {
-			if(rows[0].opt_for == "ball") {
+			if(rows[0].opt_for == "bowl") {
 				battingTeam = rows[0].first_team; 
 			}
 			else {
@@ -421,6 +493,8 @@ exports.startMatch = function(req,res) {
 			}
 		}
 		bowlingTeam = (rows[0].first_team == battingTeam)? rows[0].second_team :rows[0].first_team;
+		over_limit = rows[0].over_limit;
+		total_over = rows[0].total_over;
 		
 	}).on('end',function(){
 	var fetchbattingPlayerQuery = connection.query("SELECT id,first_name,last_name from player where match_id='"+matchId+"' and team_id ='"+battingTeam+"'");
@@ -439,6 +513,8 @@ exports.startMatch = function(req,res) {
 					bowlinglist : playerid2,
 					battingTeam : battingTeam,
 					bowlingTeam : bowlingTeam,
+					overLimit : over_limit ,
+					totalOver : total_over
 					
 			});
 			});
@@ -457,17 +533,13 @@ exports.tossMatch = function(req,res) {
 	 team2 = row.second_team;
 	 match_id = row.id;
 	  }).on('end',function(){
-		  console.log(team1);
 		  var queryString2 = connection.query("SELECT team_name FROM team where id='"+team1+"'");
 			queryString2.on('result', function(row1) {
 			 team1name = row1.team_name;
-			 console.log("team1name"+row1.team_name);
-		  });
+			 });
 			 var queryString3 = connection.query("SELECT team_name FROM team where id='"+team2+"'");
 				queryString3.on('result', function(row2) {
 				 team2name = row2.team_name;
-				 console.log("team1name"+row2.team_name);
-				 
 				 
 			  }).on('end',function(){
 					res.render('admin/tossMatch', {
@@ -489,3 +561,89 @@ exports.tossUpdateData = function(data,res) {
 			res.send(rows);
 		});
 };
+
+
+exports.fetchPlayerForMatchModel = function(req,res){
+	var bowlers_array = [];
+	var batsman_array = [];
+	var match_id = "";
+	var tossWinningTeamId;
+	var tossLossingTeamId;
+	var batting_team_id = '';
+	var bowling_team_id = '';
+	var player_list = [];
+	var queryForMatchInfo = connection.query("SELECT * FROM match_info ORDER BY match_date DESC LIMIT 1;");
+ 	queryForMatchInfo.on('result',function(rows){
+ 		console.log(rows);
+ 		match_id = rows.id;
+ 		tossWinningTeamId = rows.toss_won;
+ 		total_over = rows.total_over;
+ 		over_limit = rows.over_limit;
+ 		if(tossWinningTeamId!="" && rows.opt_for!=""){
+ 			if(rows.first_team == tossWinningTeamId){
+ 				tossLossingTeamId = rows.second_team;
+ 			}else{
+ 				tossLossingTeamId = rows.first_team;
+ 			}
+ 			if(rows.opt_for == 'bat'){
+ 				batting_team_id = tossWinningTeamId;
+ 				bowling_team_id = tossLossingTeamId;
+ 			}else if(rows.opt_for == 'bowl'){
+ 				bowling_team_id = tossWinningTeamId;
+ 				batting_team_id = tossLossingTeamId;
+ 			}
+ 		}else{
+ 			batting_team_id = rows.first_team;
+ 			bowling_team_id = rows.second_team;	
+ 		}		
+ 	}).on('end',function(){	
+ 		var fetchBattingteamname = connection.query("SELECT team_name FROM team where id='"+batting_team_id+"'");
+ 		fetchBattingteamname.on('result', function(rows) {
+ 			battingTeamName= rows.team_name;
+ 		});
+ 		var queryForMatchPlayer = connection.query("SELECT * FROM player where match_id='"+match_id+"'");
+		queryForMatchPlayer.on('result', function(rows) {			
+				tempObj = {};
+				if(rows.team_id == bowling_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					bowlers_array.push(tempObj);
+				}else if(rows.team_id == batting_team_id){
+					tempObj = {'name':rows.first_name , 'id' : rows.id}
+					batsman_array.push(tempObj);
+				}
+		}).on('end',function(){
+			res.render('admin/index', {
+			  	bowlers_array : bowlers_array,
+			  	batsman_array: batsman_array,
+			  	battingTeamName :battingTeamName,
+			  	total_over:total_over,
+			  	over_limit:over_limit,
+			  	batting_team_id:batting_team_id,
+				bowling_team_id:bowling_team_id,
+			  	match_id:match_id,
+			});
+		});	
+ 	});
+};
+
+
+exports.getOverRecord = function(req,res) {
+	
+	var queryString = "SELECT wide,noball,wicket,run,ball_id from ball where match_id='"+req.matchId+"' and team_id='"+req.teamId+"' " +
+			"and over_id='"+req.overId+"' ";
+	connection.query(queryString, function(err, rows, fields) {
+		console.log(rows);
+		res.render('admin/showOverDetails', {
+			details : rows,
+			});
+	});
+}
+
+
+exports.dashBoard = function(req,res) {
+	
+	var queryString = "SELECT * from tournament where tournament_year = '2015'";
+	connection.query(queryString, function(err, rows, fields) {
+		res.send(rows);
+	});
+}

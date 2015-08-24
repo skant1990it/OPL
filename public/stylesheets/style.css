@@ -83,9 +83,12 @@ h4{
 	margin-bottom:-10px;
 }
 .player{
-	background-color:#E0E2EC;
+	background-image: url("../images/greengrass2.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
 	margin-bottom:15px;
-	
+	background-color:#61802F;
 	padding-left:5px;
 	min-height:50px;
 	border-radius: 3px 3px 3px 3px;
@@ -93,11 +96,9 @@ h4{
 #score{
 	min-height:180px;
 	padding:0px;
+	margin-top:15px;
 }
-#scoringdiv{
-	background-color:#B9BED5;
-	
-}
+
 .player_btn{
 	height:50px;
 	width:85px;
@@ -150,10 +151,6 @@ tr ,td{
 .team_name {
 	margin-left:160px;
 }
-#match_setting {
-	padding:0px;
-	padding-left:5px;
-}
 .setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
 	margin-top: 116px;
     margin-bottom: 10px;
@@ -180,17 +177,17 @@ tr ,td{
 	margin-left:50%;
 }
 #team_A_select {
-	float: left;
-    margin-top: 35%;
-    width: 175%;
-    margin-left: 230%;
-    margin-bottom: 30%;
-}
+    margin-top: 40%;
+    width: 200%;
+	text-align: center;
+    margin-left: 1%;
+	    margin-bottom: 20%;
+	}
 #team_B_select {
-	float: left;
-    margin-top: 25%;
-    width: 175%;
-    margin-left: 230%;
+	 margin-top: 15%;
+    width: 200%;
+	text-align: center;
+    margin-left: 1%;
 
 }
 .team_name {
@@ -200,6 +197,7 @@ tr ,td{
 #team1,#team2{
 	float:left;
 	width:100%;
+	margin-left:35%;
 }
 .teamlist,.teamvalue{
 	float:left;
@@ -215,9 +213,7 @@ tr ,td{
 	margin-bottom:20px;
 	margin-top:10%;
 }
-.accordion-fold{
-	display:none;	
-}
+
 
 #settings-box-container .settings-box {
   border: 1px solid #AAAAAA;
@@ -245,6 +241,14 @@ tr ,td{
 #addplayertbl_div{
 	width:100%;
 }
+
+#heading{
+	min-height:55px;
+}
+#overdetails {
+	padding:0px;
+}
+
 .caret{
 	float:right;
 	margin-top:-4%;
@@ -304,4 +308,87 @@ select,.team_info{
 	border-radius: 3px 3px 3px 3px;
 	background-color:#F8F8F8;
 	height:50%;
+}
+#first_team_select {
+	width:10px;
+	float:left;
+	padding-top:0px;
+}
+option { 
+    text-align: center;
+}
+#errordivteam{
+	float:left;
+}
+
+#headerimg{
+	background-image: url("../images/header1.png");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	height:225px;
+	padding-top:0px;
+}
+.container{
+	padding-top:10px;
+	background-color:#919E73;
+}
+#menu{
+	background-color: #919E73;
+}
+#menuline{
+	border-bottom: 1px solid #333333;
+	
+}
+.vrline{
+  border-right: 1px solid #428bca;
+}
+ #bowler {
+	background-image: url("../images/greengrass2.jpg");
+ 	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+	background-color:#F8F8F8;
+	border-radius: 3px 3px 3px 3px;
+}
+
+#batsman{
+	background-image: url("../images/greengrass2.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+	background-color:#F8F8F8;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.player_btn_cls,.over_btn_cls {
+	color:#FFFC93;
+	background-color:#8BBE82;
+}
+
+#batting{
+	background-color:#4E5534;
+}
+#menuline>li>a{
+	color:#FFFFFF;
+}
+
+#menuline>li.active>a {
+	color:#4E5534;
+}
+
+#menuline>li>a:focus {
+    text-decoration: none;
+    background-color: #919E73;
+	border:none;
+}
+
+.graphcontainer{
+	float:left;
+		width: 45%; 
+	height: 250px;
+	margin: 0 auto;
+	margin-right:5%;
+	margin-bottom:3%;
 }
