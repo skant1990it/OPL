@@ -91,4 +91,92 @@ exports.deletedata = function(data,res,req) {
 	});
 };
 
+exports.fetchHomePageDataForYear = function(data,res) {
+	var teamArray = new Array();
+	var matchData = new Array();
+	var tournamentData = new Array();
+	var distinctYear = new Array();
+	var year = new Date().getFullYear();
+	if(typeof data.tournament_year != "undefined") {
+		year = data.tournament_year;
+	}
+	var teamSql = "SELECT te.id, te.team_name FROM tournament as t LEFT JOIN team as te ON te.tournament_id = t.id WHERE t.tournament_year = ?";
+	var teamObj = connection.query(teamSql , [year]);
+	teamObj.on('result', function(rows) {
+		teamArray[rows.id] = rows.team_name;
+	}).on('end',function(){
+		var matchSql = "SELECT mi.id,t.tournament_name, t.tournament_year,mi.first_team,mi.second_team FROM team as te INNER JOIN match_info as mi ON te.id = mi.first_team RIGHT JOIN tournament as t ON te.tournament_id = t.id";
+		console.log(matchSql);
+		var matchObj = connection.query(matchSql);
+		matchObj.on('result', function(rows) {
+			if(rows.tournament_year == year) {
+				matchData.push({
+					first_team: teamArray[rows.first_team],
+					second_team: teamArray[rows.second_team],
+					match_id: rows.id,
+					tournament_name: rows.tournament_name +" - "+rows.tournament_year,
+					tournament_year: rows.tournament_year,
+				});
+			}
+			else {
+				if(distinctYear.indexOf(rows.tournament_year) == -1) {
+					tournamentData.push({
+						match_id: rows.id,
+						tournament_name: rows.tournament_name +" - "+rows.tournament_year,
+						tournament_year: rows.tournament_year,
+					});
+					distinctYear.push(rows.tournament_year);
+				}
+				
+			}
+		}).on('end',function(){
+			if(typeof data.tournament_year != "undefined") {
+				res.send(matchData);
+			}
+			else {
+				console.log(tournamentData);
+				res.render('pages/index', {
+					matchList : matchData,
+					tournamentData : tournamentData,
+				});
+			}
+			
+		});
+	});
+};
+exports.fetchMatchDetails = function(req, res) {
+	var teamData = new Array();
+	var teamSql = "SELECT  mi.first_team as first_team_id, mi.second_team as second_team_id,mi.opt_for, mi.toss_won, t1.team_name AS first_team, t2.team_name AS second_team FROM match_info AS mi INNER JOIN team as t1 ON mi.first_team = t1.id INNER JOIN team as t2 ON mi.second_team = t2.id  WHERE mi.id = ?";
+	var teamObj = connection.query(teamSql , [req.match_id]);
+	teamObj.on('result', function(rows) {
+		if(rows.first_team_id == rows.toss_won) {
+			if(rows.opt_for == 'bat') {
+				teamData.push(rows.first_team);
+				teamData.push(rows.second_team);
+			}
+			else {
+				teamData.push(rows.second_team);
+				teamData.push(rows.first_team);
+			}
+			
+		}
+		else if(rows.second_team_id == rows.toss_won) {
+			if(rows.opt_for == 'bat') {
+				teamData.push(rows.second_team);
+				teamData.push(rows.first_team);
+			}
+			else {
+				teamData.push(rows.first_team);
+				teamData.push(rows.second_team);
+			}
+		}
+		
+	}).on('end',function(){
+		console.log(teamData);
+		res.render('pages/scoreboardTemplate', {
+			teamData : teamData,
+		});
+	});
+   	
+};
 

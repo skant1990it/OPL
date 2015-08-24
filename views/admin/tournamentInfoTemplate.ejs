@@ -7,15 +7,19 @@
 					<th>Tournament Name</th>
 					<th>No. Of Teams</th>
 					<th>Max No. Of Players</th>
-					<th></th>
+					<% if(selectedData.length > 0 && selectedData[0].edit != 0) { %>
+						<th></th>
+					<% } else if(selectedData.length == 0) {%>
+						<th></th>
+					<% } %>
 				</tr>
 				<tr>
 				<% if(selectedData.length > 0 && selectedData[0].edit == 0) { %>
 					<% for(var i=0; i < selectedData.length; i++ ) { %>
 						<% if(i == 0) { %>
 							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].tournament_name%>'></td>
-							<td>No. Of Teams: <input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].no_of_teams%>'></td>
-							<td>Max No. Of Players: <input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].max_number_of_players%>'></td>
+							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].no_of_teams%>'></td>
+							<td><input <% if(selectedData[i].edit == 0) { %> disabled <% } %> type='text' value='<%= selectedData[i].max_number_of_players%>'></td>
 						<% } %>
 					<% } %>
 				<% } else { %>

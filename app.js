@@ -9,12 +9,12 @@ var adduser = require('./controller/addcontroller');
 var adminuser = require('./controller/admincontroller');
 var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
-var  gapi = require('./lib/gapi');
+var gapi = require('./lib/gapi');
 var path = require('path');
 var multer = require('multer');
-var flash = require('connect-flash');
-var session = require('express-session');
-var cookieSession = require('cookie-session');
+// var flash = require('connect-flash');
+// var session = require('express-session');
+// var cookieSession = require('cookie-session');
 //var csv = require('ya-csv');
 // Configuration
 
@@ -28,7 +28,6 @@ app.configure(function() {
 	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
-	app.use(flash());
 });
 
 app.configure('development', function() {
@@ -42,22 +41,17 @@ app.configure('production', function() {
 	app.use(express.errorHandler());
 });
 
-// Routes
-app.get('/', function(req, res) {
-	var session = req.session;
-	console.log(session);
-	var title = 'Learning node';
-	res.render('pages/index', {
-		title : title,
-		url: gapi.url
-	});
-});
+
 
 
 /* Configure the multer. */
 //team info
 //app.get('/teaminfo', adminuser.teamInfo);
 
+// used to fetch home page data
+app.get('/', adduser.fetchHomePageDataForYear);
+app.post('/fetchSelectedTournamentMatches', adduser.fetchSelectedTournamentMatches);
+app.post('/fetchMatchDetails', adduser.fetchMatchDetails);
 //Player list
 app.get('/list', adduser.playerList);
 //Team list
@@ -110,7 +104,7 @@ app.post('/saveTeamData', adminuser.saveTeamData);
 
 app.get('/admin', function(req, res) {
 	var title = 'Admin Panel';
-	res.render('admin/index', {
+	res.render('admin/dashboard', {
 		title : title,
 		url: gapi.url
 	});
@@ -138,7 +132,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3004, function() {
+app.listen(3016, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

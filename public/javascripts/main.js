@@ -321,11 +321,7 @@ $(document).on("click", '.toss_btn', function() {
 		$(".modal-footer").hide();
 //		$(".start_match_title").text("Match Toss");
 		$(".toss-Match").html(data);
-$(document).on("click", '#tournament_setting', function() {
-	$.get('/tournamentSetting', function(data) {
-		$(".scoreboard").html(data);
 	});
-
 });
 
 $(document).on("change", '#tournament_year', function() {
@@ -339,13 +335,13 @@ $(document).on("change", '#tournament_year', function() {
 		success: function(result){
 			$('#tournament_section2').html(result);
 			var noOfRows = $('#team_info tr').length;
-			console.log(noOfRows);
-			var TotalRows = $("#no_of_teams").val();;
-			for(var i = noOfRows - 1  ; i < TotalRows ; i ++) {
-				$('#team_info tr').last().after("<tr><td><input type='text' value='' name='team_name_"+i+"' id='team_name_"+i+"'></td><td><input  type='file' value='' name='logo_"+i+"' id='logo_"+i+"'></td><td><input  type='text' value='' name='captain_"+i+"' id='captain_"+i+"'></td><td><input  type='text' value='' name='no_of_wins' disabled></td><td><input  type='text' value='' name='no_of_loss' disabled></td></tr>");
-				$('#total_rows').val(parseInt($('#total_rows').val()) + 1);
-			}
-			if(noOfRows != 1) {
+			var TotalRows = $("#no_of_teams").val();
+			//for(var i = noOfRows - 1  ; i < TotalRows ; i ++) {
+				//$('#team_info tr').last().after("<tr><td><input type='text' value='' name='team_name_"+i+"' id='team_name_"+i+"'></td><td><input  type='file' value='' name='logo_"+i+"' id='logo_"+i+"'></td><td><input  type='text' value='' name='captain_"+i+"' id='captain_"+i+"'></td><td><input  type='text' value='' name='no_of_wins' disabled></td><td><input  type='text' value='' name='no_of_loss' disabled></td></tr>");
+				//$('#total_rows').val(parseInt($('#total_rows').val()) + 1);
+			//}
+			var isDisabled = $('#team_info tr').last().find('input#team_name_1').prop('disabled');
+			if(noOfRows != 1 && !isDisabled) {
 				$('#team_info tr').last().after("<tr><td colspan='5'><input type='button' value='Save' onclick='saveTeamData();'></td></tr>");
 			}
 		}
@@ -430,9 +426,13 @@ function saveTeamData() {
 		});	
 	}
 }
-
+$(document).on("click", '#tournament_setting', function() {
+	$.get('/tournamentSetting', function(data) {
+		$(".scoreboard").html(data);
 	});
+
 });
+
 
 $(document).on("click", '#toss_save', function() {
 	var formData = $('#toss_form_id').serializeArray();
@@ -446,3 +446,43 @@ $(document).on("click", '#toss_save', function() {
 	});
 });
 
+$(function() {
+	$( "#tournamentWiseScoreCard" ).accordion();
+});
+
+function fetchSelectedTournamentMatches(tournament_year) {
+	$.ajax({
+		url: "/fetchSelectedTournamentMatches",
+		data: {
+			tournament_year : tournament_year,
+		},
+		method: "POST",
+		success: function(result){
+			var html = '';
+			console.log(result);
+			var len = result.length;
+			for(var i = 0 ; i < len; i ++) {
+				if(result[i].first_team && result[i].second_team) {
+					html += "<a href='javascript:void(0)' onclick=fetchMatchDetails('"+result[i].match_id+"')>"+ result[i].first_team +" V/S "+result[i].second_team+"</a><br/><br/>";
+				}
+			}
+			
+			$("#"+tournament_year).html(html);
+			
+		}
+	});
+}
+
+function fetchMatchDetails(match_id) {
+	$.ajax({
+		url: "/fetchMatchDetails",
+		data: {
+			match_id : match_id,
+		},
+		method: "POST",
+		success: function(result){
+			$("#jumbotron").html(result);
+			$( "#tabs" ).tabs();
+		}
+	});
+}

@@ -119,8 +119,8 @@ exports.listTeam = function(req,res) {
  */
 exports.listAllPlayer = function(req,res) {
 
-	var queryPlayer = 'SELECT * FROM player';
-	var queryTeam = 'SELECT * FROM team';
+	var queryPlayer = "SELECT * FROM player";
+	var queryTeam = "SELECT * FROM team as te INNER JOIN tournament as t ON t.id=te.tournament_id WHERE t.tournament_year="+new Date().getFullYear();
 	var result = {};
     var user_array = [];
     var assigned_user_array = [];
