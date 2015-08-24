@@ -1,0 +1,72 @@
+<div id="tabs">
+  <ul>
+    <% for(var i=0; i < teamData.length; i++) { %>
+      <li><a href="#tabs-<%=i+1%>"><%= teamData[i]%></a></li>
+    <% } %>
+  </ul>
+  <% for(var i=0; i < teamData.length; i++) { %>
+    <div id="tabs-<%=i+1%>">
+      <table>
+        <tr>
+            <td>Batsmen</td>
+            <td></td>
+            <td>R</td>
+            <td>B</td>
+            <td>4s</td>
+            <td>6s</td>
+            <td>SR</td>
+        </tr>
+        <% for(var i=0; i < 11; i++) { %>
+          <tr>
+            <td>Batsmen <%=i+1%></td>
+            <td>bowled &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>50</td>
+            <td>100</td>
+            <td>5</td>
+            <td>2</td>
+            <td>50.00</td>
+          </tr>
+        <% } %>
+        <tr>
+          <td>Extras</td>
+          <td>(b 5, lb 1, wd 3, nb 6, p 0)</td>
+          <td>15</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>(9 Wkts, 15 overs)</td>
+          <td>121</td>
+          <td colspan="4">RR:6.64</td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+            <td>Bowling</td>
+            <td>O</td>
+            <td>M</td>
+            <td>R</td>
+            <td>W</td>
+            <td>Nb</td>
+            <td>Wd</td>
+            <td>ER</td>
+        </tr>
+        <% for(var i=0; i < 6; i++) { %>
+          <tr>
+            <td>Bowler <%=i+1%></td>
+            <td>4</td>
+            <td>1</td>
+            <td>31</td>
+            <td>1</td>
+            <td>2</td>
+            <td>2</td>
+            <td>7.28</td>
+          </tr>
+        <% } %>
+      </table>
+    </div>
+  <% } %>
+</div>
