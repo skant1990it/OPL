@@ -152,30 +152,73 @@ exports.fetchMatchDetails = function(req, res) {
 		if(rows.first_team_id == rows.toss_won) {
 			if(rows.opt_for == 'bat') {
 				teamData.push(rows.first_team);
+				teamData.push(rows.first_team_id);
 				teamData.push(rows.second_team);
+				teamData.push(rows.second_team_id);
 			}
 			else {
 				teamData.push(rows.second_team);
+				teamData.push(rows.second_team_id);
 				teamData.push(rows.first_team);
+				teamData.push(rows.first_team_id);
 			}
-			
 		}
 		else if(rows.second_team_id == rows.toss_won) {
 			if(rows.opt_for == 'bat') {
 				teamData.push(rows.second_team);
+				teamData.push(rows.second_team_id);
 				teamData.push(rows.first_team);
+				teamData.push(rows.first_team_id);
 			}
 			else {
 				teamData.push(rows.first_team);
+				teamData.push(rows.first_team_id);
 				teamData.push(rows.second_team);
+				teamData.push(rows.second_team_id);
 			}
 		}
-		
 	}).on('end',function(){
-		console.log(teamData);
-		res.render('pages/scoreboardTemplate', {
-			teamData : teamData,
-		});
+		var batsmanData = new Array();
+ 		var matchDataSql = "SELECT CONCAT(IFNULL(p.first_name,'') , ' ' ,IFNULL(p.last_name,'')) as player_name, p.id player_id, sum(b.run) total_runs, count(b.id) as total_balls, SUM(IF(b.run=6,1,0)) sixes , SUM(IF(b.run=4,1,0)) fours , TRUNCATE(sum(b.run)/COUNT(b.id)*100,2) strike_rate, p.team_id FROM player as p LEFT JOIN ball AS b ON p.id = b.batsman_id WHERE p.match_id = ? GROUP BY b.batsman_id ORDER BY over_id IS NULL ASC , over_id ASC";
+		var matchDataObj = connection.query(matchDataSql , [req.match_id]);
+		matchDataObj.on('result', function(rows) {
+			batsmanData.push({
+				"player_id"  : rows.player_id,
+				"total_runs" : rows.total_runs?rows.total_runs:'',
+				"player_name": rows.player_name,
+				"total_balls": rows.total_balls?rows.total_balls:'',
+				"sixes"	: rows.total_runs?rows.sixes:'',
+				"fours" : rows.total_runs?rows.fours:'',
+				"strike_rate" : rows.total_runs?rows.strike_rate:'',
+				"team_id" : rows.team_id,			
+			});
+		}).on('end',function(){
+			var bowlerData = new Array();
+			var matchDataSql = "SELECT CONCAT(IFNULL(p.first_name,'') , ' ' ,IFNULL(p.last_name,'')) player_name, p.id player_id, count(distinct b.over_id) overs,sum(b.run) runs,sum(b.wicket) wickets, sum(b.wide) wide, sum(b.noball) noball, TRUNCATE((sum(b.run)/COUNT(distinct b.over_id)),2) economy, p.team_id FROM player as p INNER JOIN ball AS b ON p.id = b.bowler_id WHERE p.match_id = ? GROUP BY b.bowler_id ORDER BY over_id IS NULL ASC , over_id ASC"
+			var matchDataObj = connection.query(matchDataSql , [req.match_id]);
+			matchDataObj.on('result', function(rows) {
+				bowlerData.push({
+					"player_id"  : rows.player_id,
+					"overs" : rows.overs?rows.overs:0,
+					"player_name": rows.player_name,
+					"maiden": rows.maiden?rows.maiden:0,
+					"runs"	: rows.runs?rows.runs:0,
+					"wickets" : rows.wickets?rows.wickets:0,
+					"economy" : rows.economy?rows.economy:0,
+					"wide" : rows.wide?rows.wide:0,
+					"noball" : rows.noball?rows.noball:0,		
+					"team_id" : rows.team_id,		
+				});
+			}).on('end',function(){
+				console.log(batsmanData);
+				res.render('pages/scoreboardTemplate', {
+					teamData : teamData,
+					batsmanData : batsmanData,
+					bowlerData : bowlerData,
+				});
+			});
+		});	
+		
 	});
    	
 };

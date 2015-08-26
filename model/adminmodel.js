@@ -133,41 +133,36 @@ exports.listTeam = function(req,res) {
  * Call for list all team and player on add team (Admin panel)
  */
 exports.listAllPlayer = function(req,res) {
-
-	var queryPlayer = "SELECT * FROM player";
-	var queryTeam = "SELECT * FROM team as te INNER JOIN tournament as t ON t.id=te.tournament_id WHERE t.tournament_year="+new Date().getFullYear();
 	var result = {};
     var user_array = [];
     var assigned_user_array = [];
     var title_array = [];
-	connection.query(queryPlayer, function(err, rowsp, fields) {
-		for(var i=0; i < rowsp.length; i++) {
-			if(rowsp[i].team_id == 0) {
-				user_array.push(rowsp[i].id);
-				user_array.push(rowsp[i].first_name);
-			}
-			else {
-				assigned_user_array.push(rowsp[i].team_id);
-				assigned_user_array.push(rowsp[i].id);
-				assigned_user_array.push(rowsp[i].first_name);
-			}
+	var queryPlayer = "SELECT * FROM player";
+	var playerObj = connection.query(queryPlayer);
+	playerObj.on('result', function(rows) {
+		if(rows.team_id == 0) {
+			user_array.push(rows.id);
+			user_array.push(rows.first_name);
 		}
-		
-	});
-	
-	connection.query(queryTeam, function(err, rowst, fields) {
-		for(var i=0; i < rowst.length; i++) {
-			title_array.push(rowst[i].id );
-			title_array.push(rowst[i].team_name );
+		else {
+			assigned_user_array.push(rows.team_id);
+			assigned_user_array.push(rows.id);
+			assigned_user_array.push(rows.first_name);
 		}
-	});
-	setTimeout(function(){
-		res.render('admin/addTeam', {
-			player: user_array,
-			team: title_array,
-			assigned_player: assigned_user_array
+	}).on('end',function(){
+		var queryTeam = "SELECT *, te.id as team_id FROM team as te INNER JOIN tournament as t ON t.id=te.tournament_id WHERE t.tournament_year="+new Date().getFullYear();
+		var teamObj = connection.query(queryTeam);
+		teamObj.on('result', function(rows) {
+			title_array.push(rows.team_id );
+			title_array.push(rows.team_name );
+		}).on('end',function(){
+			res.render('admin/addTeam', {
+				player: user_array,
+				team: title_array,
+				assigned_player: assigned_user_array
+			});
 		});
-	},1000);
+	});
 };
 /**
  * call for fetch team member(player list for particular team)
@@ -273,6 +268,7 @@ exports.getTeamName = function(req,res) {
 exports.fetchPlayer = function(req,res) {
 
 	var queryPlayer = 'SELECT * FROM player WHERE first_name like "%'+req.player_name+'%" and team_id = 0';
+    console.log(queryPlayer);
     var user_array = [];
 	var abc = connection.query(queryPlayer, function(err, rowsp, fields) {
 		for(var i=0; i < rowsp.length; i++) {

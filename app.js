@@ -13,8 +13,8 @@ var gapi = require('./lib/gapi');
 var path = require('path');
 var multer = require('multer');
 // var flash = require('connect-flash');
-// var session = require('express-session');
-// var cookieSession = require('cookie-session');
+var session = require('express-session');
+var cookieSession = require('cookie-session');
 //var csv = require('ya-csv');
 // Configuration
 app.use(session({
@@ -47,18 +47,31 @@ app.configure('production', function() {
 });
 
 // Routes
-app.get('/', function(req, res) {
+// app.get('/', function(req, res) {
+// 	if(req.session.email){
+// 			res.render('admin/dashboard', {
+// 			title : '',
+// 			validAdmin : 'Yes',
+// 		});
+// 	}else{
+// 		var title = 'Learning node';
+// 		res.render('pages/index', {
+// 			title : title,
+// 			url: gapi.url
+// 		});	
+// 	}
+	
+// });
+
+app.get('/',  function(req, res) {
 	if(req.session.email){
 			res.render('admin/dashboard', {
 			title : '',
 			validAdmin : 'Yes',
 		});
 	}else{
-		var title = 'Learning node';
-		res.render('pages/index', {
-			title : title,
-			url: gapi.url
-		});	
+		var title = 'Learning node';	
+		res.redirect('/index');
 	}
 	
 });
@@ -69,7 +82,7 @@ app.get('/', function(req, res) {
 //app.get('/teaminfo', adminuser.teamInfo);
 
 // used to fetch home page data
-app.get('/', adduser.fetchHomePageDataForYear);
+app.get('/index', adduser.fetchHomePageDataForYear);
 app.post('/fetchSelectedTournamentMatches', adduser.fetchSelectedTournamentMatches);
 app.post('/fetchMatchDetails', adduser.fetchMatchDetails);
 //Player list
@@ -171,7 +184,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3016, function() {
+app.listen(3015, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

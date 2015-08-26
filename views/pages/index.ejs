@@ -26,7 +26,7 @@
                                 <div >
                             <% } %>
                             <% if(matchList[i].first_team && matchList[i].second_team) { %>
-                                <a><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
+                                <a href='javascript:void(0)' onclick=fetchMatchDetails('<%=matchList[i].match_id%>')><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
                             <% } %>
                             <% if(i + 1 == matchList.length) {%>
                                 </div>
