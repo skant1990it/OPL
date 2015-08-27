@@ -34,7 +34,9 @@ exports.listdataapi = function(req,res) {
 	var queryString = 'SELECT * FROM user';
 	
 	connection.query(queryString, function(err, rows, fields) {
-		res.send(rows);
+		res.render('pages/list', {
+			title : rows
+		});
 		 
 	});
 };
