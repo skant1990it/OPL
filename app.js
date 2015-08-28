@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -121,6 +122,8 @@ app.get('/scoreboard',adminuser.fetchPlayerForMatch);
 app.get('/newsFeed',adminuser.newsFeed);
 //for admin module
 
+//edit match setting
+app.get('/editSetting',adminuser.editSetting);
 /*app.get('/admin', function(req, res) {
 	var title = 'Admin Panel';
 	res.render('admin/index', {
