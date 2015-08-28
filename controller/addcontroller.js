@@ -60,3 +60,14 @@ exports.updatedata = function(req, res) {
 exports.deletedata = function(req, res) {
 	model.deletedata(req.params,res,req);
 };
+
+exports.fetchHomePageDataForYear = function(req, res) {
+    console.log("hello");
+    model.fetchHomePageDataForYear(req.params,res);
+};
+exports.fetchSelectedTournamentMatches = function(req, res) {
+    model.fetchHomePageDataForYear(req.body,res);
+};
+exports.fetchMatchDetails = function(req, res) {
+    model.fetchMatchDetails(req.body,res);
+};

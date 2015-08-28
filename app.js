@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -9,10 +10,10 @@ var adduser = require('./controller/addcontroller');
 var adminuser = require('./controller/admincontroller');
 var favicon = require('serve-favicon');
 var expressValidator = require('express-validator');
-var  gapi = require('./lib/gapi');
+var gapi = require('./lib/gapi');
 var path = require('path');
 var multer = require('multer');
-var flash = require('connect-flash');
+// var flash = require('connect-flash');
 var session = require('express-session');
 var cookieSession = require('cookie-session');
 //var csv = require('ya-csv');
@@ -30,8 +31,6 @@ app.configure(function() {
 	app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 	app.use(express.static(__dirname + '/uploads'));
 	app.use(express.bodyParser({uploadDir:'/uploads'}));
-	
-	app.use(flash());
 });
 app.use(function(req, res, next) { 
 	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'); 
@@ -49,18 +48,31 @@ app.configure('production', function() {
 });
 
 // Routes
-app.get('/', function(req, res) {
+// app.get('/', function(req, res) {
+// 	if(req.session.email){
+// 			res.render('admin/dashboard', {
+// 			title : '',
+// 			validAdmin : 'Yes',
+// 		});
+// 	}else{
+// 		var title = 'Learning node';
+// 		res.render('pages/index', {
+// 			title : title,
+// 			url: gapi.url
+// 		});	
+// 	}
+	
+// });
+
+app.get('/',  function(req, res) {
 	if(req.session.email){
 			res.render('admin/dashboard', {
 			title : '',
 			validAdmin : 'Yes',
 		});
 	}else{
-		var title = 'Learning node';
-		res.render('pages/index', {
-			title : title,
-			url: gapi.url
-		});	
+		var title = 'Learning node';	
+		res.redirect('/index');
 	}
 	
 });
@@ -70,6 +82,10 @@ app.get('/', function(req, res) {
 //team info
 //app.get('/teaminfo', adminuser.teamInfo);
 
+// used to fetch home page data
+app.get('/index', adduser.fetchHomePageDataForYear);
+app.post('/fetchSelectedTournamentMatches', adduser.fetchSelectedTournamentMatches);
+app.post('/fetchMatchDetails', adduser.fetchMatchDetails);
 //Player list
 app.get('/list', adduser.playerList);
 //Team list
@@ -121,9 +137,11 @@ app.get('/scoreboard',adminuser.fetchPlayerForMatch);
 app.get('/newsFeed',adminuser.newsFeed);
 //for admin module
 
+//edit match setting
+app.get('/editSetting',adminuser.editSetting);
 /*app.get('/admin', function(req, res) {
 	var title = 'Admin Panel';
-	res.render('admin/index', {
+	res.render('admin/dashboard', {
 		title : title,
 		url: gapi.url
 	});
@@ -169,7 +187,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3008, function() {
+app.listen(3015, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

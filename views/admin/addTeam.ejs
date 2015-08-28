@@ -15,7 +15,7 @@
 		<table>
 			<tr>
 				<td style="text-align:center;">
-					<input name = "search" type = "text" id="search_box" style="width:80%;margin:5% auto auto auto;">
+					<input name = "search" type = "text" id="search_box" style="width:80%;margin:5% auto auto auto;" value="<%= assigned_player.length %>">
 					<div id="filtered_data" style="overflow:auto;height:685px;width:100%;text-align:center;" class="playerdroppable">
 					<% for(var i=0; i < player.length; i+=2) { %>
 						<div class="draggable" droped="0" style="color:black;border:1px solid black;width:75%;margin:2% auto auto auto;" id="<%= player[i] %>"><%= player[i+1] %></div>
@@ -27,7 +27,7 @@
 					<% var droppableBlockCounter = 0; %>
 					<td id="team_<%= team[i] %>" >
 						<% for(var j=0; j < assigned_player.length; j += 3) { %>
-							<% if(assigned_player[j] == count) {%>
+							<% if(assigned_player[j] == team[i]) {%>
 								<div style="color:black;border:1px solid green;margin:5%;height:40px;text-align:center;" class="droppable">
 									<div droped="1" class="draggable" style="color:black;border:1px solid black;width:75%;margin:auto;" id="<%= assigned_player[j+1] %>"><%= assigned_player[j+2] %></div>
 								</div>
