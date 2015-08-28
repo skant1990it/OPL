@@ -168,7 +168,6 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	
 	  //change batsman
 	   if((ballcount < 6) && (gainedruns == '1' || gainedruns == '3' || gainedruns == '5')){
-		  
 		  batsman_active = $('input[type="button"][class="player_btn batsman green"]').attr('data');
 		  $('input[type="button"][class="player_btn batsman green"][data="'+oncrease_player+'"]').removeClass('green').addClass('lightgreen');
 		  $('input[type="button"][class="player_btn batsman lightgreen"][data="'+offcrease_player+'"]').removeClass('lightgreen').addClass('green');
@@ -291,6 +290,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	}
 	
 	  if(ballcount==7){
+		 
 		   overcount++;
 		  check_over = $('input[type="button"][class*="over_btn active"]').attr('id');
 		  var completed_over =  $("input[type='button'][name='over"+check_over+"']");
@@ -310,11 +310,11 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		 }else{
 		 $("table#score_table").find("tr:eq(1)").find('input[type="radio"],[type="checkbox"],[type="button"]').prop('disabled',true);
 		 }
-		 if(gainedruns == '2' || gainedruns == '4' || gainedruns == '6'){
+		 //if(gainedruns == '1' || gainedruns == '3' || gainedruns == '5' || gainedruns == '0'){
 			   $('input[type="button"][class="player_btn batsman green"][data="'+oncrease_player+'"]').removeClass('green').addClass('lightgreen');
 			  $('input[type="button"][class="player_btn batsman lightgreen"][data="'+offcrease_player+'"]').removeClass('lightgreen').addClass('green');
 				   
-		  }
+		//  }
 		 
 		 batsmandetail.map(function (person) {
 			  if (person.name == $('input[type="button"][class="player_btn bowler green"]').val()) {

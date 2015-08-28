@@ -165,3 +165,6 @@ exports.dashBoard = function(req, res) {
 //	res.render('admin/dashAdmin');
 };
 
+exports.editSetting = function(req, res) {
+	model.editSetting(req.body,res);
+};
