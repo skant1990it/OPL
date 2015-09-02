@@ -51,7 +51,6 @@ exports.teamPlayer = function(req, res) {
 };
 
 exports.addRuns = function(req, res) {
-	console.log(req.body);
 		model.addRuns(req.body,res);
 };
 
@@ -88,10 +87,6 @@ exports.assignPlayerToTeam = function(req, res) {
 //for playing 11 team select
 exports.playing11 = function(req, res) {
     model.playing11Team(req.body,res);
-};
-
-exports.fetchPlayerForMatch = function(req,res){
-	model.fetchPlayerForMatchModel(req.params,res);
 };
 
 exports.getOverRecord = function(req, res) {
@@ -138,7 +133,7 @@ exports.saveTeamData = function(req, res) {
 
 //for strike barsman setting
 exports.startMatch = function(req, res) {
-	model.startMatch(req.body,res);
+	model.startMatch(req.params,req.body,res);
 };
 
 exports.fetchMatchDetails = function(req, res) {
@@ -153,7 +148,7 @@ exports.tossUpdateData = function(req, res) {
 	model.tossUpdateData(req.body,res);
 };
 exports.fetchPlayerForMatch = function(req,res){
-	model.fetchPlayerForMatchModel(req.params,res);
+	model.fetchPlayerForMatchModel(req.params,res,req);
 };
 //Add news feed
 exports.newsFeed = function(req, res) {

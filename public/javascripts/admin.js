@@ -348,11 +348,30 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	  var tot_extra=parseInt($('#tot_wide').html())+parseInt($('#tot_noball').html());
 	  $('#tot_extras').html(tot_extra);
 	  
-	  
+	  var lastovercnt =  $("#over").find(".over_btn").last().val();
+	  console.log("lastover"+lastovercnt);
+		if(overcount == parseInt(lastovercnt)+1 && ballcount==1){
+			$.get('/startMatch/2', function(data) {
+				$('#myModal').modal('toggle');
+				   $('#myModal').css('display','block');
+				   $('.start-Match').css('display','block');
+				   $('.modal-header').css('display','block');
+				   $('.modal-footer').css('display','block');
+					$("#cancelbtn").hide();
+					$(".over-details").hide();
+					$(".toss-Match").hide();
+					$(".start-Match").html(data);
+			});
+			$.get('/scoreboard/2', function(data) {
+				$(".scoreboard").html(data);
+
+			});
+		}
 	  
 }else{
 	alert("Please select one player");
 } 
+	
 	 
 });
 

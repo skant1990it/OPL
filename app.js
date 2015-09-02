@@ -109,7 +109,7 @@ app.get('/newmatch', adminuser.newMatch);
 app.post('/playing11', adminuser.playing11);
 
 //for strike batsman setting 
-app.get('/startMatch', adminuser.startMatch);
+app.get('/startMatch/*', adminuser.startMatch);
 
 //for add as player form in add ciontroller
 app.get('/addAsPlayer',adduser.addAsPlayer);
@@ -132,7 +132,7 @@ app.post('/fetchSelectedYearData', adminuser.fetchSelectedYearData);
 app.post('/saveTournamentData', adminuser.saveTournamentData);
 app.post('/saveTeamData', adminuser.saveTeamData);
 
-app.get('/scoreboard',adminuser.fetchPlayerForMatch);
+app.get('/scoreboard/*',adminuser.fetchPlayerForMatch);
 //Add news feed
 app.get('/newsFeed',adminuser.newsFeed);
 //for admin module
@@ -187,7 +187,7 @@ app.post('/upload/group', function(req, res) {
     });
 });
 
-app.listen(3015, function() {
+app.listen(3009, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

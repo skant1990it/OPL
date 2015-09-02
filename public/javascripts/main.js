@@ -63,7 +63,7 @@ $(document).on("click", '#admin', function() {
 $(document).on("click", '#dash_admin', function() {
 	$("#graph_div").css('display',"none");
 	$(".scoreboard").css('display','block');
-	$.get('/startMatch', function(data) {
+	$.get('/startMatch/1', function(data) {
 		if(data == 'NANT'){
 			alert("No Match Setting done for today match");
 			 $(".dash_admin").removeClass('active');
@@ -86,11 +86,15 @@ $(document).on("click", '#dash_admin', function() {
 				});
 		}else{
 			   $('#myModal').modal('toggle');
+			   $('#myModal').css('display','block');
+			   $('.start-Match').css('display','block');
+			   $('.modal-header').css('display','block');
+			   $('.modal-footer').css('display','block');
 				$("#cancelbtn").hide();
 				$(".over-details").hide();
 				$(".toss-Match").hide();
 				$(".start-Match").html(data);
-				$.get('/scoreboard', function(data) {
+				$.get('/scoreboard/1', function(data) {
 					$(".scoreboard").html(data);
 
 				});
@@ -603,138 +607,129 @@ $( document ).ready(function() {
 //	graph();
 });
 function graph(data){
-	
-console.log(data);
+	console.log(data);
+	var key1 = 0 ,key2 = 0 ,key3 = 0 ,key4 = 0,count=0,keywon=0,keyloss=0,keydraw=0,keyplayed=0;
+	var graph1Data=[],graph2Data=[],graph3Data=[],graph4Data=[],chart,graph1Name=[],graphTeam=[];
+	var graph1Datawon=[],graph1Dataloss=[],graph1Datadraw=[],graph1Dataplayed = [];
+	  $.each( data, function( key, value ) {
+		  if(value.tournament_year) {
+			  graph3Data[key3++] = {name: value.tournament_year+ " " +value.tournament_name, data: [value.no_of_teams,value.max_number_of_players]};
+		  }
+		  else if(value.captain){
+			  graph2Data[key2++] = [value.team_name + " "+ value.tournament_name,value.no_of_won_match];
+			  graph1Datawon[keywon++] = [value.no_of_won_match];
+			  graph1Dataloss[keyloss++] = [value.no_of_loss_match];
+			  graph1Datadraw[keydraw++] = [value.no_of_draw_match];
+			  graph1Dataplayed[keyplayed++] = [value.no_of_won_match+value.no_of_loss_match+value.no_of_draw_match];
+			  graphTeam[count++] = [value.team_name];
+			  
+		  }
+    	});
+	  console.log(graph1Data[1]);
     $('#container1').highcharts({
-        title: {
-            text: 'Tournament',
-            x: -20 //center
-        },
-        subtitle: {
-            text: 'Vikash kumar',
-            x: -20
-        },
-        xAxis: {
-            categories: ['No of team','Max no of player']
-        },
-        yAxis: {
-            title: {
-                text: 'tournament Year'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: '°C'
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [4,14]
-        }]
+    	 chart: {
+             type: 'column'
+         },
+         title: {
+             text: 'Current Tournament Status'
+         },
+         subtitle: {
+             text: 'OPL: osscube.com'
+         },
+         xAxis: {
+             categories: graphTeam,
+             crosshair: true
+         },
+         yAxis: {
+             min: 0,
+             title: {
+                 text: 'Values'
+             }
+         },
+         tooltip: {
+             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                 '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+             footerFormat: '</table>',
+             shared: true,
+             useHTML: true
+         },
+         plotOptions: {
+             column: {
+                 pointPadding: 0.2,
+                 borderWidth: 0
+             }
+         },
+         series: [{
+        	 name : 'Total Played match',
+        	 data : graph1Dataplayed
+         },
+         {
+        	 name : 'No of won match',
+        	 data : graph1Datawon
+         },
+         {
+        	 name : 'No of Loss match',
+        	 data : graph1Dataloss
+         },
+         {
+        	 name : 'No of Draw match',
+        	 data : graph1Datadraw
+         }]
     });
     
-    
     $('#container2').highcharts({
-        title: {
-            text: 'Team',
-            x: -20 //center
-        },
-        subtitle: {
-            text: 'Vikash kumar',
-            x: -20
-        },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
-        yAxis: {
-            title: {
-                text: 'Temperature (°C)'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: '°C'
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: 'New York',
-            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: 'Berlin',
-            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-        }, {
-            name: 'London',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-        }]
+  
+              chart: {
+                  plotBackgroundColor: null,
+                  plotBorderWidth: null,
+                  plotShadow: false,
+                  type: 'pie'
+              },
+              title: {
+                  text: 'Number Of Won Match Status Of Tournament (Current Year)'
+              },
+              tooltip: {
+          	    pointFormat: '{series.name}: <b>{point.y}</b>',
+              	percentageDecimals: 1
+              },
+              series: [{
+            	  name: 'No of won match',
+            	  data: graph2Data
+              }]
+
     });
 
     $('#container3').highcharts({
-        title: {
-            text: 'Team player',
-            x: -20 //center
-        },
-        subtitle: {
-            text: 'Vikash kumar',
-            x: -20
-        },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
-        yAxis: {
-            title: {
-                text: 'Temperature (°C)'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: '°C'
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: 'New York',
-            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: 'Berlin',
-            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-        }, {
-            name: 'London',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-        }]
+    	 title: {
+             text: 'Tournament',
+             x: -20 //center
+         },
+         subtitle: {
+             text: 'Tournament Summary',
+             x: -20
+         },
+         xAxis: {
+             categories: ['No of team','Max no of player']
+         },
+         yAxis: {
+             title: {
+                 text: 'Value'
+             },
+             plotLines: [{
+                 value: 0,
+                 width: 1,
+                 color: '#808080'
+             }]
+         },
+         legend: {
+             layout: 'vertical',
+             align: 'right',
+             verticalAlign: 'middle',
+             borderWidth: 0
+         },
+       	  series: graph3Data
+       
     });
     
     $('#container4').highcharts({
