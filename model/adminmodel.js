@@ -434,7 +434,7 @@ exports.playing11Team = function(data,res) {
 
 exports.startMatch = function(data,req,res) {
 	var matchId='',toss_won='',opt_for='',battingTeam,bowlingTeam;
-	var playerid1 = [],tmp1 = [],tmp2;
+	var playerid1 = [],tmp1 = [],tmp2,innings=1;
 	var playerid2 = [];
 
 	var myDate = new Date();
@@ -482,7 +482,6 @@ exports.startMatch = function(data,req,res) {
 			  } else if(matchId != ''  && toss_won==null  && opt_for==null ){
 				  res.send("NANM");
 			  }else{
-				  console.log("nnnnn"+battingTeam);
 				  if(data[0] == 2){
 						tmp1 = playerid2;
 						playerid2 = playerid1;
@@ -491,6 +490,7 @@ exports.startMatch = function(data,req,res) {
 						tmp2 = bowlingTeam;
 						bowlingTeam = battingTeam;
 						battingTeam = tmp2;
+						innings=2;
 					}
 					  res.render('admin/startMatch', {
 						matchId : matchId,
@@ -499,7 +499,8 @@ exports.startMatch = function(data,req,res) {
 						battingTeam : battingTeam,
 						bowlingTeam : bowlingTeam,
 						overLimit : over_limit ,
-						totalOver : total_over
+						totalOver : total_over,
+						
 						
 				});
 			  }
@@ -552,7 +553,7 @@ exports.tossUpdateData = function(data,res) {
 
 exports.fetchPlayerForMatchModel = function(data,res,req){
 	var bowlers_array = [];
-	var batsman_array = [],tmp=[],tmp2 ;
+	var batsman_array = [],tmp=[],tmp2,innings=1 ;
 	var match_id = "";
 	var tossWinningTeamId,battingTeamName;
 	var tossLossingTeamId;
@@ -609,6 +610,7 @@ exports.fetchPlayerForMatchModel = function(data,res,req){
 			  	tmp2 = bowling_team_id;
 			  	bowling_team_id = batting_team_id;
 				batting_team_id = tmp2;
+				innings = 2;
 			}
 			res.render('admin/index', {
 			  	bowlers_array : bowlers_array,
@@ -619,6 +621,7 @@ exports.fetchPlayerForMatchModel = function(data,res,req){
 			  	batting_team_id:batting_team_id,
 				bowling_team_id:bowling_team_id,
 			  	match_id:match_id,
+			  	innings :innings
 			});
 		});	
  	});

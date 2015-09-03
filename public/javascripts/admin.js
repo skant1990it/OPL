@@ -51,6 +51,8 @@ var overcount=1;
 
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1,wicket;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
+	 var lastovercnt =  $("#over").find(".over_btn").last().val();
+	 
 	if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') && $('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen') ){
 		CheckPlayerFlag = 0;
 	}else{
@@ -348,7 +350,6 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	  var tot_extra=parseInt($('#tot_wide').html())+parseInt($('#tot_noball').html());
 	  $('#tot_extras').html(tot_extra);
 	  
-	  var lastovercnt =  $("#over").find(".over_btn").last().val();
 	  console.log("lastover"+lastovercnt);
 		if(overcount == parseInt(lastovercnt)+1 && ballcount==1){
 			$.get('/startMatch/2', function(data) {
@@ -367,10 +368,19 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 
 			});
 		}
-	  
+		
+		
 }else{
 	alert("Please select one player");
 } 
+	if( $('#innings').val()== '2' && (overcount == parseInt(lastovercnt)*2+1 && ballcount==1)){
+		alert("match finished");
+		$.get('/dashboard', function(data) {
+			$(".scoreboard").html(data);
+		});
+		
+	}
+  
 	
 	 
 });
