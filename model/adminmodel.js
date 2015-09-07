@@ -424,6 +424,7 @@ exports.playing11Team = function(data,res) {
 			var queryString2 = "UPDATE player SET match_id ='0' where id not in ( "+ data.player11_id +") " +
 			"AND team_id = '"+data.team_id+"'";
 				connection.query(queryString2);
+				res.send("Updated playing 11 team");
 		//}
 	});
 };
@@ -633,7 +634,6 @@ exports.getOverRecord = function(req,res) {
 	var queryString = "SELECT wide,noball,wicket,run,ball_id from ball where match_id='"+req.matchId+"' and team_id='"+req.teamId+"' " +
 			"and over_id='"+req.overId+"' ";
 	connection.query(queryString, function(err, rows, fields) {
-		console.log(rows);
 		res.render('admin/showOverDetails', {
 			details : rows,
 			});
@@ -658,6 +658,44 @@ exports.dashBoard = function(req,res) {
 			data.push(rows2);
 		}).on('end',function(){
 			res.send(data);
+		});
+	});
+}
+
+exports.result = function(req,res) {
+	console.log(req.matchId);
+	var match_id, team_id =[],score1=[],score2=[],data = [];
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+	var currentYear = myDate.getFullYear();
+	var teamString = connection.query("select distinct team_id from ball where match_id = '"+req.matchId+"'");
+	teamString.on('result', function(rows2) {	
+		team_id.push(rows2);
+	}).on('end',function(){
+		
+		var score1String = connection.query("select sum(ball.score) as Total1 ,team.team_name as team1 from ball join team where ball.team_id = '"+team_id[0].team_id+"' AND team.id = '"+team_id[0].team_id+"' and  ball.match_id = '"+req.matchId+"'");
+		score1String.on('result',function(rowsscore1) {
+			score1.push(rowsscore1);
+		}).on('end',function(){
+			var score2String = connection.query("select sum(ball.score) as Total2 ,team.team_name as team2 from ball join team where ball.team_id = '"+team_id[1].team_id+"' AND team.id = '"+team_id[1].team_id+"' and  ball.match_id = '"+req.matchId+"'");
+			score2String.on('result',function(rowsscore2) {
+				score2.push(rowsscore2);
+			}).on('end',function(){
+				if(score1[0].Total1 > score2[0].Total2) {
+					var winner = score1[0].team1;
+				}
+				else if(score1[0].Total1 == score2[0].Total2) {
+					var winner = "Draw Match";
+				}
+				else {
+					var winner = score2[0].team2;
+				}
+				res.render('admin/result', {
+					result1 : score1,
+					result2 : score2,
+					winner : winner,
+				});
+			});
 		});
 	});
 }

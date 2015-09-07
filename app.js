@@ -172,6 +172,8 @@ app.post('/setStartingPlayer',adminuser.setStartingPlayer);
 
 app.get('/dashboard',adminuser.dashBoard);
 
+app.post('/result',adminuser.result);
+
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
     console.log('File size is ' + req.files.groupfile.size);

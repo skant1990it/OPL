@@ -5,6 +5,8 @@
 var bowlerId;
 var batsmanId;
 var enablenextrowflag=0;
+var totalBatsman;
+
 $(document).on('click', 'input[type="button"][class="player_btn bowler"]', function() {
 	 $('input[type="button"][class="player_btn bowler green"]').removeClass('green');
 	 $(this).addClass('green');
@@ -37,6 +39,8 @@ $(document).on('click', 'input[type="button"][class*="player_btn batsman"]', fun
 			
 		}
 	}
+	$('#bat1span').html( $('input[type="button"][class="player_btn batsman green"]').val());
+	$('#bat2span').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
 	 
 });
 
@@ -48,7 +52,7 @@ $(document).on('change', 'input[type="checkbox"][group="extra[]"]', function() {
 var batsmandetail=[],batsmandetailactive=[];
 
 var overcount=1;
-
+var wicketCount = 0;
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1,wicket;
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	 var lastovercnt =  $("#over").find(".over_btn").last().val();
@@ -69,7 +73,8 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	var checkedRun=[];
 	var check_over,radiocount=1;
 	var gainedruns;
-	var extraruns,extraType="";  
+	var extraruns,extraType=""; 
+	
 
 	  batsman_active = $('input[type="button"][class="player_btn batsman green"]').attr('data');
 	  oncrease_player = $('input[type="button"][class="player_btn batsman green"]').attr('data');
@@ -138,6 +143,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  
 		  if($.inArray('8', checkedRun)>=0){
 			   wicket="yes";
+			   wicketCount++;
 			   extraruns='0';
 			   if($.inArray('9', checkedRun)>=0 ){
 				   batsmandetail.map(function (person) {
@@ -254,7 +260,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		  }else{
 		  $(this).parents('tr').closest('tr').next('tr').find('input[type="radio"],[type="checkbox"],[type="button"]')
 		  .prop("disabled",true);
-		  alert("Please select a player");
+		  alert("Please select a Batsman");
 		  }	
 		 
 	enablenextrowflag =  $(this).parents('tr').closest('tr').next('tr').attr('id');
@@ -351,7 +357,10 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	  $('#tot_extras').html(tot_extra);
 	  
 	  console.log("lastover"+lastovercnt);
-		if(overcount == parseInt(lastovercnt)+1 && ballcount==1){
+
+		if(($('#innings').val()== '1' && overcount == parseInt(lastovercnt)+1 && ballcount==1) || ($('#innings').val()== '1' && wicketCount ==  totalBatsman-1)){
+			ballcount=1;
+			wicketCount = 0;
 			$.get('/startMatch/2', function(data) {
 				$('#myModal').modal('toggle');
 				   $('#myModal').css('display','block');
@@ -371,16 +380,28 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		
 		
 }else{
-	alert("Please select one player");
+	alert("Please select Bowler");
 } 
-	if( $('#innings').val()== '2' && (overcount == parseInt(lastovercnt)*2+1 && ballcount==1)){
+	if(($('#innings').val()== '2' && (overcount == parseInt(lastovercnt)*2+1 && ballcount==1)) || ($('#innings').val()== '2' && wicketCount ==  totalBatsman-1)){
 		alert("match finished");
-		$.get('/dashboard', function(data) {
-			$(".scoreboard").html(data);
+		ballcount=1;
+		var matchId = $("#match_id_score").val();
+		$.ajax({
+			url: "/result",
+			data: { 
+				'matchId' : matchId 
+				},
+			method: "POST",
+			success: function(result){
+				$('#resultModal').modal('toggle');
+				console.log(result);
+				$(".result-Match").html(result);
+			},
+			error: function(err) {
+				console.log(err);
+			}
 		});
-		
-	}
-  
+		}
 	
 	 
 });
@@ -458,6 +479,10 @@ $(document).on('click', "#start_match_btn", function() {
  
 	 $('input[type="button"][class*="player_btn bowler"]').prop('disabled',true);
 	 $('input[type="button"][class*="player_btn batsman"]').prop('disabled',true);
+	 
+	 totalBatsman = $('input[type="button"][class*="player_btn batsman"]').size();
+//		alert(totalBatsman);
+
 	});
 
 $(document).on('click', ".vrline", function() {

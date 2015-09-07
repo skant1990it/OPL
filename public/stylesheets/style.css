@@ -403,3 +403,8 @@ option {
 	float:left;
 	padding-top:5%;
 }
+#result {
+		min-height:125px;
+	color:#c41d1d;
+	background-color:#e4edf4;
+}
