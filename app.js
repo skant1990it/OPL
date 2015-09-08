@@ -181,6 +181,7 @@ fs.watchFile('views/admin/example.xml', function(curr, prev) {
     // parsing the new xml data and converting them into json file
     var json = parser.toJson(data);
     // send the new data to the client
+    console.log(json);
     socket.volatile.emit('notification', json);
   });
 });
@@ -194,16 +195,14 @@ var element = et.Element;
 var subElement = et.SubElement;
 //var xml2js = require('xml2js');
 //var xmlbuilder = require('xmlbuilder');
-var ballcount=0;
 //var parser = new xml2js.Parser();
 function readXmlFile(req){
-	ballcount++;
-//	console.log("data"+req);
+	console.log(req);
 //	console.log(Object.keys(req));
 	var dataNew, etreeNew;
 	dataNew = fs.readFileSync('views/admin/example.xml').toString();
 	etreeNew = et.parse(dataNew);
-	iframeTag = subElement(etreeNew._root, "ballId"+ballcount+"");
+	iframeTag = subElement(etreeNew._root, "ballId"+req.ball+"");
 	var key;
 	for (key in req) {
 	    if (req.hasOwnProperty(key)) {
@@ -250,7 +249,7 @@ app.post('/upload/group', function(req, res) {
 });
 
 
-app.listen(3017, function() {
+app.listen(3018, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });
