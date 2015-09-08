@@ -2,6 +2,8 @@
  <head>
     <% include ../partials/head %>
 </head>
+
+
 <body class="container" id="backgrnd">
 
 <header>
@@ -10,13 +12,30 @@
     </header>
     <main>
         <div class="row">
-            <div class="col-sm-8">
-            
-                <div class="jumbotron" id="jumbotron">
-                </div>
-                
-            </div>
-            <div class="col-sm-4">
+	            <div class="col-sm-8">
+	                <div class="jumbotron" id="jumbotron">
+	                </div>
+	                
+	                <div id="notificationdiv">Try to change your xml data to update this content
+	                
+	                </div>
+		<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script> 
+	<script>
+	// creating a new websocket
+	var socket = io.connect('http://localhost:3017');
+	// on every message recived we print the new datas inside the #container div
+	socket.on('notification', function (data) {
+	console.log(data);
+		// convert the json string into a valid javascript object
+		var _data = JSON.parse(data);
+		console.log(_data.ballDetails.length);
+		console.log(_data.ballDetails.ballId[0].ball);
+		$('#notificationdiv').html(_data.ballDetails.ballId[0].ball);
+		$('time').html('Last Update:' + new Date());
+	});
+	</script>
+	            </div>
+	            <div class="col-sm-4">
                 
                 <div class="well player_list">
                     <div id="tournamentWiseScoreCard">
