@@ -12,14 +12,81 @@
     </header>
     <main>
         <div class="row">
-	            <div class="col-sm-8">
-	                <div class="jumbotron" id="jumbotron">
+        
+             <div id="notificationdiv" class="notificationdiv col-sm-8">
+             		 <div class="curr_score_header">
+	       					<input type="button" class="curr_score_title" id="curr_team1" value="Team A">
+	       					<input type="button" class="curr_score_title" id="curr_vs" value="V/S" disabled>
+	       					<input type="button" class="curr_score_title" id="curr_team2" value="Team B">
 	                </div>
-	                
-	                <div id="notificationdiv">Try to change your xml data to update this content
-	                
+	                <div class="curr_score">
+	                <style>
+						#scoretable, #scoretable th, #scoretable td {
+						    border: 1px solid black;
+						    border-collapse: collapse;
+						}
+						#scoretable th, #scoretable td {
+						    padding: 10px;
+						}
+					</style>
+	       				<table id="scoretable" style="width:100%">
+	       					<tr>
+		       					<th>Over</th>
+		       					<th>Ball No</th>
+		       					<th>Batsman</th>
+		       					<th>Bowler</th>
+		       					<th>Run</th>
+	       					</tr>
+	       					<% for(var i=0; i < 6; i++) { %>
+	       					<tr>
+	       					<td></td>
+	       					<td></td>
+	       					<td></td>
+	       					<td></td>
+	       					<td></td>
+	       					</tr>
+	       					<% } %>
+	       				</table>
 	                </div>
-		<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script> 
+
+		   			<div class="curr_score">
+	       				<div class="col-sm-6" id="curr_batsman_div">
+	       					<input type="button" class="curr_score_div" id="curr_batsman_score" value="Batsman" disabled>
+	       				</div>
+	       				<div class="col-sm-6" id="curr_bowler_div">
+	       				<input type="button" class="curr_score_div" id="curr_bowler_score" value="Bowler" disabled>
+	       				</div>
+	                </div>
+	               
+	         </div>
+	               <div class="col-sm-4">
+
+                
+                <div class="well player_list">
+                    <div id="tournamentWiseScoreCard">
+                        <% for(var i=0; i < matchList.length; i++ ) { %>
+                            <% if(i == 0) {%>
+                                <h3><%=matchList[i].tournament_name%></h3>
+                                <div >
+                            <% } %>
+                            <% if(matchList[i].first_team && matchList[i].second_team) { %>
+                                <a href='javascript:void(0)' onclick=fetchMatchDetails('<%=matchList[i].match_id%>')><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
+                            <% } %>
+                            <% if(i + 1 == matchList.length) {%>
+                                </div>
+                            <% } %>
+                        <% } %>
+                        <% for(var i=0; i < tournamentData.length; i++ ) { %>
+                            <h3><a onclick="fetchSelectedTournamentMatches(<%=tournamentData[i].tournament_year%>)"><%=tournamentData[i].tournament_name%></a></h3>
+                            <div id="<%=tournamentData[i].tournament_year%>" ></div>
+                        <% } %>
+                    </div>
+                </div>
+
+            </div>
+	         <div class="col-sm-8">
+	                  
+	  <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script> 
 	<script>
 	// creating a new websocket
 	var socket = io.connect('http://localhost:3018');
@@ -44,31 +111,11 @@ console.log("rev");
 		$('time').html('Last Update:' + new Date());
 	});
 	</script>
+	                <div class="jumbotron" id="jumbotron">
+	                </div>
+	          
 	            </div>
-	            <div class="col-sm-4">
-                
-                <div class="well player_list">
-                    <div id="tournamentWiseScoreCard">
-                        <% for(var i=0; i < matchList.length; i++ ) { %>
-                            <% if(i == 0) {%>
-                                <h3><%=matchList[i].tournament_name%></h3>
-                                <div >
-                            <% } %>
-                            <% if(matchList[i].first_team && matchList[i].second_team) { %>
-                                <a href='javascript:void(0)' onclick=fetchMatchDetails('<%=matchList[i].match_id%>')><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
-                            <% } %>
-                            <% if(i + 1 == matchList.length) {%>
-                                </div>
-                            <% } %>
-                        <% } %>
-                        <% for(var i=0; i < tournamentData.length; i++ ) { %>
-                            <h3><a onclick="fetchSelectedTournamentMatches(<%=tournamentData[i].tournament_year%>)"><%=tournamentData[i].tournament_name%></a></h3>
-                            <div id="<%=tournamentData[i].tournament_year%>" ></div>
-                        <% } %>
-                    </div>
-                </div>
-
-            </div>
+	      
         </div>
     </main>
      <footer>
