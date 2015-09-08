@@ -408,3 +408,55 @@ option {
 	color:#c41d1d;
 	background-color:#e4edf4;
 }
+#notificationdiv{
+	min-height:335px;
+	padding-top:10px;
+}
+.curr_score {
+	border-radius: 3px 3px 3px 3px;
+	background-color:#DADADA;
+	min-height:150px;
+}
+.curr_score_header { 
+	background-color:#919E73;
+	border-radius: 3px 3px 3px 3px;
+	height:50px;
+	margin-bottom:2px;
+}
+#curr_team1{
+	width: 172px;
+    margin-left: 20%;
+    margin-top: 11px;
+}
+#curr_team2{
+	width: 172px;
+    margin-left: 0%;
+    margin-top: 11px;
+}
+#curr_vs{
+	margin-top: 11px;
+}
+#curr_batsman_div {
+	background-color:#FFFFFF;
+	min-height:200px;
+}
+#curr_bowler_div {
+	background-color:#FFFFFF;
+	min-height:200px;
+}
+.curr_score_div {
+	width:200px;
+	margin-left:50px;
+	margin-top:5px;
+}
+.notificationdiv {
+	border-radius: 6px;
+	padding-right: 60px;
+    padding-left: 60px;
+	padding-top: 48px;
+    padding-bottom: 48px;
+	padding: 30px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #eee;
+}

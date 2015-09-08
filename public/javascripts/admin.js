@@ -39,8 +39,8 @@ $(document).on('click', 'input[type="button"][class*="player_btn batsman"]', fun
 			
 		}
 	}
-	$('#bat1span').html( $('input[type="button"][class="player_btn batsman green"]').val());
-	$('#bat2span').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
+	 $('#bat1span').html( $('input[type="button"][class="player_btn batsman green"]').val());
+	 $('#bat2span').html($('input[type="button"][class="player_btn batsman lightgreen"]').val());
 	 
 });
 
@@ -205,7 +205,44 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 			console.log(err);
 		}
 	});
-	  
+	
+	$.get('/currentScore', function(data) {
+	/*	console.log("saasddjkk");
+		console.log(data);
+	$(".jumbotron").html(data);
+	*/
+		});
+	
+	/*$.post('/example', function(data) {
+			console.log("saasddjkk");
+				console.log(data);
+			
+		$(".jumbotron").html(data);
+
+		});
+	  */
+	$.ajax({
+		url: "/example",
+		data: {
+			"over":overcount,
+			"ball":check_ball,
+			
+			"bowler":bowlerId,
+			"batsman_id":batsman_active,
+			
+		
+		},
+		
+		method: "POST",
+		success: function(result){
+		},
+		error: function(err) {
+			console.log(err);
+		}
+	});
+	
+	
+	
 		if ( ($.inArray('9', checkedRun)>=0 &&  $.inArray('8', checkedRun)== -1)  || ($.inArray('10', checkedRun)>=0) && $.inArray('8', checkedRun)== -1  ) {
 		radiocount++;
 		nextballcount++;
@@ -265,7 +302,8 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		 
 	enablenextrowflag =  $(this).parents('tr').closest('tr').next('tr').attr('id');
 	 $('input[type="button"][class*="player_btn batsman"]').prop('disabled',false);		
-	 	
+	 
+	
 	}
 	else{
 		if(checkedRun.length == '0'){
