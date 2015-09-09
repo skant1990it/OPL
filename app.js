@@ -157,7 +157,7 @@ app.post('/fetchMatchDetails',adminuser.fetchMatchDetails);
 app.post('/setStartingPlayer',adminuser.setStartingPlayer);
 
 app.get('/dashboard',adminuser.dashBoard);
-function handler(req, res) {
+/*function handler(req, res) {
 	console.log("in handler");
   fs.readFile( 'views/pages/currentScore.ejs', function(err, data) {
     if (err) {
@@ -169,7 +169,7 @@ function handler(req, res) {
     res.end(data);
   });
 }
-
+*/
 
 //creating a new websocket to keep the content updated without any AJAX request
 io.sockets.on('connection', function(socket) {
@@ -181,7 +181,6 @@ fs.watchFile('views/admin/example.xml', function(curr, prev) {
     // parsing the new xml data and converting them into json file
     var json = parser.toJson(data);
     // send the new data to the client
-    console.log(json);
     socket.volatile.emit('notification', json);
   });
 });
@@ -197,8 +196,6 @@ var subElement = et.SubElement;
 //var xmlbuilder = require('xmlbuilder');
 //var parser = new xml2js.Parser();
 function readXmlFile(req){
-	console.log(req);
-//	console.log(Object.keys(req));
 	var dataNew, etreeNew;
 	dataNew = fs.readFileSync('views/admin/example.xml').toString();
 	etreeNew = et.parse(dataNew);
@@ -223,16 +220,14 @@ function readXmlFile(req){
 }
 
 app.post('/example', function(req, res) {
-	console.log(req.body);
 	 var  xml = readXmlFile(req.body);
-	 console.log(xml);
-    res.send(xml);     
+	 res.send(xml);     
 })
 
-app.get('/currentScore', function (req, res) {
+/*app.get('/currentScore', function (req, res) {
 		handler(req,res);
     
-});
+});*/
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);
     console.log('File size is ' + req.files.groupfile.size);
