@@ -2,6 +2,7 @@
  * @author jyotikumari
  */
 
+
 var bowlerId;
 var batsmanId;
 var enablenextrowflag=0;
@@ -374,8 +375,6 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 
 			});
 		}
-		
-console.log(oldplayer);
 		$.ajax({
 			url: "/example",
 			data: {
