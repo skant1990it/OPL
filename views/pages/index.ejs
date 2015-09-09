@@ -12,7 +12,31 @@
     </header>
     <main>
         <div class="row">
-        
+               <div class="col-sm-4">
+                
+                <div class="well player_list">
+                    <div id="tournamentWiseScoreCard">
+                        <% for(var i=0; i < matchList.length; i++ ) { %>
+                            <% if(i == 0) {%>
+                                <h3><%=matchList[i].tournament_name%></h3>
+                                <div >
+                            <% } %>
+                            <% if(matchList[i].first_team && matchList[i].second_team) { %>
+                                <a href='javascript:void(0)' onclick=fetchMatchDetails('<%=matchList[i].match_id%>')><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
+                            <% } %>
+                            <% if(i + 1 == matchList.length) {%>
+                                </div>
+                            <% } %>
+                        <% } %>
+                        <% for(var i=0; i < tournamentData.length; i++ ) { %>
+                            <h3><a onclick="fetchSelectedTournamentMatches(<%=tournamentData[i].tournament_year%>)"><%=tournamentData[i].tournament_name%></a></h3>
+                            <div id="<%=tournamentData[i].tournament_year%>" ></div>
+                        <% } %>
+                    </div>
+                </div>
+
+            </div>
+            <div id="allScore" class="notificationdiv col-sm-8"></div>
              <div id="notificationdiv" class="notificationdiv col-sm-8">
              		 <div class="curr_score_header">
 	       					<input type="button" class="curr_score_title" id="curr_team1" value="Team A">
@@ -58,30 +82,7 @@
 	                </div>
 	               
 	         </div>
-	               <div class="col-sm-4">
-                
-                <div class="well player_list">
-                    <div id="tournamentWiseScoreCard">
-                        <% for(var i=0; i < matchList.length; i++ ) { %>
-                            <% if(i == 0) {%>
-                                <h3><%=matchList[i].tournament_name%></h3>
-                                <div >
-                            <% } %>
-                            <% if(matchList[i].first_team && matchList[i].second_team) { %>
-                                <a href='javascript:void(0)' onclick=fetchMatchDetails('<%=matchList[i].match_id%>')><%=matchList[i].first_team%>  V/S <%=matchList[i].second_team%></a><br/><br/>
-                            <% } %>
-                            <% if(i + 1 == matchList.length) {%>
-                                </div>
-                            <% } %>
-                        <% } %>
-                        <% for(var i=0; i < tournamentData.length; i++ ) { %>
-                            <h3><a onclick="fetchSelectedTournamentMatches(<%=tournamentData[i].tournament_year%>)"><%=tournamentData[i].tournament_name%></a></h3>
-                            <div id="<%=tournamentData[i].tournament_year%>" ></div>
-                        <% } %>
-                    </div>
-                </div>
-
-            </div>
+	        
 	         <div class="col-sm-8">
 	                  
 	           
@@ -123,4 +124,3 @@
         </div>
     </div>
 </div>
- 

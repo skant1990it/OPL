@@ -414,6 +414,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 				$(".scoreboard").html(data);
 
 			});
+			return false;
 		}
 		
 		
