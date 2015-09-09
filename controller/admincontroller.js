@@ -163,3 +163,7 @@ exports.dashBoard = function(req, res) {
 exports.editSetting = function(req, res) {
 	model.editSetting(req.body,res);
 };
+
+exports.result = function(req, res) {
+	model.result(req.body,res);
+};

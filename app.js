@@ -171,6 +171,8 @@ app.get('/dashboard',adminuser.dashBoard);
 }
 */
 
+app.post('/result',adminuser.result);
+
 //creating a new websocket to keep the content updated without any AJAX request
 io.sockets.on('connection', function(socket) {
 // watching the xml file
@@ -227,6 +229,7 @@ app.post('/example', function(req, res) {
 /*app.get('/currentScore', function (req, res) {
 		handler(req,res);
     
+
 });*/
 app.post('/upload/group', function(req, res) {
     console.log('File name is ' + req.files.groupfile.name);

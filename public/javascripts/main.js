@@ -12,6 +12,9 @@ function deleteUser(id) {
 	}
 }
 $(document).on("click", '#add_new_player', function() {
+	$("#jumbotron").show();
+	$("#allScore").hide();
+	$("#notificationdiv").hide();
 	$.get('/addAsPlayer', function(data) {
 		$(".modal-body").html(data);
 	});
@@ -20,7 +23,14 @@ $(document).on("click", '#add_new_player', function() {
 	});
 });
 
+$(document).on("click", '#home', function() {
+	$("#notificationdiv").show();
+	$("#allScore").hide();
+	$("#jumbotron").hide();
+});
+
 $(document).on("click", '#playeradd', function() {
+	$("#allScore").hide();
 	var formData = $('#form_id').serializeArray();
 	$.ajax({
 		url: "/addPlayerData",
@@ -45,6 +55,9 @@ $(document).on("click", '#playeradd', function() {
 });
 
 $(document).on("click", '#list_view', function() {
+	$("#jumbotron").show();
+	$("#allScore").hide();
+	$("#notificationdiv").hide();
 	$.get('/list', function(data) {
 		$(".jumbotron").html(data);
 	});
@@ -54,7 +67,9 @@ $(document).on("click", '#list_view', function() {
 //For admin login 
 
 $(document).on("click", '#admin', function() {
-
+	$("#notificationdiv").show();
+	$("#allScore").hide();
+	$("#jumbotron").hide();
 	$.get('/login', function(data) {
 		$(".modal-body").html(data);
 	});
@@ -100,7 +115,6 @@ $(document).on("click", '#dash_admin', function() {
 				});
 		}
 	});
-	
 
 });
 
@@ -561,7 +575,10 @@ function fetchMatchDetails(match_id) {
 		},
 		method: "POST",
 		success: function(result){
-			$("#jumbotron").html(result);
+			$("#notificationdiv").hide();
+			$("#jumbotron").hide();
+			$("#allScore").show();
+			$("#allScore").html(result);
 			$( "#tabs" ).tabs();
 		}
 	});
@@ -586,6 +603,7 @@ graph();
 
 $(document).on("click", '#back_to_home', function() {
 	$('#myModal').modal('toggle');
+	$('#resultModal').hide();
 	 $(".dash_admin").removeClass('active');
 	 $(".dash_admin").find("a").removeClass('focus');  
 	 $(".dashboard").addClass('active').find("a").addClass('focus');
@@ -593,6 +611,14 @@ $(document).on("click", '#back_to_home', function() {
 	 $(".scoreboard").css('display','none');
 });
 
+$(document).on("click", '#match_done', function() {
+	$('#resultModal').modal('toggle');
+	 $(".dash_admin").removeClass('active');
+	 $(".dash_admin").find("a").removeClass('focus');  
+	 $(".dashboard").addClass('active').find("a").addClass('focus');
+	 $("#graph_div").css('display',"block");
+	 $(".scoreboard").css('display','none');
+});
 $(document).on("click", '#news_feed', function() {
 	$("#graph_div").css('display',"none");
 	$(".scoreboard").css('display','block');
@@ -601,6 +627,8 @@ $(document).on("click", '#news_feed', function() {
 	});
 });
 $( document ).ready(function() {
+	$("#jumbotron").hide();
+	$("#allScore").hide();
 	$.get('/dashboard', function(data) {
 		graph(data);
 	});
