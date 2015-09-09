@@ -576,6 +576,7 @@ function fetchMatchDetails(match_id) {
 		method: "POST",
 		success: function(result){
 			$("#notificationdiv").hide();
+			$("#jumbotron").hide();
 			$("#allScore").show();
 			$("#allScore").html(result);
 			$( "#tabs" ).tabs();
