@@ -18,29 +18,43 @@ a {
 	color:#c41d1d;
 	background-color:#e4edf4;
 }
-#playeradd{
+#playeradd ,.match_player_save{
 	margin-top:30px;
 	margin-bottom:10px;
 	margin-right : 10px;
+	border-radius: 3px 3px 3px 3px;
+	width: 15%;
 }
 #register_div {
 	min-height:300px;
 	color:#c41d1d;
 	background-color:#e4edf4;
 }
+#password {
+	margin-left:90px;
+}
 .button_class {
 		margin-top:10px;
 	margin-left:100px;
+	border-radius: 3px 3px 3px 3px;
+}
+#login_save {
+	width: 15%;
+    margin-left: 26.5%;
+}
+.cancel {
+	width:15%;
+	border-radius: 3px 3px 3px 3px;
 }
 .label_class{
     margin-bottom:5px;
 	margin-right:5px;
 }
 .field_class{
-	
+	border-radius: 3px 3px 3px 3px;
 	margin-bottom:5px;
 	margin-right:10px;
-
+    width : -20%;
 }
 #form_id {
 	width : 100%;
@@ -154,6 +168,7 @@ tr ,td{
 .setting_save ,.update,#update_setting_btn,#team1_save,#team2_save {
 	margin-top: 116px;
     margin-bottom: 10px;
+	border-radius: 3px 3px 3px 3px;
 }
 .center_postion {
 	text-align:center;
@@ -257,14 +272,22 @@ tr ,td{
 
 #setting_save{	
     margin-top: 69px;
+	border-radius: 3px 3px 3px 3px;
+	width:20%;
 }
 .match_setting_text{
 	width:80%;
+}
+#match_player_save1,#match_player_save2 {
+	margin-bottom:2%;
+	border-radius: 3px 3px 3px 3px;
+	width:20%;
 }
 .playing_team11 {
 	margin-left: 33%;
     margin-top: 2%;
     margin-bottom: 2%;
+	
 }
 .toss_btn {
 	background-color:green; 
@@ -459,4 +482,37 @@ option {
     margin-bottom: 30px;
     color: inherit;
     background-color: #eee;
+}
+#graph_div {
+	margin-left:35px;
+}
+#news_feed_area {
+    overflow: scroll;
+	border-radius: 3px 3px 3px 3px;
+	margin: 0px; width: 506px; height: 81px;
+}
+#new_feed_div {
+		min-height:200px;
+	background-color:#e4edf4;
+	    width: 50%;
+	border-radius: 3px 3px 3px 3px;
+}
+.news_feed_save {
+	    float: left;
+    margin-top: 20px;
+    margin-left: 200px;
+	width:100px;
+	border-radius: 3px 3px 3px 3px;
+	width:20%;
+}
+.news_feed_show {
+	margin-left: -15px;
+    width: 361px;
+	height: 100px;
+}
+#back_to_home{
+	margin-right:28%;
+}
+.startmatchdiv {
+height:5%;	
 }

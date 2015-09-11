@@ -102,6 +102,13 @@ exports.fetchHomePageDataForYear = function(data,res) {
 	if(typeof data.tournament_year != "undefined") {
 		year = data.tournament_year;
 	}
+	var newsData = [];
+	var newsFeedSql = "SELECT  news from news_feed order by id desc limit 1";
+	var newsFeed = connection.query(newsFeedSql);
+	newsFeed.on('result', function(news) {
+		console.log(news.news);
+		newsData.push(news.news);
+	});
 	var teamSql = "SELECT te.id, te.team_name FROM tournament as t LEFT JOIN team as te ON te.tournament_id = t.id WHERE t.tournament_year = ?";
 	var teamObj = connection.query(teamSql , [year]);
 	teamObj.on('result', function(rows) {
@@ -118,6 +125,7 @@ exports.fetchHomePageDataForYear = function(data,res) {
 					match_id: rows.id,
 					tournament_name: rows.tournament_name +" - "+rows.tournament_year,
 					tournament_year: rows.tournament_year,
+					news_feed : newsData,
 				});
 			}
 			else {
@@ -140,6 +148,7 @@ exports.fetchHomePageDataForYear = function(data,res) {
 				res.render('pages/index', {
 					matchList : matchData,
 					tournamentData : tournamentData,
+					news_feed : newsData,
 				});
 			}
 			

@@ -21,8 +21,9 @@ connection.query(queryString, function(err, rows, fields) {
 		});
 	}
 	else {
-		res.render('pages/index', {
-			title : rows,
+		res.render('admin/login', {
+			errors : rows,
+			title : '',
 			validAdmin : 'No'
 		});
 	}
@@ -183,18 +184,25 @@ exports.teamPlayer = function(data,res) {
 
 //save and update match setting
 exports.saveMacthSetting = function(req,res) {
-console.log(req);
+	var tournament_id;
+	var myDate = new Date();
+	var matchDate = (myDate.getFullYear())+ '-' +(myDate.getMonth()+1)+ '-' +(myDate.getDate()) ;
+	var currentYear = myDate.getFullYear();
+	var tournament_idsql = "select * from tournament where tournament_year = '"+currentYear+"' ";
+	connection.query(tournament_idsql, function(err, rows, fields) {
+		tournament_id = rows[0].id;
+	});
 	var uniqueId = '';
 	var uuid = "select uuid() as record_id";
 	connection.query(uuid, function(err, rows, fields) {
 		uniqueId = rows[0]['record_id'];
 	}).on('end',function(){
 		  if(!req.match_id) {
-				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date) " +
-						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"',NOW());";
+				var queryString = "INSERT INTO match_info (id,first_team,second_team,total_over,over_limit,match_date,tournament_id) " +
+						"values ('"+ uniqueId +"','"+ req.team1_name +"','"+ req.team2_name +"','"+ req.total_over +"','"+ req.over_limit +"',NOW(),'"+tournament_id+"');";
 			}
 			else {
-				var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' ,first_team='"+ req.team1_name +"',second_team='"+ req.team2_name +"' where id = '"+ req.match_id +"'";
+				var queryString = "UPDATE match_info SET total_over ='"+ req.total_over +"' ,over_limit='"+ req.over_limit +"' ,first_team='"+ req.team1_name +"',second_team='"+ req.team2_name +"',tournament_id='"+ tournament_id +"' where id = '"+ req.match_id +"'";
 				}
 			
 			connection.query(queryString, function(err, rows, fields) {
@@ -413,14 +421,12 @@ exports.playing11Team = function(data,res) {
 	getMatchId.on('result', function(row) {
 		matchId.push(row.id);
 	}).on('end',function(){
-		console.log(data);
+		console.log(matchId);
 		//for(var i =0; i < data.player11_id.length; i++) {
 			
 			var queryString1 = "UPDATE player SET match_id ='"+ matchId +"' where id in ( "+ data.player11_id +") " +
 					"AND team_id = '"+data.team_id+"'";
-			console.log(queryString1);
 			connection.query(queryString1);
-			
 			var queryString2 = "UPDATE player SET match_id ='0' where id not in ( "+ data.player11_id +") " +
 			"AND team_id = '"+data.team_id+"'";
 				connection.query(queryString2);
@@ -657,7 +663,16 @@ exports.dashBoard = function(req,res) {
 		queryString.on('result', function(rows2) {	
 			data.push(rows2);
 		}).on('end',function(){
-			res.send(data);
+			var top5batsman = connection.query("select SUM(b.run) as batsman_run, b.batsman_id as batsmanId ," +
+					"p.first_name,p.last_name,p.team_id,tm.team_name from ball b LEFT JOIN player p on p.id = b.batsman_id " +
+					"LEFT JOIN team tm on p.team_id = tm.id LEFT JOIN match_info m on m.id = b.match_id " +
+					"LEFT JOIN tournament t on t.id = m.tournament_id and t.tournament_year = '"+currentYear+"' " +
+							"group by b.batsman_id limit 5");
+			top5batsman.on('result', function(rows3) {	
+				data.push(rows3);
+			}).on('end',function(){
+				res.send(data);
+			});
 		});
 	});
 }
@@ -699,3 +714,11 @@ exports.result = function(req,res) {
 		});
 	});
 }
+
+exports.newsFeedSave = function(req,res) {
+	var queryString = "INSERT INTO news_feed (news,created_on,created_by,status) " +
+				"values ('"+ req.news_data +"',NOW(),'Vikash','0')";
+	connection.query(queryString, function(err, rows, fields) {
+		res.send(rows);
+	});	
+};

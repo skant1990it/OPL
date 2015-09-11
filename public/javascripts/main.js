@@ -37,8 +37,6 @@ $(document).on("click", '#playeradd', function() {
 		data: formData,
 		method: "POST",
 		success: function(result){
-			console.log(result);
-			console.log("errlng"+result.length);
 			if(result.length < 10) {
 				for(i = 0; i < result.length; i ++) {
 					$("."+result[i].param).html(result[i].msg);
@@ -342,7 +340,7 @@ $(document).on("click", '#match_player_save1', function() {
 		},
 		method: "POST",
 		success: function(result){
-			console.log("playing 11 added");
+			alert("playing 11 selected successfully for first Team...");
 			$('.team_info').attr('disabled','disabled');
 		}
 	});
@@ -364,8 +362,7 @@ $(document).on("click", '#match_player_save2', function() {
 		method: "POST",
 		success: function(result){
 			$('.team_info').attr('disabled','disabled');
-			console.log("playeradd1"+result);
-			console.log("playing 11 added");
+			alert("playing 11 selected successfully for second Team...");
 		}
 	});
 });
@@ -626,6 +623,25 @@ $(document).on("click", '#news_feed', function() {
 		$(".scoreboard").html(data);
 	});
 });
+$(document).on("click", '.news_feed_save', function() {
+	var data = $('#news_feed_area').val();
+	if(data.length == 0) {
+		alert("Write something on News Feed.")
+		return false;
+	}
+	else {
+		$.ajax({
+			url: "/newsFeed",
+			data: {
+				news_data : data,
+			},
+			method: "POST",
+			success: function(result){
+				alert("News feed added successfully");
+			}
+		});
+	}
+});
 $( document ).ready(function() {
 	$("#jumbotron").hide();
 	$("#allScore").hide();
@@ -635,9 +651,10 @@ $( document ).ready(function() {
 //	graph();
 });
 function graph(data){
-	console.log(data);
+//	console.log(data);
 	var key1 = 0 ,key2 = 0 ,key3 = 0 ,key4 = 0,count=0,keywon=0,keyloss=0,keydraw=0,keyplayed=0;
-	var graph1Data=[],graph2Data=[],graph3Data=[],graph4Data=[],chart,graph1Name=[],graphTeam=[];
+	var graph1Data=[],graph2Data=[],graph3Data=[],graph4Data=[],chart,graph1Name=[],graphTeam=[],graph4Player =[],graph4RunName =[],graph4RunData =[];
+	var player =0,run=0,runData = 0;
 	var graph1Datawon=[],graph1Dataloss=[],graph1Datadraw=[],graph1Dataplayed = [];
 	  $.each( data, function( key, value ) {
 		  if(value.tournament_year) {
@@ -652,8 +669,15 @@ function graph(data){
 			  graphTeam[count++] = [value.team_name];
 			  
 		  }
+		  else if(value.batsman_run) {
+//			  console.log(value);
+			  graph4Player[player++] = value.first_name + " "+ value.last_name;
+			  graph4RunName[run++] = value.first_name+ " "+ value.last_name;
+			  graph4RunData[runData++] = value.batsman_run;
+		  }
     	});
-	  console.log(graph1Data[1]);
+//	  console.log(graph4Player);
+//	  console.log(graph4Run);
     $('#container1').highcharts({
     	 chart: {
              type: 'column'
@@ -761,50 +785,43 @@ function graph(data){
     });
     
     $('#container4').highcharts({
+    	chart: {
+            type: 'column'
+        },
         title: {
-            text: 'Current year match status',
-            x: -20 //center
+            text: 'Top 5 Batsman of the Tournament(Current Tournament Status)'
         },
         subtitle: {
-            text: 'Vikash kumar',
-            x: -20
+            text: 'OPL: osscube.com'
         },
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: graph4Player,
+            crosshair: true
         },
         yAxis: {
+            min: 0,
             title: {
-                text: 'Temperature (°C)'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
+                text: 'Values'
+            }
         },
         tooltip: {
-            valueSuffix: '°C'
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
         },
-        series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: 'New York',
-            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: 'Berlin',
-            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-        }, {
-            name: 'London',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-        }]
+       series: [{
+	        name : graph4RunName,
+	        data: graph4RunData,
+    	 }]
     });
 
 
