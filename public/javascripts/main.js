@@ -75,9 +75,53 @@ $(document).on("click", '#admin', function() {
 	});
 });
 
+
 $(document).on("click", '#dash_admin', function() {
+	 
 	$("#graph_div").css('display',"none");
 	$(".scoreboard").css('display','block');
+	  
+		if(localStorage.getItem("balls")){
+				
+			 console.log(localStorage.getItem("balls"));
+			 /*  console.log(localStorage.length);
+			*/   
+			var listId=$(JSON.parse(localStorage.getItem("balls")));
+			   $.get('/scoreboard', function(data) {
+					$(".scoreboard").html(data);
+					 $('#score_table tr:eq(1)').remove();
+						
+					   for(var j=0;j<listId.length;j++){
+						  	//  var currentRow = $("input:checkbox[class*='overball'][checkclass="+listId[j].ball+"][name='check"+listId[j].over+"_"+listId[j].ball+"']").parents('tr');
+							//  var currentTr= currentRow.attr('id');
+							  var newrow=$("<tr  id='"+listId[j].ball+"_"+listId[j].ball+"'><td>"+listId[j].ball+"</td>");
+						  
+							  for(var i=1; i <=10; i++) { 
+								  if(i<=7){ 
+									  newrow.append("<td><input type='radio'  name='radio"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' " +
+									  		"class='overball ball1'" +" checkclass="+listId[j].ball+" value= "+i+" id="+i+" " +
+									  				" "+(i== listId[j].gainedRun?"checked":"")+"></td>");
+								  } 
+								  else {
+									  if(i==8){
+										  newrow.append("<td><input type='checkbox' name='check"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+listId[j].ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+										    	  
+									  }else{
+									  newrow.append("<td><input type='checkbox' name='check"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' class='overball ball1' checkclass="+listId[j].ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+							     }
+								  }
+							  } 
+							  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='"+listId[j].ball+"' id='ball1'></td></tr>");
+							  newrow.insertAfter($("#score_table tr:eq("+j+")") );	 
+					   }	
+					
+				});
+			 
+				
+			   
+		
+		}else{
+	
 	$.get('/startMatch/1', function(data) {
 		if(data == 'NANT'){
 			alert("No Match Setting done for today match");
@@ -115,7 +159,7 @@ $(document).on("click", '#dash_admin', function() {
 				});
 		}
 	});
-
+		}
 });
 
 //For playing team list

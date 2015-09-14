@@ -76,8 +76,10 @@ $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popove
 <input type="hidden" id = "tot_over_id" value="<%= total_over %>">
 <input type="hidden" id = "overlimit_id" value="<%= over_limit %>">
 <input type="hidden" id = "innings" value="<%= innings %>">
-
-  
+<input type="text" id="player" />
+<button id="localbtn">join</button>
+<div id="tournament"></div>
+ <input type="hidden" id="matchStarted" value="0">
     <form id="scoreform"  name="scoreform" method="POST">
     
      <div class="row">
@@ -149,7 +151,7 @@ $("input[type=checkbox][id=8][name*='check"+over+"_"+ball+"'][data-toggle=popove
                                   <th>    No Ball       </th>
                                   <th></th>
                 </tr>
-                <tr id="1" >
+                <tr id="1_1_1" >
                 <td>1</td>
                  <% for(var i=1; i <=10; i++) { %>
                 

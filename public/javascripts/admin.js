@@ -51,10 +51,13 @@ $(document).on('change', 'input[type="checkbox"][group="extra[]"]', function() {
 	$(this).parents('tr').find('input[group="' + $(this).attr('group') + '"]').not($(this)).prop('checked', false);
 });
 var batsmandetail=[],batsmandetailactive=[];
+var myArrayObject = [],temporarysaved=0;
 
 var overcount=1;
 var wicketCount = 0;
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1,wicket;
+var ballDetails = new Object();
+
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	 var lastovercnt =  $("#over").find(".over_btn").last().val();
 	 
@@ -186,6 +189,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		oldplayer =  $('input[type="button"][class="player_btn batsman lightgreen"]').val();  
 	  }
 	   bowlerId = $('input[type="button"][class="player_btn bowler green"]').attr('data'); 
+	   
 	$.ajax({
 		url: "/addRuns",
 		data: {
@@ -204,6 +208,30 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		
 		method: "POST",
 		success: function(result){
+			   /* ballDetails.ball = result.ball;
+			    ballDetails.batsman_id = result.batsman_id;
+			    ballDetails.bowler = result.bowler;
+			    ballDetails.extraruns = result.extraruns;
+			    ballDetails.extratype = result.extratype;
+			    ballDetails.gainedRun = result.gainedruns;
+			    ballDetails.matchId = result.matchId;
+			    ballDetails.over = result.over; 
+			    ballDetails.team1Id = result.team1Id;
+			    ballDetails.wicket = result.wicket;*/
+			    ballDetails.ball = check_ball;
+			    ballDetails.batsman_id = batsman_active;
+			    ballDetails.bowler = bowler;
+			    ballDetails.extraruns = extraruns;
+			    ballDetails.extratype = extraType;
+			    ballDetails.gainedRun = gainedruns;
+			    ballDetails.matchId = $("#match_id_score").val();
+			    ballDetails.over = overcount; 
+			    ballDetails.team1Id = $("#battingteam_id_score").val();
+			    ballDetails.wicket = wicket;
+			    myArrayObject.push(ballDetails);
+			    localStorage.setItem("balls", JSON.stringify(myArrayObject));
+			    
+			    console.log(localStorage.getItem("balls"));
 		},
 		error: function(err) {
 			console.log(err);
@@ -470,9 +498,21 @@ $(document).on('click', 'input[type="button"][class*="over_btn completed"]', fun
 
 
 
+var $tournament; 
+$(document).on('click', '#localbtn', function() {
+   $tournament.append($('#player').val() + '<br/>');
+   localStorage.setItem("#tournament", $tournament.html());
+});
 
 $(document).on('click', "#start_match_btn", function() {
-	
+	$tournament = $('#tournament');
+	 localStorage.setItem("#matchStarted", '1');
+	 
+	 if(localStorage.getItem("#tournament")) {
+	        $tournament.html(localStorage.getItem("#tournament"));
+	    }
+	 
+	 
 	var firstbatsman = $('#1stbatsman_select option:selected').attr('id');
 	if(firstbatsman == undefined) {
 		$('#1st_batsman_select').html('Select First batsman');

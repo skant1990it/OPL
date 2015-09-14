@@ -227,6 +227,7 @@ exports.getmatchId = function(req,res) {
 
 
 exports.addRuns = function(req,res) {
+	console.log(req);
 	var extraColumnName="",extraValue=0;
 	if(req.extraruns=='0'){
 		if(req.wicket == "no"){
