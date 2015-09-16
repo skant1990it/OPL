@@ -1,12 +1,12 @@
 
 <body>
-<div id = "center">
+<div id = "new_feed_div">
 
-<form enctype="multipart/form-data" id = "form_id" method = 'post' action='/admin'>
+<form enctype="multipart/form-data" id = "form_id" method = 'post'>
 
-<p>Enter News here...<textarea name="news_feed" ></textarea></p>
-<input class = "button_class" type = "submit" value  = "Save">
-<input class ="cancel" type = "button" value  = "Cancel" data-dismiss="modal">
+<p>Enter News here...(max 100 characters)</p><textarea maxlength="100" id="news_feed_area" name="news_feed">
+</textarea>
+<input class = "news_feed_save" type = "button" value  = "Save">
 
 
 </form>

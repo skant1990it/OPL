@@ -62,7 +62,6 @@ exports.deletedata = function(req, res) {
 };
 
 exports.fetchHomePageDataForYear = function(req, res) {
-    console.log("hello");
     model.fetchHomePageDataForYear(req.params,res);
 };
 exports.fetchSelectedTournamentMatches = function(req, res) {

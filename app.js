@@ -130,6 +130,7 @@ app.post('/saveTeamData', adminuser.saveTeamData);
 app.get('/scoreboard/*',adminuser.fetchPlayerForMatch);
 //Add news feed
 app.get('/newsFeed',adminuser.newsFeed);
+app.post('/newsFeed',adminuser.newsFeedSave);
 //for admin module
 
 //edit match setting
@@ -247,7 +248,7 @@ app.post('/upload/group', function(req, res) {
 });
 
 
-app.listen(3018, function() {
+app.listen(3017, function() {
 	console.log("Express server listening on port %d in %s mode",
 			app.address().port, app.settings.env);
 });

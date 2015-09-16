@@ -155,6 +155,10 @@ exports.newsFeed = function(req, res) {
 	res.render('admin/newsfeed');
 };
 
+exports.newsFeedSave = function(req, res) {
+	model.newsFeedSave(req.body,res);
+};
+
 exports.dashBoard = function(req, res) {
 	model.dashBoard(req.body,res);
 //	res.render('admin/dashAdmin');
