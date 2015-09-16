@@ -845,7 +845,7 @@ function graph(data){
         yAxis: {
             min: 0,
             title: {
-                text: 'Values'
+                text: 'Runs'
             }
         },
         tooltip: {
@@ -863,7 +863,7 @@ function graph(data){
             }
         },
        series: [{
-	        name : graph4RunName,
+	        name : 'Run:',
 	        data: graph4RunData,
     	 }]
     });

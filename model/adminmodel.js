@@ -347,7 +347,6 @@ exports.fetchSelectedYearData = function(data,res) {
 };
 
 exports.saveTournamentData = function(data,res) {
-	
 	if((typeof data.tournament_id != "undefined") && (data.tournament_id != "")) {
 		var queryStringTournament = "UPDATE tournament SET tournament_name = '"+data.tournament_name +"', tournament_year = '"+ new Date().getFullYear() +"', no_of_teams='"+ data.no_of_teams +"',max_number_of_players='"+ data.max_number_of_players +"' WHERE id='"+data.tournament_id+"'";
 		var uniqueIdTournament = data.tournament_id;
@@ -363,7 +362,8 @@ exports.saveTournamentData = function(data,res) {
 		connection.query(queryStringTeamDelete);
 		for(var i = 1; i <= data.no_of_teams; i ++) {
 			var uniqueIdTeam = uuid.v1();
-			queryStringTeam += "('"+ uniqueIdTeam +"','"+ uniqueIdTournament +"','Team "+i+"','Captain "+i+"','','','',''),";
+			queryStringTeam += "('"+ uniqueIdTeam +"','"+ uniqueIdTournament +"','Team "+i+"','Captain "+i+"','','','','',''),";
+			
 			teamData[i] = {
 				team_id: uniqueIdTeam, 
 				tournament_id: uniqueIdTournament, 
