@@ -75,51 +75,8 @@ $(document).on("click", '#admin', function() {
 
 
 $(document).on("click", '#dash_admin', function() {
-	 
 	$("#graph_div").css('display',"none");
 	$(".scoreboard").css('display','block');
-	  
-		if(localStorage.getItem("balls")){
-				
-			 console.log(localStorage.getItem("balls"));
-			 /*  console.log(localStorage.length);
-			*/   
-			var listId=$(JSON.parse(localStorage.getItem("balls")));
-			   $.get('/scoreboard', function(data) {
-					$(".scoreboard").html(data);
-					 $('#score_table tr:eq(1)').remove();
-						
-					   for(var j=0;j<listId.length;j++){
-						  	//  var currentRow = $("input:checkbox[class*='overball'][checkclass="+listId[j].ball+"][name='check"+listId[j].over+"_"+listId[j].ball+"']").parents('tr');
-							//  var currentTr= currentRow.attr('id');
-							  var newrow=$("<tr  id='"+listId[j].ball+"_"+listId[j].ball+"'><td>"+listId[j].ball+"</td>");
-						  
-							  for(var i=1; i <=10; i++) { 
-								  if(i<=7){ 
-									  newrow.append("<td><input type='radio'  name='radio"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' " +
-									  		"class='overball ball1'" +" checkclass="+listId[j].ball+" value= "+i+" id="+i+" " +
-									  				" "+(i== listId[j].gainedRun?"checked":"")+"></td>");
-								  } 
-								  else {
-									  if(i==8){
-										  newrow.append("<td><input type='checkbox' name='check"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+listId[j].ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
-										    	  
-									  }else{
-									  newrow.append("<td><input type='checkbox' name='check"+listId[j].over+"_"+listId[j].ball+"_"+listId[j].ball+"' class='overball ball1' checkclass="+listId[j].ball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
-							     }
-								  }
-							  } 
-							  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='"+listId[j].ball+"' id='ball1'></td></tr>");
-							  newrow.insertAfter($("#score_table tr:eq("+j+")") );	 
-					   }	
-					
-				});
-			 
-				
-			   
-		
-		}else{
-	
 	$.get('/startMatch/1', function(data) {
 		if(data == 'NANT'){
 			alert("No Match Setting done for today match");
@@ -142,6 +99,107 @@ $(document).on("click", '#dash_admin', function() {
 					$(".scoreboard").html(data);
 				});
 		}else{
+			var lastball;
+			if(localStorage.getItem("balls")){
+				 var storedRuns = $(JSON.parse(localStorage.getItem("balls")));
+				 for( i = 0; i < storedRuns.length; i++){
+					 myArrayObject.push(storedRuns[i]); 
+				 }
+				 console.log(myArrayObject);
+				  $.get('/scoreboard', function(data) {
+						$(".scoreboard").html(data);
+						 var activePlayers = $(JSON.parse(localStorage.getItem("activePlayer")));
+						 $("div #batsman").find('input[type="button"][id="bat'+activePlayers[0].oncreaseBatsman+'"]').addClass('green');
+						 $("div #batsman").find('input[type="button"][id="bat'+activePlayers[0].offcreaseBatsman+'"]').addClass('lightgreen');
+						 $("div #bowler").find('input[type="button"][id="ball'+activePlayers[0].activeBowler+'"]').addClass('green');
+					
+						 $('#score_table tr:eq(1)').remove();
+						
+						   for(var j=0;j<myArrayObject.length;j++){
+							   var checkExtraRun=0;
+							   if(myArrayObject[j].extratype == 'noball'){
+								   checkExtraRun = 10;
+							   }else  if(myArrayObject[j].extratype == 'wide'){
+								   checkExtraRun = 9;
+							   }
+							   ballCnt = myArrayObject[j].isNextBall == '1'?myArrayObject[j].ball:'';
+							     var newrow=$("<tr  id='"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"'><td>"+ballCnt+"</td>");
+								  for(var i=1; i <=10; i++) { 
+									  if(i<7 ) {
+										 if( i== myArrayObject[j].gainedRun){
+											  newrow.append("<td><input type='radio' disabled name='radio"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"' " +
+														"class='overball ball1'" +" checkclass="+myArrayObject[j].ball+" value= "+i+" id="+i+" checked></td>");
+													 
+										 }else{
+											  newrow.append("<td><input type='radio' disabled name='radio"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"' " +
+														"class='overball ball1'" +" checkclass="+myArrayObject[j].ball+" value= "+i+" id="+i+" ></td>");
+											 
+										 }
+										  
+									  }else if(i == 7){
+										  if(myArrayObject[j].gainedRun == '0'){
+											  newrow.append("<td><input type='radio' disabled name='radio"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"' " +
+														"class='overball ball1'" +" checkclass="+myArrayObject[j].ball+" value= "+i+" id="+i+" checked></td>");
+											  
+										  }else{
+											  newrow.append("<td><input type='radio' disabled name='radio"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"' " +
+														"class='overball ball1'" +" checkclass="+myArrayObject[j].ball+" value= "+i+" id="+i+" ></td>");
+										  
+										  }
+									  } else {
+										  if(i==8 && myArrayObject[j].wicket=='yes') {
+		 newrow.append("<td><input type='checkbox'" +
+		 		" disabled name='check"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"'" +
+		 		" class='overball ball1 popover-top popover-show' data-bind=popover" +
+		 		" checkclass="+myArrayObject[j].ball+" " +
+		 		" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"" +
+		 				""+(i== checkExtraRun?"checked":"")+"></td>");
+										  }else{
+										  newrow.append("<td><input type='checkbox' " +
+							"disabled name='check"+myArrayObject[j].over+"_"+myArrayObject[j].ball+"_"+myArrayObject[j].extraball+"' " +
+									"class='overball ball1' checkclass="+myArrayObject[j].ball+"" +
+											" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+" "+
+													""+(i== checkExtraRun?'checked':"")+"></td>");
+								     }
+								 }
+							  } 
+			 newrow.append("<td><input type='button' disabled value='OK' class ='ball1' checkclass='"+myArrayObject[j].ball+"' id='ball1'></td></tr>");
+			 newrow.insertAfter($("#score_table tr:eq("+j+")") );	
+			 lastball = myArrayObject[j].ball;
+			 lastextraball = myArrayObject[j].extraball;
+			 lastover = myArrayObject[j].over;
+			 isNextball = myArrayObject[j].isNextBall;
+				}	
+						   if( isNextball == 1){
+							   lastextraball = 1;
+							   lastball = parseInt(lastball) +1;
+						   }else  if(isNextball == 0){
+							   lastextraball = parseInt(lastextraball) +1;
+						   }
+						   console.log("next"+isNextball);
+						   console.log("lball"+lastball);
+						   console.log("lexball"+lastextraball);
+						   var currentRow = $("input:checkbox[class*='overball'][checkclass="+lastball+"][name='check"+lastover+"_"+lastball+"']").parents('tr');
+							  var currentTr= currentRow.attr('id');
+							  var newrow=$("<tr class="+currentTr+" id='"+lastover+"_"+lastball+"_"+lastextraball+"'><td>"+lastball+"</td>");
+							  for(var i=1; i <=10; i++) { 
+								  if(i<=7){ 
+									  newrow.append("<td><input type='radio'  name='radio"+lastover+"_"+lastball+"_"+lastextraball+"' class='overball ball1'" +" checkclass="+lastball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
+								  } 
+								  else {
+									  if(i==8){
+										  newrow.append("<td><input type='checkbox' name='check"+lastover+"_"+lastball+"_"+lastextraball+"' class='overball ball1 popover-top popover-show' data-bind=popover checkclass="+lastball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+										    	  
+									  }else{
+									  newrow.append("<td><input type='checkbox' name='check"+lastover+"_"+lastball+"_"+lastextraball+"' class='overball ball1' checkclass="+lastball+" value=" + i+ " id="+i+" group="+(i=='8' ? "wicket[]":"extra[]")+"></td>");
+							     }
+								  }
+							  } 
+							  newrow.append("<td><input type='button' value='OK' class ='ball1' checkclass='"+lastball+"' id='ball1'></td></tr>");
+							  newrow.insertAfter($("#score_table tr:last")  );
+						
+					});
+			}else{
 			   $('#myModal').modal('toggle');
 			   $('#myModal').css('display','block');
 			   $('.start-Match').css('display','block');
@@ -156,8 +214,9 @@ $(document).on("click", '#dash_admin', function() {
 
 				});
 		}
+	}
 	});
-		}
+		
 });
 
 //For playing team list

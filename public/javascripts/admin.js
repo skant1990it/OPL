@@ -51,15 +51,16 @@ $(document).on('change', 'input[type="checkbox"][group="extra[]"]', function() {
 	$(this).parents('tr').find('input[group="' + $(this).attr('group') + '"]').not($(this)).prop('checked', false);
 });
 var batsmandetail=[],batsmandetailactive=[];
-var myArrayObject = [],temporarysaved=0;
-
+var myArrayObject = [],activePlayerArray= [],temporarysaved=0;
 var overcount=1;
 var wicketCount = 0;
 var ballcount=1,nextballcount=1,batsman1,batsman2,CheckPlayerFlag = 1,wicket;
-var ballDetails = new Object();
+var localStorageCnt = 0 ;
+var activePlayerDetails = new Object();
 
 $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	 var lastovercnt =  $("#over").find(".over_btn").last().val();
+	 var isNextball =1 ;
 	 
 	if($('input[type="button"][class*="player_btn batsman"]').hasClass('green') && $('input[type="button"][class*="player_btn batsman"]').hasClass('lightgreen') ){
 		CheckPlayerFlag = 0;
@@ -128,6 +129,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 	}
 	  else{
 		  extraruns='1';
+		  isNextball ='0';
 			  if($.inArray('9', checkedRun)>=0 && $.inArray('8', checkedRun)== -1 ){
 			  extraType ="wide";
 			  wicket="no";
@@ -189,7 +191,8 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		oldplayer =  $('input[type="button"][class="player_btn batsman lightgreen"]').val();  
 	  }
 	   bowlerId = $('input[type="button"][class="player_btn bowler green"]').attr('data'); 
-	   
+	  var extraBallThrownId = $(this).parents('tr').attr('id');
+	  
 	$.ajax({
 		url: "/addRuns",
 		data: {
@@ -208,7 +211,11 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		
 		method: "POST",
 		success: function(result){
-			   /* ballDetails.ball = result.ball;
+			
+				var ballDetails = new Object();
+			    ballDetails.ball = result.ball;
+			    ballDetails.extraball =  extraBallThrownId.substr(extraBallThrownId.length - 1);
+			    ballDetails.isNextBall = isNextball;
 			    ballDetails.batsman_id = result.batsman_id;
 			    ballDetails.bowler = result.bowler;
 			    ballDetails.extraruns = result.extraruns;
@@ -217,21 +224,18 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 			    ballDetails.matchId = result.matchId;
 			    ballDetails.over = result.over; 
 			    ballDetails.team1Id = result.team1Id;
-			    ballDetails.wicket = result.wicket;*/
-			    ballDetails.ball = check_ball;
-			    ballDetails.batsman_id = batsman_active;
-			    ballDetails.bowler = bowler;
-			    ballDetails.extraruns = extraruns;
-			    ballDetails.extratype = extraType;
-			    ballDetails.gainedRun = gainedruns;
-			    ballDetails.matchId = $("#match_id_score").val();
-			    ballDetails.over = overcount; 
-			    ballDetails.team1Id = $("#battingteam_id_score").val();
-			    ballDetails.wicket = wicket;
+			    ballDetails.wicket = result.wicket;
 			    myArrayObject.push(ballDetails);
+			    console.log(myArrayObject);
 			    localStorage.setItem("balls", JSON.stringify(myArrayObject));
 			    
-			    console.log(localStorage.getItem("balls"));
+			    activePlayerArray=[];
+			    activePlayerDetails.activeBowler = $('input[type="button"][class="player_btn bowler green"]').attr('data');
+			    activePlayerDetails.oncreaseBatsman = $('input[type="button"][class="player_btn batsman lightgreen"]').attr('data');
+			    activePlayerDetails.offcreaseBatsman = $('input[type="button"][class="player_btn batsman green"]').attr('data');
+			    activePlayerArray.push(activePlayerDetails);
+			    localStorage.setItem("activePlayer", JSON.stringify(activePlayerArray));
+			    
 		},
 		error: function(err) {
 			console.log(err);
@@ -247,7 +251,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		nextballcount++;
 	  var currentRow = $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr');
 	  var currentTr= currentRow.attr('id');
-	  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td></td>");
+	  var newrow=$("<tr class="+currentTr+" id='"+over+"_"+check_ball+"_"+nextballcount+"'><td></td>");
 	  for(var i=1; i <=10; i++) { 
 		  if(i<=7){ 
 			  newrow.append("<td><input type='radio'  name='radio"+over+"_"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
@@ -273,7 +277,7 @@ $(document).on('click', 'input[type="button"][class*="ball"]', function() {
 		ballcount++;
 		check_ball++;
 		var currentTr= $("input:checkbox[class*='overball'][checkclass="+check_ball+"][name='check"+over+"_"+check_ball+"']").parents('tr').attr('id');
-		  var newrow=$("<tr class="+currentTr+" id='"+check_ball+"_"+nextballcount+"'><td>"+check_ball+"</td>");
+		  var newrow=$("<tr class="+currentTr+" id='"+over+"_"+check_ball+"_"+nextballcount+"'><td>"+check_ball+"</td>");
 		  for(var i=1; i <=10; i++) { 
 			  if(i<=7){ 
 				  newrow.append("<td><input type='radio'  name='radio"+over+"_"+check_ball+"_"+nextballcount+"' class='overball ball1'" +" checkclass="+check_ball+" value= "+i+" id="+i+" checked="+(i=='7' ? "true":"false")+"></td>");
